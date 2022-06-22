@@ -1,0 +1,65 @@
+/* header */
+@media screen and (min-width: 320px) and (max-width: 475px) {
+    html{
+        width: fit-content;
+    }
+}
+@media screen and (min-width: 995px) and (max-width: 1200px) {
+    .vendor-section {
+        padding-top: 30px !important;
+        padding-bottom: 30px !important;
+    }
+    .vendor-content {
+        width: 650px !important;
+    }
+}
+@media screen and (min-width: 320px) and (max-width: 995px) {
+    .navbar .nav-right a img {
+        height: 20px !important;
+        margin-left: 10px !important;
+    }
+
+    .navbar .nav-left {
+        display: flex;
+        font-size: 10px !important;
+    }
+
+    .navbar .nav-left a {
+        font-size: 10px !important;
+    }
+
+    .navbar {
+        height: auto !important;
+    }
+    .vendor-section{
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
+    }
+    .vendor-section .vendor-content{
+        padding: 20px;
+        width: 100% !important;
+    }
+    .add-product{
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
+    }
+}
+/* header */
+
+/* container */
+@media only screen and (min-width: 360px) and (max-width: 995px) {
+    .container {
+        width: 483px !important;
+    }
+    .side-nav {
+        transition: 2s;
+        position: fixed;
+        top: 0;
+        left: -100% !important;
+        height: 100% !important;
+        width: 100%;
+        border-radius: 0px !important;
+        z-index: 1030 !important;
+    }
+}
+/* container */

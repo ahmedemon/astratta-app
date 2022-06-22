@@ -1,0 +1,84 @@
+@font-face {
+    font-family: 'Crucial';
+    src: url('../../fonts/Crucial-Medium.otf');
+    src:
+        local('Crucial'),
+        local('Crucial'),
+        url('../../fonts/Crucial-Medium.otf') format('opentype');
+}
+.side-nav{
+    width: 270px;
+    height: 826px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.side-nav .vendor-info .vendor-profile-image{
+    width: 122.88px;
+    height: 122.88px;
+}
+.side-nav .vendor-info h1{
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #4A213A;
+}
+
+.side-nav .vendor-info p{
+    font-family: 'Montserrat' !important;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #FF6DC5;
+}
+
+.side-nav .menu-group .btn{
+    text-align: left;
+    background: #FFFFFF;
+    font-family: 'Crucial' !important;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    color: #4A213A;
+}
+.side-nav .active {
+    background-color: #F2F2F2 !important;
+}
+.side-nav .menu-group .btn:hover{
+    background-color: #F2F2F2;
+}
+.side-nav .menu-group .btn:focus{
+    background-color: #F2F2F2;
+    box-shadow: none !important;
+}
+
+.sideMenuButton {
+    width: auto;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    z-index: 1025;
+    color: white;
+    background-color: #21252980;
+}
+
+#closeButton {
+    position: absolute;
+    right: 30px;
+}
+
+.toggle-menubar {
+    transition-duration: 1s;
+    float: left;
+    height: 100%;
+    width: 100% !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    z-index: 1030 !important;
+}

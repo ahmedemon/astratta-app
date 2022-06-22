@@ -1,0 +1,126 @@
+.btn {
+    transition-duration: 0.3s;
+}
+
+.btn:focus {
+    transition-duration: 0.3s;
+    box-shadow: 0px 0px 0px 4px #ff007b40 !important;
+}
+
+.buy-now-button {
+    text-decoration: none;
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+
+    color: #FFFFFF;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 158px;
+    height: 51px;
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%);
+}
+
+.buy-now-button:hover {
+    color: white;
+    background: linear-gradient(90deg, #B627DC 0%, #FF007D 100%);
+}
+
+.add-to-cart-button {
+    text-decoration: none;
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%);
+    border: 1px solid !important;
+    border-image: linear-gradient(to right, #FF007D, #B627DC) 1 !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-left: 30px;
+    width: 178px;
+    height: 51px;
+}
+
+.add-to-cart-button:hover {
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%) !important;
+    -webkit-text-fill-color: white;
+}
+
+.sign-up-button {
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%) !important;
+    border-width: 1px;
+    border-image: linear-gradient(to right, #FF007D, #B627DC) 1 !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white;
+    background-clip: text;
+
+    width: 104px;
+    height: 41px;
+    margin-left: 30px;
+    transition-duration: 0.3s;
+}
+
+.sign-in-button:focus {
+    transition-duration: 0.3s;
+    box-shadow: 0px 0px 0px 4px #ff007b40 !important;
+}
+
+.sign-up-button:focus {
+    transition-duration: 0.3s;
+    box-shadow: 0px 0px 0px 4px #ff007b40 !important;
+}
+
+.sign-up-button:hover {
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%);
+    -webkit-text-fill-color: white;
+}
+
+.sign-in-button {
+    transition-duration: 0.3s;
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%);
+    border-width: 1px;
+    border-image: linear-gradient(to right, #FF007D, #B627DC) 1 !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    width: 104px;
+    height: 41px;
+    margin-left: 30px;
+}
+
+.sign-in-button:hover {
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%) !important;
+    -webkit-text-fill-color: white;
+}

@@ -1,0 +1,125 @@
+/* footer */
+.footer {
+    background-color: #F2F2F2;
+}
+
+.footer .container {
+    padding: 98px 0px;
+}
+
+.footer .footer-nav-logo {
+    width: 155px;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+.footer .about {
+    font-family: 'Montserrat' !important;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-left: -10px;
+    margin-bottom: 35px;
+}
+
+.footer .footer-heading {
+    font-family: 'Crucial' !important;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+    letter-spacing: 0em;
+    margin-bottom: 24px;
+}
+
+.footer .link-section {
+    padding-left: 130px;
+    justify-content: center;
+    font-family: 'Crucial' !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.footer .contact-section {
+    justify-content: center;
+    font-family: 'Crucial' !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    padding-left: 40px;
+}
+
+.footer ul li {
+    margin-bottom: 17px;
+}
+
+.footer ul li a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.footer-gallery img {
+    width: 130px;
+    height: 178px;
+    border-radius: 0px;
+    padding: 5px;
+    box-shadow: inset 0px 0px 0px 1.26225px #000000, inset 0px 0px 0px 6.31124px #FFFFFF !important;
+    filter: drop-shadow(-4.20749px 4.20749px 12.6225px rgba(0, 0, 0, 0.1)) !important;
+}
+
+.footer-gallery .gimg1 {
+    margin-right: -72px;
+    float: left;
+}
+
+.footer-gallery .gimg2 {
+    margin-right: -10px;
+    margin-top: 58px;
+}
+
+/* footer */
+
+/* footer nav */
+.footer-nav {
+    font-family: 'Crucial' !important;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+
+    padding: 9px 0px;
+    gap: 8px;
+    height: 32px;
+    background: #380F28;
+}
+
+.footer-nav a {
+    font-family: 'Crucial' !important;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: left;
+
+    text-decoration: none;
+    color: #FFFFFF;
+    margin-left: 30px;
+}
+.social-links {
+    margin-top: 58px !important;
+    margin-left: -10px !important;
+}
+
+.social-links i {
+    color: #000000;
+    font-size: 18px;
+    margin-right: 14px !important;
+}
+/* footer nav */

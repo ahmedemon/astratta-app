@@ -1,0 +1,70 @@
+/* header */
+.navbar{
+    /* height: 80px !important; */
+}
+.navbar .nav-right a{
+    text-decoration: none;
+}
+.navbar .nav-right a img{
+    margin-left: 30px !important;
+    height: 30px !important;
+}
+
+.navbar .nav-left a{
+    text-decoration: none;
+    margin-right: 20px !important;
+}
+.navbar-toggler{
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+}
+.navbar .nav-menu {
+    margin-bottom: 10px;
+    margin-left: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto !important;
+    font-size: small !important;
+}
+.navbar .nav-menu:focus {
+    margin-left: 0 !important;
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%) !important;
+    border-width: 1px !important;
+    border-image: linear-gradient(to right, #FF007D, #B627DC) 1 !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.menu {
+    padding: 0px;
+    gap: 40px;
+}
+
+.nav-links {
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 19px;
+    letter-spacing: 0.045em;
+    color: #000000;
+}
+
+.nav-logo {
+    width: 124px !important;
+    height: 39.83px !important;
+}
+
+.nav-links:hover {
+    background: linear-gradient(90deg, #FF007D 0%, #B627DC 100%);
+    border-width: 1px;
+    border-image: linear-gradient(to right, #FF007D, #B627DC) 1 !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+/* header */
