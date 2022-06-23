@@ -36,10 +36,24 @@ return [
             'throw' => false,
         ],
 
+        'profile' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/seller'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'product' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/product'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VendorRegisterRequest extends FormRequest
+class SellerRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class VendorRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'unique:vendors'],
-            'email' => ['required', 'unique:vendors'],
-            'phone' => ['required', 'unique:vendors'],
+            'username' => ['required', 'unique:sellers'],
+            'email' => ['required', 'unique:sellers'],
+            'phone' => ['required', 'unique:sellers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required'],
             'paintings' => ['nullable', 'mimes:png,jpg,jpeg,gif', 'max:2048'],

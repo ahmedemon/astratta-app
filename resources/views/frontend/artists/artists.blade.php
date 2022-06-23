@@ -9,7 +9,7 @@
                         <h1 class="my-lg-0 my-3">Interested in abstract painting?</h1>
                     </div>
                     <div class="col-md-12 col-lg-6 col-xl-6 col-xxl-6 d-flex justify-content-lg-end justify-content-center col-12">
-                        <a href="{{ Auth::guard('vendor')->check() ? route('vendor.dashboard.index') : route('vendor.join-us') }}" class="become-an-artist-link">{{ Auth::guard('vendor')->check() ? 'Go To Dashboard' : 'Become An Artist' }}</a>
+                        <a href="{{ Auth::guard('seller')->check() ? route('seller.dashboard.index') : route('seller.join-us') }}" class="become-an-artist-link">{{ Auth::guard('seller')->check() ? 'Go To Dashboard' : 'Become An Artist' }}</a>
                     </div>
                 </div>
             </div>

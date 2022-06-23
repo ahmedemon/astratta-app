@@ -65,7 +65,7 @@
                                     <small>Or</small>
                                     <hr />
                                 </div>
-                                <a href="{{ route('vendor.join-us') }}" class="btn rounded-0 sign-in-button create-account">JOIN AS AN ARTIST</a>
+                                <a href="{{ route('seller.join-us') }}" class="btn rounded-0 sign-in-button create-account">JOIN AS AN ARTIST</a>
                             </form>
                         </div>
                     </div>

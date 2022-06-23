@@ -32,13 +32,14 @@
     <link rel="stylesheet" href="{{ asset('vendor/css/vendor/preset.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/vendor/chart.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="{{ asset('vendor/css/select2.min.css') }}" />
     <!-- local link -->
 </head>
 
 <body>
     <!-- navbar start -->
     @include('sweetalert::alert')
-    @include('layouts.vendor.header')
+    @include('layouts.frontend.header')
     <!-- navbar end -->
     <!-- breadcrumb start -->
     <div class="breadcrumb">
@@ -76,12 +77,37 @@
 <!-- cdn scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<script src="{{ asset('vendor/js/owl.carousel.min.js') }}"></script>
+{{-- <script src="{{ asset('vendor/js/owl.carousel.min.js') }}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"></script>
 
-<script src="{{ asset('vendor/js/Chart.min.js') }}"></script>
-<script src="{{ asset('vendor/js/chart-area.js') }}"></script>
+{{-- select2 & images loader --}}
+@if (Request::is('seller/products/create'))
+    <script src="{{ asset('vendor/js/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/jquery.imagesloader-1.0.1.js') }}"></script>
+@endif
+{{-- select2 & images loader --}}
+
+{{-- profile cropper --}}
+@if (Request::is('seller/profile'))
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+@endif
+{{-- profile cropper --}}
+
+{{-- datatables --}}
+@if (Request::is('seller/products'))
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.jss"></script>
+@endif
+{{-- datatables --}}
+
+{{-- chart --}}
+@if (Request::is('seller/dashboard'))
+    <script src="{{ asset('vendor/js/Chart.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/chart-area.js') }}"></script>
+@endif
+{{-- chart --}}
+
 <!-- cdn scripts -->
 <script>
     function sideBarToggle() {
@@ -95,3 +121,5 @@
         });
     });
 </script>
+
+@stack('js')

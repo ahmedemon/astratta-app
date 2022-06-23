@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/';
     public const ADMIN_HOME = 'admin';
-    public const VENDOR_HOME = 'seller';
+    public const SELLER_HOME = 'seller';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -31,9 +31,9 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $admin_home = env('ADMIN_URL_PREFIX', static::ADMIN_HOME);
-        $vendor_home = env('VENDOR_URL_PREFIX', static::VENDOR_HOME);
+        $seller_home = env('SELLER_URL_PREFIX', static::SELLER_HOME);
 
-        $this->routes(function () use ($admin_home, $vendor_home) {
+        $this->routes(function () use ($admin_home, $seller_home) {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
@@ -48,10 +48,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/admin.php'));
 
             Route::middleware('web')
-                ->prefix($vendor_home)
-                ->name('vendor.')
+                ->prefix($seller_home)
+                ->name('seller.')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/vendor.php'));
+                ->group(base_path('routes/seller.php'));
         });
     }
 

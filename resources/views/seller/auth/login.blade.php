@@ -14,7 +14,7 @@
                                     <small class="text-danger">{{ $error }}</small>
                                 @endforeach
                             @endif
-                            <form method="POST" action="{{ route('vendor.login') }}">
+                            <form method="POST" action="{{ route('seller.login') }}">
                                 @csrf
                                 <div class="inputGroup mb30">
                                     <label for="username">Username / Email</label>
@@ -49,7 +49,7 @@
                                     <small>Or</small>
                                     <hr />
                                 </div>
-                                <a href="{{ route('vendor.join-us') }}" class="btn rounded-0 sign-in-button create-account">CREATE ACCOUNT</a>
+                                <a href="{{ route('seller.join-us') }}" class="btn rounded-0 sign-in-button create-account">CREATE ACCOUNT</a>
                             </form>
                         </div>
                     </div>

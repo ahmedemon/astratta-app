@@ -10,7 +10,7 @@
                             <div>
                                 <h1 class="headings1">Lorem ipsum dolor sit, adipiscing elit. Odio vitae vitae magnis.</h1>
                                 <div class="d-inline-flex align-items-center">
-                                    <a href="{{ Auth::guard('vendor')->check() ? route('vendor.dashboard.index') : route('vendor.join-us') }}" class="start-selling-link">Start selling your paintings</a>
+                                    <a href="{{ Auth::guard('seller')->check() ? route('seller.dashboard.index') : route('seller.join-us') }}" class="start-selling-link">Start selling your paintings</a>
                                     <p class="my-0 text-white">Paintings</p>
                                 </div>
                                 <br />

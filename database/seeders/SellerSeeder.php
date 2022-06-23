@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Vendor;
+use App\Models\Seller;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class VendorSeeder extends Seeder
+class SellerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class VendorSeeder extends Seeder
      */
     public function run()
     {
-        Vendor::insert([
+        Seller::insert([
             [
                 'image'     => null,
                 'name'     => null,

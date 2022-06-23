@@ -18,7 +18,7 @@
                 <a href="{{ route('my-cart.index') }}" class="">
                     <img src="{{ asset('vendor/svg/cart.svg') }}" alt="" />
                 </a>
-                <a href="{{ Auth::guard('vendor')->user() ? route('vendor.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
+                <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
                     <img src="{{ asset('vendor/svg/profile.svg') }}" alt="" />
                 </a>
             </div>
@@ -49,7 +49,7 @@
                         <a href="{{ route('my-cart.index') }}" class="">
                             <img src="{{ asset('vendor/svg/cart.svg') }}" alt="" />
                         </a>
-                        <a href="{{ Auth::guard('vendor')->user() ? route('vendor.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
+                        <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
                             <img src="{{ asset('vendor/svg/profile.svg') }}" alt="" />
                         </a>
                     </div>

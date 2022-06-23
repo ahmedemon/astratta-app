@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfNotVendor
+class RedirectIfSeller
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,10 @@ class RedirectIfNotVendor
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $guard = 'vendor')
+    public function handle(Request $request, Closure $next, $guard = 'seller')
     {
-        if (!Auth::guard($guard)->check()) {
-            return redirect()->route('vendor.login');
+        if (Auth::guard($guard)->check()) {
+            return redirect()->route('seller.dashboard.index');
         }
         return $next($request);
     }

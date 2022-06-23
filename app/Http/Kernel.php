@@ -67,7 +67,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'admin.guest' => \App\Http\Middleware\RedirectIfAdmin::class,
 
-        'vendor' => \App\Http\Middleware\RedirectIfNotVendor::class,
-        'vendor.guest' => \App\Http\Middleware\RedirectIfVendor::class,
+        'seller' => \App\Http\Middleware\RedirectIfNotSeller::class,
+        'seller.guest' => \App\Http\Middleware\RedirectIfSeller::class,
     ];
 }

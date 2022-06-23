@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Vendor\Auth;
+namespace App\Http\Controllers\Seller\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -8,16 +8,16 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class VendorLoginController extends Controller
+class SellerLoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = RouteServiceProvider::VENDOR_HOME;
+    protected $redirectTo = RouteServiceProvider::SELLER_HOME;
 
     function __construct()
     {
-        $this->redirectTo = env('VENDOR_URL_PREFIX', 'vendor');
-        $this->middleware('vendor.guest')->except('logout');
+        $this->redirectTo = env('SELLER_URL_PREFIX', 'seller');
+        $this->middleware('seller.guest')->except('logout');
         $this->username = $this->findUsername();
     }
 
@@ -51,13 +51,13 @@ class VendorLoginController extends Controller
             $this->middleware('guest')->except('logout');
             return redirect()->back();
         }
-        $pageTitle = "Vendor Login";
-        return view('vendor.auth.login', compact('pageTitle'));
+        $pageTitle = "Seller Login";
+        return view('seller.auth.login', compact('pageTitle'));
     }
 
     protected function guard()
     {
-        return Auth::guard('vendor');
+        return Auth::guard('seller');
     }
 
     public function login(Request $request)
@@ -75,7 +75,7 @@ class VendorLoginController extends Controller
 
         if ($this->attemptLogin($request)) {
             alert('Greetings!', 'Welcome to Dashboard, Art something new today!', 'success');
-            return redirect()->route('vendor.dashboard.index');
+            return redirect()->route('seller.dashboard.index');
             // return $this->sendLoginResponse($request);
         }
 
@@ -87,8 +87,8 @@ class VendorLoginController extends Controller
 
     public function logout(Request $request)
     {
-        $this->guard('vendor')->logout();
+        $this->guard('seller')->logout();
         // $request->session()->invalidate();
-        return $this->loggedOut($request) ?: redirect()->route('vendor.log-in');
+        return $this->loggedOut($request) ?: redirect()->route('seller.log-in');
     }
 }

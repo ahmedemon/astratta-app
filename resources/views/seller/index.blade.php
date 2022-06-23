@@ -1,9 +1,9 @@
-@extends('layouts.vendor.app', ['pageTitle' => $pageTitle])
+@extends('layouts.seller.app', ['pageTitle' => $pageTitle])
 @section('content')
     <div class="container-fluid px-0 bg-light">
         <div class="container px-lg-0 px-xl-0 px-xxl-0 pt96 pb96 vendor-section">
             <div class="row justify-content-between mx-auto">
-                @include('layouts.vendor.side-menu')
+                @include('layouts.seller.side-menu')
                 <div class="col-md-8 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
                     <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
                     <div class="row mx-auto">
