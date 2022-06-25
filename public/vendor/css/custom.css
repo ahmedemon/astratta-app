@@ -49,7 +49,7 @@ html {
     color: #000000;
 }
 
-.vendor-content .form-control{
+.vendor-content form .form-control{
     height: 47px;
     border: 1px solid #00000050;
 
@@ -82,10 +82,16 @@ html {
 input[type=search]{
     outline-offset: unset;
     outline: none;
-    border: 1px solid #00000086 !important;
     transition-duration: 0.3s;
 }
 input[type=search]:focus{
+    transition-duration: 0.3s;
+    box-shadow: 0px 0px 0px 4px #ff007b40 !important;
+}
+#DataTables_Table_0_wrapper .dataTables_info{
+    display: none !important;
+}
+.form-select:focus{
     transition-duration: 0.3s;
     box-shadow: 0px 0px 0px 4px #ff007b40 !important;
 }
@@ -95,6 +101,9 @@ input[type=search]:focus{
 .vendor-content table tr{
     transition-duration: 0.3s;
 }
+.vendor-content table tr td{
+    vertical-align: middle !important;
+}
 .vendor-content table tr:hover{
     transition-duration: 0.3s;
     background-color: #F2F2F2;
@@ -102,25 +111,24 @@ input[type=search]:focus{
 .vendor-content table .active{
     background-color: #F2F2F2;
 }
-.dataTables_paginate .next{
-    border-right: 1px solid #FF6DC5 !important;
-}
-.dataTables_paginate .paginate_button{
+
+.dataTables_paginate .paginate_button .page-link{
     color: #000000;
     text-decoration: none;
     padding: 5px 10px !important;
     border: 1px solid #FF6DC5;
-    border-right: 0px;
     cursor: pointer !important;
+    background: white;
 }
-.dataTables_paginate .paginate_button:focus{
+.dataTables_paginate .paginate_button .page-link:focus{
     transition-duration: 0.3s;
     box-shadow: 0px 0px 0px 4px #ff007b40 !important;
 }
-.dataTables_paginate .paginate_button:hover{
+.dataTables_paginate .paginate_button .page-link:hover{
     background: #FF007D;
     color: white;
 }
+
 .vendor-content table{
     font-family: 'Crucial' !important;
     font-style: normal;

@@ -18,4 +18,9 @@ class Seller extends User
         'privacy_policy',
         'contact_agreement',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

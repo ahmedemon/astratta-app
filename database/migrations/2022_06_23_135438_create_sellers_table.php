@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('contact_agreement')->default(0);
 
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('is_top')->default(0);
             $table->boolean('is_active')->default(0);
             $table->boolean('is_approved')->default(0);
             $table->boolean('is_blocked')->default(0);

@@ -25,5 +25,6 @@ Route::middleware('seller')->group(function () {
     Route::group(['prefix' => 'products', 'as' => 'product.'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('create', [ProductController::class, 'create'])->name('create');
+        Route::post('add-product', [ProductController::class, 'store'])->name('store');
     });
 });

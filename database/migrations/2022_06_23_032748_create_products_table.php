@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('seller_id');
             $table->string('product_name');
             $table->decimal('product_price', 10, 2);
-            $table->integer('category_id');
+            $table->integer('category');
             $table->string('tags');
             $table->text('about_this_paint')->nullable();
             $table->text('details_1')->nullable();

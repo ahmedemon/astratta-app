@@ -637,7 +637,7 @@ textarea{
 
 /* section 3 */
 .section2-container-3{
-    margin-top: 36px !important;
+    margin-top: 96px !important;
     margin-bottom: 96px !important;
     height: 407.3px;
 }
@@ -1252,7 +1252,6 @@ textarea{
 }
 .view-artist .left-side{
     width: 463px;
-    height: 1665px;
     background: #FFFFFF;
     box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.1);
     border-radius: 20px !important;
@@ -1264,7 +1263,7 @@ textarea{
     margin-bottom: 48px !important;
 }
 .view-artist .left-side .card{
-    padding: 50px 50px 0px 50px;
+    padding: 50px 50px 50px 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1304,7 +1303,6 @@ textarea{
 }
 .view-artist .right-side{
     width: 602.88px;
-    padding-top: 30px;
 }
 .view-artist .right-side .painting{
     width: 286.44px !important;

@@ -30,25 +30,27 @@ class ProfileController extends Controller
         $seller_profile->designation = $request->designation;
         $seller_profile->description = $request->description;
 
-        $input = $request->all();
-        $parts = explode(";base64,", $input['base64image']);
-        $type_aux = explode("image/", $parts[0]);
-        $type = $type_aux[1];
-        $image_base64 = base64_decode($parts[1]);
+        if ($request->hasFile('base64image')) {
+            $input = $request->all();
+            $parts = explode(";base64,", $input['base64image']);
+            $type_aux = explode("image/", $parts[0]);
+            $type = $type_aux[1];
+            $image_base64 = base64_decode($parts[1]);
 
-        // file naming convension
-        $separator = '-';
-        $prefix = 'seller-profile-';
-        $postfix = '';
-        $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
-        // file naming convension
+            // file naming convension
+            $separator = '-';
+            $prefix = 'seller-profile-';
+            $postfix = '';
+            $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+            // file naming convension
 
-        if ($seller_profile->image != null) {
-            Storage::disk('profile')->delete($seller_profile->image);
+            if ($seller_profile->image != null) {
+                Storage::disk('profile')->delete($seller_profile->image);
+            }
+            Storage::disk('profile')->put($filename, $image_base64);
+
+            $seller_profile->image = $filename;
         }
-        Storage::disk('profile')->put($filename, $image_base64);
-
-        $seller_profile->image = $filename;
         $seller_profile->save();
 
         alert('Updated', 'Profile updated successfully!', 'success');

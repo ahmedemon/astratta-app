@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{{ asset('vendor/css/owl.carousel.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/owl.theme.default.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/profile-cropper.css') }}" />
-    <link rel="stylesheet" href="{{ asset('vendor/css/jquery.imagesloader.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('vendor/css/layout/header.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/layout/side-nav.css') }}" />
@@ -84,7 +83,7 @@
 {{-- select2 & images loader --}}
 @if (Request::is('seller/products/create'))
     <script src="{{ asset('vendor/js/select2.min.js') }}"></script>
-    <script src="{{ asset('vendor/js/jquery.imagesloader-1.0.1.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/js/jquery.imagesloader-1.0.1.js') }}"></script> --}}
 @endif
 {{-- select2 & images loader --}}
 
@@ -96,8 +95,8 @@
 
 {{-- datatables --}}
 @if (Request::is('seller/products'))
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.jss"></script>
+    <script src="{{ asset('vendor/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/js/dataTables.bootstrap5.min.js') }}"></script>
 @endif
 {{-- datatables --}}
 

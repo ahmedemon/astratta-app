@@ -20,134 +20,16 @@
         <div class="artist-section">
             <div class="container artist-section-container section2-container-3 px-lg-0">
                 <div class="artist-loop row justify-content-between mx-auto">
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta1.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
+                    @foreach ($artists as $artist)
+                        <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
+                            <div class="item">
+                                <div>
+                                    <img src="{{ $artist->image ? asset('storage/seller/' . $artist->image) : asset('vendor/images/artist/avatar.svg') }}" alt="" />
+                                    <p class="my-0"><a href="{{ route('artist.show', $artist->id) }}" class="text-dark text-decoration-none">{{ $artist->name ?? $artist->username }}</a></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta2.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Arnold Banks</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta3.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta4.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta1.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta2.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Arnold Banks</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta3.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta4.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta1.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta2.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Arnold Banks</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta3.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta4.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta1.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta2.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Arnold Banks</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta3.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-6 col-lg-3 col-xl-3 col-xxl-3 d-flex justify-content-center px-lg-0">
-                        <div class="item">
-                            <div>
-                                <img src="{{ asset('frontend/images/top-artist/ta4.png') }}" alt="" />
-                                <p class="my-0"><a href="{{ route('artist.show', 1) }}" class="text-dark text-decoration-none">Andrea Moore</a></p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
