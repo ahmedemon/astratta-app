@@ -239,6 +239,9 @@ svg{
     padding: 94px 0 !important;
 }
 
+.get-in-touch-form .form-control:focus {
+    border-color: #FA0486 !important;
+}
 .get-in-touch-form .form-control {
     width: 248.5px !important;
 }

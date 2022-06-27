@@ -67,31 +67,59 @@
                     </div>
                     <div class="col-md-7 form-box bg-white d-flex justify-content-end">
                         <div class="get-in-touch-form">
-                            <form action="" method="POST">
+                            <form action="{{ route('contact.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="buyer_id" value="{{ Auth::guard('web')->check() ? Auth::guard('web')->user()->id : '' }}">
+                                <input type="hidden" name="seller_id" value="{{ Auth::guard('seller')->check() ? Auth::guard('seller')->user()->id : '' }}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-12 group">
                                             <label for="name" class="label">Name</label>
-                                            <input type="text" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0" placeholder="John doe" />
+                                            <input type="text" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0 @error('name') is-invalid @enderror" placeholder="John doe" name="name" value="{{ old('name') }}" required />
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <small>{{ $message }}</small>
+                                                </span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-12 group">
                                             <label for="subject" class="label">Subject</label>
-                                            <input type="text" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0" placeholder="Enter Subject" />
+                                            <input type="text" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0 @error('subject') is-invalid @enderror" placeholder="Enter Subject" name="subject" value="{{ old('subject') }}" required />
+                                            @error('subject')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <small>{{ $message }}</small>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6 d-grid justify-content-end">
                                         <div class="col-md-12 group">
                                             <label for="phone" class="label">Phone</label>
-                                            <input type="tel" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0" placeholder="Enter Phone Number" />
+                                            <input type="tel" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0 @error('phone') is-invalid @enderror" placeholder="Enter Phone Number" name="phone" value="{{ old('phone') }}" required />
+                                            @error('phone')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <small>{{ $message }}</small>
+                                                </span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-12 group">
                                             <label for="email" class="label">E-mail</label>
-                                            <input type="email" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0" placeholder="johndoe@example.com" />
+                                            <input type="email" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0 @error('email') is-invalid @enderror" placeholder="johndoe@example.com" name="email" value="{{ old('email') }}" required />
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <small>{{ $message }}</small>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label for="message" class="label">Message</label>
-                                        <textarea type="text" class="textarea form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0" placeholder="Type your message here.."></textarea>
+                                        <textarea type="text" class="textarea form-control rounded-0 border-0 border-bottom border-secondary shadow-none p-0 @error('message') is-invalid @enderror" placeholder="Type your message here.." name="message" required>{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <span class="invalid-feedback" role="alert">
+                                                <small>{{ $message }}</small>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <button class="sign-up-button" type="submit">Send</button>

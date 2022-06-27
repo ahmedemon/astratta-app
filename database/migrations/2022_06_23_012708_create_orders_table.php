@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('order_track_id');
+            $table->bigInteger('order_track_id');
             $table->date('order_date');
             $table->decimal('total_cost', 10, 2);
+            $table->integer('method_id');
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

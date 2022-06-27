@@ -15,7 +15,7 @@
             <a href="javascript:void();" class="">
                 <img src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
             </a>
-            <a href="{{ route('my-cart.index') }}" class="">
+            <a href="{{ Auth::guard('seller')->user() ? 'javascript::void();' : (Auth::user() ? route('my-cart.index') : route('login')) }}" class="">
                 <img src="{{ asset('frontend/svg/cart.svg') }}" alt="" />
             </a>
             <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
@@ -46,7 +46,7 @@
                     <a href="javascript:void();" class="">
                         <img src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
                     </a>
-                    <a href="{{ route('my-cart.index') }}" class="">
+                    <a href="{{ Auth::guard('seller')->user() ? 'javascript::void();' : (Auth::user() ? route('my-cart.index') : route('login')) }}" class="">
                         <img src="{{ asset('frontend/svg/cart.svg') }}" alt="" />
                     </a>
                     <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">

@@ -27,8 +27,9 @@
         </div>
         <!-- breadcrumb end -->
 
-        <form action="" method="POST">
+        <form action="{{ route('checkout.checkout') }}" method="POST">
             @csrf
+            @method('GET')
             <!-- product list -->
             <div class="cart-product-list bg-light">
                 <div class="container">
@@ -42,45 +43,27 @@
                                     <p class="my-0">Price</p>
                                 </div>
                             </div>
-                            <label for="chk-1" class="row-label">
-                                <div class="row cart-body" id="row-1">
-                                    <input class="input-x d-none" type="checkbox" id="chk-1" value="5" data-price="400" />
-                                    <div class="col-8 d-flex align-items-center">
-                                        <i class="lni lni-close" id="close-1"></i>
-                                        <img class="product-image" src="{{ asset('frontend/images/art/demo3.png') }}" alt="" />
-                                        <a class="text-decoration-none color-1">La Réunion Acryilic</a>
+                            @foreach ($cartItems as $item)
+                                @php
+                                    $image = $item->product->productImages->first();
+                                @endphp
+                                <label for="chk-{{ $item->id }}" class="row-label">
+                                    <div class="row cart-body ps-1 bg-danger" id="row-{{ $item->id }}">
+                                        <input type="hidden" name="items[{{ $item->id }}][cart_item_id]" value="{{ $item->id }}" />
+                                        <input class="input-x d-none" type="checkbox" checked id="chk-{{ $item->id }}" name="items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}" data-price="{{ $item->product->product_price }}" required aria-required="" />
+                                        <div class="col-8 d-flex align-items-center">
+                                            <a href="{{ route('my-cart.remove-from-cart', $item->id) }}" class="m-0">
+                                                <i class="lni lni-close close-button-font" id="close-{{ $item->id }}"></i>
+                                            </a>
+                                            <img class="product-image" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                                            <a class="text-decoration-none color-1">La Réunion Acryilic</a>
+                                        </div>
+                                        <div class="col-4 d-flex align-items-center justify-content-end">
+                                            <p class="my-0 color-1">${{ str_replace('.00', '', $item->product->product_price) }}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0 color-1">$400</p>
-                                    </div>
-                                </div>
-                            </label>
-                            <label for="chk-2" class="row-label">
-                                <div class="row cart-body" id="row-2">
-                                    <input class="input-x d-none" type="checkbox" id="chk-2" value="5" data-price="1200" />
-                                    <div class="col-8 d-flex align-items-center">
-                                        <i class="lni lni-close" id="close-2"></i>
-                                        <img class="product-image" src="{{ asset('frontend/images/art/art2.png') }}" alt="" />
-                                        <a class="text-decoration-none color-2">Newborn Acryilic</a>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0 color-2">$1,200</p>
-                                    </div>
-                                </div>
-                            </label>
-                            <label for="chk-3" class="row-label">
-                                <div class="row cart-body" id="row-3">
-                                    <input class="input-x d-none" type="checkbox" id="chk-3" value="5" data-price="1000" />
-                                    <div class="col-8 d-flex align-items-center">
-                                        <i class="lni lni-close" id="close-3"></i>
-                                        <img class="product-image" src="{{ asset('frontend/images/footer1.png') }}" alt="" />
-                                        <a class="text-decoration-none color-3">Water lily lake Acryilic</a>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0 color-3">$10,00</p>
-                                    </div>
-                                </div>
-                            </label>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -88,13 +71,14 @@
             <!-- product list -->
 
             <!-- apply coupon -->
+            <input type="hidden" id="couponCode" value="ahmedemon" data-price="{{ 100 }}">
             <div class="apply-coupon bg-light">
                 <div class="container px-lg-0 px-xl-0 px-xxl-0">
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="coupon-body bg-white d-flex">
-                                <input type="text" name="coupon_code" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
-                                <button class="btn rounded-0 sign-in-button" type="button">Apply Coupon</button>
+                                <input type="text" name="coupon_code" id="couponCodeInput" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
+                                <button class="btn rounded-0 sign-in-button" type="button" id="discountButton">Apply Coupon</button>
 
                             </div>
                         </div>
@@ -116,18 +100,18 @@
                                 </div>
                                 <div class="d-flex discounted justify-content-between mb25">
                                     <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">$11,600</p>
+                                    <p class="my-0 discounted-amount">$0</p>
                                 </div>
                                 <div class="d-flex shipping justify-content-between mb25">
                                     <p class="my-0 shipping-title">Shipping to <span class="shipping-location">Dhaka</span></p>
-                                    <p class="my-0 shipping-amount">$20</p>
+                                    <p class="my-0 shipping-amount">$<span id="shippingCharge">20</span></p>
                                 </div>
                                 <hr class="mb25" />
                                 <div class="d-flex shipping justify-content-between mb25">
                                     <p class="my-0 shipping-title">Total</p>
                                     <p class="my-0 shipping-amount d-flex align-items-center justify-content-end">
                                         $
-                                        <input class="bg-transparent px-0 border-0 text-end form-control rounded-0 shadow-none w-50" id="total" type="number" name="total" min="1" value="11620" readonly />
+                                        <input class="bg-transparent px-0 border-0 text-end form-control rounded-0 shadow-none w-50" id="total" type="number" name="total_cost" min="1" value="" readonly />
                                     </p>
                                 </div>
 
@@ -140,6 +124,7 @@
             <!-- cart total -->
         </form>
     </div>
+    <div id="tots"></div>
 @endsection
 
 @push('js')
@@ -156,9 +141,63 @@
             $colorChnage.toggleClass("text-white-selected");
         });
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        // for checking all product is selected
+        $(".checkout-button").click(function() {
+            var allCheckBox = $("[id^='chk-']")
+            var count_checked = allCheckBox.filter(":checked").length;
+            if (count_checked == 0) {
+                swal("Please select product!", "", "info");
+            } else if (count_checked != allCheckBox.length) {
+                swal("Some product is not selected!", "", "warning");
+            } else {
+                return confirm("Are you sure you want to do this?");
+            }
+        });
+        // for checking all product is selected
+
+        // calculate price
+        function calc() {
+            var tots = 0;
+            $(".input-x:checked").each(function() {
+                var price = $(this).attr("data-price");
+                tots += parseFloat(price);
+            });
+            var shippingCharge = document.getElementById("shippingCharge").innerHTML;
+            var total = tots + parseInt(shippingCharge);
+
+            document.getElementById("discountButton").addEventListener("click", addDiscount);
+
+            // declare discounted amount
+            function addDiscount() {
+                var compare = document.getElementById("couponCode").value; //real coupon code
+                var couponAmount = $("input#couponCode").data("price"); //real coupon code
+                var couponCodeInput = document.getElementById("couponCodeInput").value; //input coupon code
+                console.log(couponCodeInput);
+                if (compare === couponCodeInput) {
+                    document.getElementsByClassName("discounted-amount")[0].innerHTML = '$' + couponAmount;
+                    $('#couponCodeInput').attr('disabled', '');
+                    swal("Coupon Accepted!", "", "success");
+                } else {
+                    console.log('not ok');
+                }
+            }
+            // declare discounted amount
+
+            document.getElementById("total").value = total; // .toFixed(2) 2 is for .00
+            document.getElementsByClassName("subtotal-amount")[0].innerHTML = ('$' + tots.toFixed(2));
+
+        }
+        $(function() {
+            $(document).on("change", ".input-x", calc);
+            calc();
+        });
+        // calculate price
+    </script>
 
     <!-- price calculation -->
-    <script>
+    {{-- <script>
         window.onload = () => document.querySelectorAll(".input-x").forEach((input) => input.addEventListener("change", calculatePrize));
 
         function calculatePrize() {
@@ -166,6 +205,6 @@
             document.querySelectorAll(".input-x").forEach((input) => (sum += input.checked ? Number.parseFloat(input.getAttribute("data-price")) : 0));
             document.getElementById("total").value = sum;
         }
-    </script>
+    </script> --}}
     <!-- price calculation -->
 @endpush

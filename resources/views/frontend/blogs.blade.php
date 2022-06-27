@@ -50,96 +50,18 @@
             <!-- shorting end -->
             <div class="container blog-site px-lg-0">
                 <div class="row justify-content-between mx-auto">
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Designer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Developer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Graphic Design</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Designer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Developer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Graphic Design</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Designer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Developer</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
-                        <a href="{{ route('blog', 1) }}" class="text-decoration-none text-dark">
-                            <div class="col-md-12">
-                                <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
-                                <p class="author my-0">Graphic Design</p>
-                                <p class="title my-0">Sheri Briggs</p>
-                                <p class="description my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi, enim, ut aliquam convallis in. Habitasse sollicitudin.</p>
-                            </div>
-                        </a>
-                    </div>
+                    @foreach ($blogs as $blog)
+                        <div class="col-lg-4 col-xl-4 col-xxl-4 col-md-4 col-6 item px-lg-0 px-xl-0 px-xxl-0">
+                            <a href="{{ route('blog', $blog->id) }}" class="text-decoration-none text-dark">
+                                <div class="col-md-12">
+                                    <img class="" src="{{ asset('frontend/images/blog-demo.png') }}" alt="" />
+                                    <p class="author my-0">{{ $blog->topic }}</p>
+                                    <p class="title my-0">{{ $blog->title }}</p>
+                                    <p class="description my-0">{{ $blog->description }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

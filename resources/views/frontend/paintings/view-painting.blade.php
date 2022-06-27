@@ -17,7 +17,7 @@
                                 <a href="javascript:void();" class="btn rounded-0 border-0 buy-now-button">Edit</a>
                             @else
                                 <a href="javascript:void();" class="btn rounded-0 border-0 buy-now-button">Buy Now</a>
-                                <a href="javascript:void();" class="btn rounded-0 border-0 add-to-cart-button">Add to Cart</a>
+                                <a href="{{ route('my-cart.add-to-cart', $painting->id) }}" class="btn rounded-0 border-0 add-to-cart-button">Add to Cart</a>
                             @endif
                         </div>
                     </div>
