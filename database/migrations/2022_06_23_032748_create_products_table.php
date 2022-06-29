@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('details_1')->nullable();
             $table->text('details_2')->nullable();
             $table->boolean('best_selling')->default(0);
+            $table->boolean('is_purchased')->default(0);
             $table->integer('status')->default(0);
             $table->timestamps();
         });

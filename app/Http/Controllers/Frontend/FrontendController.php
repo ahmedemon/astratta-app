@@ -14,7 +14,7 @@ class FrontendController extends Controller
     // ------------------------------------------------- home
     public function index()
     {
-        $best_sellings = Product::where('best_selling', 1)->where('status', 1)->with('productImages')->latest()->take(6)->get();
+        $best_sellings = Product::where('best_selling', 1)->where('status', 1)->where('is_purchased', 0)->with('productImages')->latest()->take(6)->get();
         $pageTitle = "Welcome to largest online painting platform!";
         return view('welcome', compact('pageTitle', 'best_sellings'));
     }

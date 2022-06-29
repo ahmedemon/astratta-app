@@ -48,18 +48,18 @@
                                     $image = $item->product->productImages->first();
                                 @endphp
                                 <label for="chk-{{ $item->id }}" class="row-label">
-                                    <div class="row cart-body ps-1 bg-danger" id="row-{{ $item->id }}">
+                                    <div class="row cart-body" id="row-{{ $item->id }}">
                                         <input type="hidden" name="items[{{ $item->id }}][cart_item_id]" value="{{ $item->id }}" />
                                         <input class="input-x d-none" type="checkbox" checked id="chk-{{ $item->id }}" name="items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}" data-price="{{ $item->product->product_price }}" required aria-required="" />
                                         <div class="col-8 d-flex align-items-center">
                                             <a href="{{ route('my-cart.remove-from-cart', $item->id) }}" class="m-0">
-                                                <i class="lni lni-close close-button-font" id="close-{{ $item->id }}"></i>
+                                                <i class="lni lni-close" id="close-{{ $item->id }}"></i>
                                             </a>
                                             <img class="product-image" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
-                                            <a class="text-decoration-none color-1">La Réunion Acryilic</a>
+                                            <a href="{{ route('painting.show', $item->id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
                                         </div>
                                         <div class="col-4 d-flex align-items-center justify-content-end">
-                                            <p class="my-0 color-1">${{ str_replace('.00', '', $item->product->product_price) }}</p>
+                                            <p class="my-0 color-{{ $item->id }}">${{ str_replace('.00', '', $item->product->product_price) }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -151,8 +151,6 @@
                 swal("Please select product!", "", "info");
             } else if (count_checked != allCheckBox.length) {
                 swal("Some product is not selected!", "", "warning");
-            } else {
-                return confirm("Are you sure you want to do this?");
             }
         });
         // for checking all product is selected

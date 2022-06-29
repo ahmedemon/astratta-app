@@ -108,6 +108,15 @@ input[type=search]:focus{
     transition-duration: 0.3s;
     background-color: #F2F2F2;
 }
+
+.vendor-content table tr .action-buttons a i{
+    transition-duration: 0.3s;
+    font-size: 0px;
+}
+.vendor-content table tr:hover .action-buttons a i{
+    transition-duration: 0.3s;
+    font-size: 20px;
+}
 .vendor-content table .active{
     background-color: #F2F2F2;
 }

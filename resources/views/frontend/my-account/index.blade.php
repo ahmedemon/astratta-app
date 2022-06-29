@@ -31,31 +31,10 @@
         <div class="my-account bg-light py96">
             <div class="container px-lg-0 px-xl-0 px-xxl-0">
                 <div class="row justify-content-between mx-auto">
-                    <div class="col-md-3 profile-section bg-white">
-                        <div class="profile-info-section">
-                            <h1 class="my-0 mb40-important">Hello {{ strtok(Auth::user()->name, ' ') }},</h1>
-                            <p class="my-0 mb10-important">4:14PM</p>
-                            <p class="my-0 mb40-important">May 27, 2022</p>
-                            <a href="{{ route('logout') }}" class="btn rounded-0 sign-in-button logout mb45" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                        <hr class="mb50-important" />
-                        <div class="row mx-auto profile-product-section">
-                            <div class="col-md-12 d-flex align-items-center px-lg-0 px-xl-0 px-xxl-0 mb40">
-                                <img src="{{ asset('frontend/images/art/demo3.png') }}" alt="" />
-                                <a href="{{ route('painting.show', 1) }}" class="">La Réunion Acryilic</a>
-                            </div>
-                            <div class="col-md-12 d-flex align-items-center px-lg-0 px-xl-0 px-xxl-0">
-                                <img src="{{ asset('frontend/images/art/demo3.png') }}" alt="" />
-                                <a href="{{ route('painting.show', 1) }}" class="">La Réunion Acryilic</a>
-                            </div>
-                        </div>
-                    </div>
+                    @include('frontend.my-account.side-menu')
                     <div class="col-md-7 orders-section-width px-lg-0 px-xl-0 px-xxl-0">
                         <div class="orders-section bg-white table-responsive">
-                            <table class="table orders-table mb-0">
+                            <table class="table orders-table mb-">
                                 <thead>
                                     <tr class="">
                                         <th class="ps-0">Orders</th>
@@ -66,46 +45,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="ps-0">#265</td>
-                                        <td>May 27, 2022</td>
-                                        <td>Processing</td>
-                                        <td>$10,256</td>
-                                        <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-0">#453</td>
-                                        <td>January 3, 2022</td>
-                                        <td>Processing</td>
-                                        <td>$1,200</td>
-                                        <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-0">#412</td>
-                                        <td>January 3, 2022</td>
-                                        <td>Processing</td>
-                                        <td>$6,530</td>
-                                        <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-0">#354</td>
-                                        <td>January 3, 2022</td>
-                                        <td>Completed</td>
-                                        <td>$400</td>
-                                        <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-0">#587</td>
-                                        <td>January 3, 2022</td>
-                                        <td>Completed</td>
-                                        <td>$680</td>
-                                        <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                    </tr>
+                                    @foreach ($orders as $order)
+                                        @foreach ($order->orderItems as $item)
+                                            <tr>
+                                                <td class="ps-0">#{{ $order->order_track_id }}</td>
+                                                <td>{{ $order->created_at->format('m:d:Y') }}</td>
+                                                <td>{{ $order->status == 1 ? 'Complete' : 'Processing' }}</td>
+                                                <td>${{ str_replace('.00', '', $item->product->product_price ?? '--') }}</td>
+                                                <td><a href="javascript:void();" class="refund-link">Refund</a></td>
+                                            </tr>
+                                        @endforeach
+                                    @endforeach
                                 </tbody>
                             </table>
+                            {{ $orders->links() }}
                         </div>
                         <div class="account-settings bg-white">
-                            <a href="javascript:void();" class="account-setting-link">Account Settings</a>
+                            <a href="{{ route('settings.index') }}" class="account-setting-link">Account Settings</a>
                         </div>
                     </div>
                 </div>

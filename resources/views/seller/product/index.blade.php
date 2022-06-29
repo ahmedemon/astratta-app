@@ -26,9 +26,17 @@
                                 @php
                                     $image = $product->productImages->first();
                                 @endphp
-                                <tr>
+                                <tr class="data-row">
                                     <td class="align-middle" width="50%">
                                         <div class="py15 d-flex align-items-center">
+                                            <div class="action-buttons d-flex">
+                                                <a href="{{ route('seller.product.destroy', $product->id) }}" class="text-decoration-none d-flex align-items-center text-danger mx-2">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                <a href="{{ route('seller.product.edit', $product->id) }}" class="text-decoration-none d-flex align-items-center text-info mx-2">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </div>
                                             <img src="{{ asset('storage/products/' . $image->image) }}" alt="" />
                                             <a href="{{ route('painting.show', $product->id) }}" class="ml20">{{ $product->product_name }}</a>
                                         </div>
@@ -48,3 +56,18 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(".data-row").on("::focus-visible", function() {
+            var $chk = $(this),
+                num = $chk.attr("id").substring(4),
+                $row = $("#row-" + num),
+                $closeBtn = $("#close-" + num),
+                $colorChnage = $(".color-" + num);
+
+            $row.toggleClass("ps-1 bg-danger");
+            $closeBtn.toggleClass("close-button-font");
+            $colorChnage.toggleClass("text-white-selected");
+        });
+    </script>
+@endpush

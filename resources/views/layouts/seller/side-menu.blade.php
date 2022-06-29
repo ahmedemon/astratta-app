@@ -23,7 +23,7 @@
                 <a href="{{ route('seller.product.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/products') ? 'active' : '' }}">Products</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="javascript:void();" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders') ? 'active' : '' }}">Orders</a>
+                <a href="{{ route('seller.orders.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders') ? 'active' : '' }}">Orders</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
                 <a href="javascript:void();" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw') ? 'active' : '' }}">Withdraw</a>

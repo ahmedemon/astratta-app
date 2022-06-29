@@ -18,7 +18,7 @@ class RedirectIfNotSeller
     public function handle(Request $request, Closure $next, $guard = 'seller')
     {
         if (!Auth::guard($guard)->check()) {
-            return redirect()->route('seller.login');
+            return redirect()->route('seller.log-in');
         }
         return $next($request);
     }

@@ -13,10 +13,10 @@
                         <h1>{{ $painting->product_name }}</h1>
                         <h2>${{ str_replace('.00', '', $painting->product_price) }}</h2>
                         <div class="d-flex justify-content-lg-start justify-content-xl-start justify-content-xxl-start justify-content-between">
-                            @if (Auth::guard('seller')->user()->id ?? null == $painting->seller_id)
-                                <a href="javascript:void();" class="btn rounded-0 border-0 buy-now-button">Edit</a>
+                            @if (Auth::guard('seller')->check() ? Auth::guard('seller')->user()->id == $painting->seller_id : '')
+                                <a href="{{ route('seller.product.edit', $painting->id) }}" class="btn rounded-0 border-0 buy-now-button">Edit</a>
                             @else
-                                <a href="javascript:void();" class="btn rounded-0 border-0 buy-now-button">Buy Now</a>
+                                <a href="{{ route('checkout.buy.now', $painting->id) }}" class="btn rounded-0 border-0 buy-now-button">Buy Now</a>
                                 <a href="{{ route('my-cart.add-to-cart', $painting->id) }}" class="btn rounded-0 border-0 add-to-cart-button">Add to Cart</a>
                             @endif
                         </div>

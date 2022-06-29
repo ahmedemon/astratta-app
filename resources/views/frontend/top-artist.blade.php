@@ -4,46 +4,19 @@
         <img class="h-100" src="{{ asset('frontend/images/line1.png') }}" alt="" />
     </div>
     <div class="artist-loop owl-carousel owl-theme">
-        <div class="item">
-            <div class="col-md-12 d-flex justify-content-center">
-                <a class="text-decoration-none" href="{{ route('artist.show', 1) }}">
-                    <div>
-                        <img src="{{ asset('frontend/images/top-artist/ta1.png') }}" alt="" />
-                        <p class="my-0">Jean Garrett</p>
-                    </div>
-                </a>
+        @foreach (config('top_artists') as $item)
+            <div class="item">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <a class="text-decoration-none" href="{{ route('artist.show', $item->id) }}">
+                        <div>
+                            <img height="247px" width="247px" src="{{ $item->image ? asset('storage/seller/' . $item->image) : asset('vendor/images/artist/avatar.svg') }}" alt="" />
+                            <p class="my-0">{{ $item->name ?? $item->username }}</p>
+                        </div>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="item">
-            <div class="col-md-12 d-flex justify-content-center">
-                <a class="text-decoration-none" href="{{ route('artist.show', 1) }}">
-                    <div>
-                        <img src="{{ asset('frontend/images/top-artist/ta2.png') }}" alt="" />
-                        <p class="my-0">Arnold Banks</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-md-12 d-flex justify-content-center">
-                <a class="text-decoration-none" href="{{ route('artist.show', 1) }}">
-                    <div>
-                        <img src="{{ asset('frontend/images/top-artist/ta3.png') }}" alt="" />
-                        <p class="my-0">Sherman Mitchell</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-md-12 d-flex justify-content-center">
-                <a class="text-decoration-none" href="{{ route('artist.show', 1) }}">
-                    <div>
-                        <img src="{{ asset('frontend/images/top-artist/ta4.png') }}" alt="" />
-                        <p class="my-0">Andrea Moore</p>
-                    </div>
-                </a>
-            </div>
-        </div>
+        @endforeach
+
     </div>
 </div>
 

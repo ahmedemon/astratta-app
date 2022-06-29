@@ -45,6 +45,7 @@
                                     <hr />
                                 </div>
                                 <a href="{{ route('register') }}" class="btn rounded-0 sign-in-button create-account">CREATE ACCOUNT</a>
+                                <a href="{{ route('seller.log-in') }}" class="sub-link">Sign In As Artist</a>
                             </form>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ class SellerLoginController extends Controller
     {
         $this->redirectTo = env('SELLER_URL_PREFIX', 'seller');
         $this->middleware('seller.guest')->except('logout');
+        $this->middleware('guest')->except('logout');
         $this->username = $this->findUsername();
     }
 

@@ -46,7 +46,7 @@
                             <tr>
                                 <td>#{{ $viewOrder->order_track_id }}</td>
                                 <td>{{ $viewOrder->order_date }}</td>
-                                <td>{{ $viewOrder->billing->email ?? '---' }}</td>
+                                <td>{{ $viewOrder->user->email ?? '---' }}</td>
                                 <td>${{ $viewOrder->total_cost }}</td>
                                 <td>{{ $viewOrder->method_id }}</td>
                             </tr>

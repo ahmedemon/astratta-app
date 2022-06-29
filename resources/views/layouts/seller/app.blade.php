@@ -81,7 +81,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"></script>
 
 {{-- select2 & images loader --}}
-@if (Request::is('seller/products/create'))
+@if (Request::is('seller/products/*'))
     <script src="{{ asset('vendor/js/select2.min.js') }}"></script>
     {{-- <script src="{{ asset('vendor/js/jquery.imagesloader-1.0.1.js') }}"></script> --}}
 @endif

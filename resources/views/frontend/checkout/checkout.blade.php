@@ -38,55 +38,55 @@
                                 <div class="col-md-6 mb30">
                                     <div class="inputGroup">
                                         <label for="first_name">First Name</label>
-                                        <input id="first_name" name="first_name" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="first_name" name="first_name" value="{{ strtok(Auth::user()->name ?? '', ' ') }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb30">
                                     <div class="inputGroup">
                                         <label for="last_name">Last Name</label>
-                                        <input id="last_name" name="last_name" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="last_name" name="last_name" value="{{ basename(str_replace(' ', '/', Auth::user()->name ?? '')) }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb30">
                                     <div class="inputGroup">
                                         <label for="phone">Phone</label>
-                                        <input id="phone" name="phone" type="tel" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="phone" name="phone" value="{{ Auth::user()->phone ?? '' }}" type="tel" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb30">
                                     <div class="inputGroup">
                                         <label for="email">Email</label>
-                                        <input id="email" name="email" type="email" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="email" name="email" value="{{ Auth::user()->email ?? '' }}" type="email" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb30">
                                     <div class="inputGroup">
                                         <label for="country">Country</label>
-                                        <input id="country" name="country" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="country" name="country" value="{{ Auth::user()->billing->country ?? '' }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb30">
                                     <div class="inputGroup">
                                         <label for="state">State</label>
-                                        <input id="state" name="state" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="state" name="state" value="{{ Auth::user()->billing->state ?? '' }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb30">
                                     <div class="inputGroup">
                                         <label for="town_city">Town / City</label>
-                                        <input id="town_city" name="town_city" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="town_city" name="town_city" value="{{ Auth::user()->billing->town_city ?? '' }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb30">
                                     <div class="inputGroup">
                                         <label for="street">Street Address</label>
-                                        <input id="street" name="street" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="street" name="street" value="{{ Auth::user()->billing->street ?? '' }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="inputGroup">
                                         <label for="post_or_zip">Postcode / ZIP (Optional)</label>
-                                        <input id="post_or_zip" name="post_or_zip" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
+                                        <input id="post_or_zip" name="post_or_zip" value="{{ Auth::user()->billing->post_or_zip ?? '' }}" type="text" class="form-control border-0 border-bottom border-secondary rounded-0 shadow-none px-0 pb-1 pt-0" placeholder="John Doe" />
                                     </div>
                                 </div>
                             </div>

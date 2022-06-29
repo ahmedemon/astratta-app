@@ -28,11 +28,18 @@
                             <small class="text-danger">{{ $error }}</small>
                         @endforeach
                     @endif
-                    <form method="POST" action="{{ route('seller.product.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('seller.product.update', $product->id) }}" enctype="multipart/form-data">
                         @csrf
-
+                        @method('PUT')
+                        @php
+                            $images = $product->productImages;
+                        @endphp
                         <div class="row mb35">
-                            <div class="imgPreview"> </div>
+                            <div class="imgPreview">
+                                @foreach ($images as $image)
+                                    <img src="{{ asset('storage/products/' . $image->image) }}" alt="">
+                                @endforeach
+                            </div>
                             <div class="custom-file">
                                 <input type="file" name="images[]" class="custom-file-input" id="images" multiple="multiple">
                                 <label class="custom-file-label" for="images">Choose image</label>
@@ -40,7 +47,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="text" name="product_name" value="{{ old('product_name') }}" placeholder="Product Name" class="form-control @error('product_name') in-valid @enderror" />
+                            <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" placeholder="Product Name" class="form-control @error('product_name') in-valid @enderror" />
                             @error('product_name')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -49,7 +56,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="number" name="product_price" value="{{ old('product_price') }}" placeholder="Price In Doller" class="form-control @error('product_price') in-valid @enderror" />
+                            <input type="number" name="product_price" value="{{ old('product_price', intval($product->product_price)) }}" placeholder="Price In Doller" class="form-control @error('product_price') in-valid @enderror" />
                             @error('product_price')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -58,9 +65,9 @@
                         </div>
 
                         <div class="mb35">
-                            <select name="category" value="{{ old('category') }}" id="" class="form-control">
+                            <select name="category" id="" class="form-control">
                                 @foreach ($categories as $category)
-                                    <option {{ $loop->first ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option {{ $product->category == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @error('category')
@@ -71,9 +78,9 @@
                         </div>
 
                         <div class="mb35">
-                            <select name="tags[]" value="{{ old('tags') }}" id="" class="form-control tags" aria-placeholder="tags">
+                            <select name="tags[]" id="" class="form-control tags" multiple aria-placeholder="tags">
                                 @foreach ($tags as $tag)
-                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                    <option {{ $loop->first ? 'selected' : '' }} value="{{ $tag->name }}" @if ($product->tags()->pluck('name')->contains($tag->name)) selected @endif>{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             @error('tags')
@@ -84,7 +91,7 @@
                         </div>
 
                         <div class="mb35">
-                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') in-valid @enderror"></textarea>
+                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') in-valid @enderror">{{ old('about_this_paint', $product->about_this_paint) }}</textarea>
                             @error('about_this_paint')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -94,7 +101,7 @@
 
                         <div class="row">
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') in-valid @enderror"></textarea>
+                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') in-valid @enderror">{{ old('details_1', $product->details_1) }}</textarea>
                                 @error('details_1')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -102,7 +109,7 @@
                                 @enderror
                             </div>
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') in-valid @enderror"></textarea>
+                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') in-valid @enderror">{{ old('details_2', $product->details_2) }}</textarea>
                                 @error('details_2')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -121,6 +128,7 @@
 @push('js')
     <script>
         $(function() {
+            $('.select2').select2()
             $(".tags").select2({
                 tags: true,
                 multiple: true,

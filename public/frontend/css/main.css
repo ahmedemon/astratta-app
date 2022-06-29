@@ -2325,6 +2325,17 @@ textarea{
     line-height: 26px;
     color: #CE4899;
 }
+
+/* setting page */
+.my-account .settings label{
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    color: #000000c2;
+}
+/* setting page */
 /* my account page */
 
 /* blogs page */

@@ -6,12 +6,12 @@
             <div class="container px-0">
                 <div class="breadcrumb-background d-flex justify-content-center align-items-center">
                     <div>
-                        <h1>Search Paintings</h1>
+                        <h1>{{ $pageTitle }}</h1>
                         <form action="{{ route('painting.search') }}" method="POST" class="d-flex justify-content-center">
                             @csrf
                             @method('GET')
                             <div class="input-group">
-                                <input type="text" name="search_key" class="form-control shadow-none border border-right-0" placeholder="Search Here..." autocomplete="search_key" />
+                                <input type="text" name="search_key" class="form-control shadow-none border border-right-0" placeholder="Search Here..." value="{{ $key }}" autocomplete="search_key" />
                                 <button class="btn border-0" type="submit">
                                     <img src="{{ asset('frontend/images/search-icon.png') }}" alt="" />
                                 </button>
@@ -39,7 +39,7 @@
                     <div class="dropdown">
                         <button class="btn border border-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Sort...<i class="fas fa-chevron-down"></i></button>
                         <ul class="dropdown-menu py-0 border-0" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item border border-dark mt-1" href="{{ route('painting.default') }}">Default</a></li>
+                            <li><a class="dropdown-item border border-dark mt-1" href="javascript:void();">Default</a></li>
                             <li><a class="dropdown-item border border-dark mt-1" href="javascript:void();">Newest First</a></li>
                             <li><a class="dropdown-item border border-dark mt-1" href="javascript:void();">Oldest First</a></li>
                         </ul>

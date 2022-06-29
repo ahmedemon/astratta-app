@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Seller;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         $product = ProductImage::first();
-        config(['image.product' => $product]);
+        $top_artists = Seller::where('is_top', 1)->get();
+        config(['image.product' => $product, 'top_artists' => $top_artists]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\AccountSettingController;
 use App\Http\Controllers\Frontend\ArtistsController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -46,9 +47,17 @@ Route::controller(ArtistsController::class)->prefix('artists')->as('artist.')->g
 Route::controller(PaintingsController::class)->prefix('paintings')->as('painting.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('view/{id}', 'show')->name('show');
+    Route::get('search', 'search')->name('search');
+    Route::get('default', 'default')->name('default');
+    Route::get('newest', 'newest')->name('newest');
+    Route::get('oldest', 'oldest')->name('oldest');
 });
 Route::controller(MyAccountController::class)->prefix('my-account')->as('my-account.')->group(function () {
     Route::get('/', 'index')->name('index');
+});
+Route::controller(AccountSettingController::class)->prefix('settings')->as('settings.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::put('save-changes/{id}', 'update')->name('update');
 });
 Route::controller(MyCartController::class)->prefix('my-cart')->as('my-cart.')->group(function () {
     Route::get('/', 'index')->name('index');
@@ -57,6 +66,7 @@ Route::controller(MyCartController::class)->prefix('my-cart')->as('my-cart.')->g
 });
 Route::controller(CheckoutController::class)->prefix('check-point')->as('checkout.')->group(function () {
     Route::get('checkout', 'checkout')->name('checkout');
+    Route::get('buy-now/{id}', 'buyNow')->name('buy.now');
     Route::post('place-order', 'placeOrder')->name('place.order');
     Route::get('completed/{order}', 'completed')->name('completed');
 });

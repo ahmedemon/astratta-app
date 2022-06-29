@@ -17,12 +17,9 @@ class Order extends Model
         return $this->hasMany(OrderedItem::class);
     }
 
-    public function billing()
+
+    public function user()
     {
-        return $this->hasOne(BillingDetail::class);
-    }
-    public function shipping()
-    {
-        return $this->hasOne(ShippingDetail::class);
+        return $this->belongsTo(User::class);
     }
 }
