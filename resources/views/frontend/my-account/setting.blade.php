@@ -63,9 +63,10 @@
                                                 </span>
                                             @enderror
                                         </div>
+                                        <small class="mb-2 text-secondary">If You don't want to change your password! Just leave this field blank.</small>
                                         <div class="col-md-12 mb20">
                                             <label for="current_password" class="label">Current Password </label>
-                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('current_password') is-invalid @enderror" placeholder="Leave this field if you don't want to change pasword!" name="current_password" value="{{ old('current_password') }}" />
+                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('current_password') is-invalid @enderror" placeholder="Enter your current password!" name="current_password" value="{{ old('current_password') }}" />
                                             @error('current_password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <small>{{ $message }}</small>
@@ -74,7 +75,7 @@
                                         </div>
                                         <div class="col-md-12 mb20">
                                             <label for="new_password" class="label">New Password</label>
-                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('new_password') is-invalid @enderror" placeholder="Leave this field if you don't want to change pasword!" name="new_password" value="{{ old('new_password') }}" />
+                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('new_password') is-invalid @enderror" placeholder="Enter new password!" name="new_password" value="{{ old('new_password') }}" />
                                             @error('new_password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <small>{{ $message }}</small>
@@ -83,7 +84,7 @@
                                         </div>
                                         <div class="col-md-12 mb20">
                                             <label for="confirm_password" class="label">Confirm Password</label>
-                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('confirm_password') is-invalid @enderror" placeholder="Leave this field if you don't want to change pasword!" name="confirm_password" value="{{ old('confirm_password') }}" />
+                                            <input type="password" class="form-control rounded-0 border-0 border-bottom border-secondary shadow-none ps-0 @error('confirm_password') is-invalid @enderror" placeholder="Re-enter new password!" name="confirm_password" value="{{ old('confirm_password') }}" />
                                             @error('confirm_password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <small>{{ $message }}</small>
@@ -93,6 +94,22 @@
                                     </div>
                                     <button class="sign-up-button ms-0" type="submit">Send</button>
                                 </form>
+                            </div>
+                        </div>
+                        <div class="account-settings bg-white">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="my-0">Billing Address</p>
+                                        <a href="{{ route('billing.edit') }}" class="btn btn-sm btn-outline-success">Edit</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="my-0">Shipping Address</p>
+                                        <a href="{{ route('shipping.edit') }}" class="btn btn-sm btn-outline-success">Edit</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

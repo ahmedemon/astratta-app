@@ -16,7 +16,7 @@
                             <h1 class="my-0">36</h1>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">
-                            <h3 class="my-0 mb15-i">Sales This Month</h3>
+                            <h3 class="my-0 mb15-i">Balance</h3>
                             <h1 class="my-0">$5,800</h1>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">

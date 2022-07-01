@@ -59,10 +59,6 @@ class CheckoutController extends Controller
         ]);
         if (isset($request->items) && count($request->items) > 0) {
             foreach ($request->items as $key => $value) {
-                OrderedItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $value['product_id'],
-                ]);
                 $id = $value['product_id'];
                 if ($value['cart_item_id'] != null) {
                     $my_cart = MyCart::where('product_id', $id)->first();
@@ -72,6 +68,12 @@ class CheckoutController extends Controller
                 $product = Product::find($id);
                 $product->is_purchased = 1;
                 $product->save();
+
+                OrderedItem::create([
+                    'seller_id' => $product->seller_id,
+                    'order_id' => $order->id,
+                    'product_id' => $value['product_id'],
+                ]);
             }
         }
 

@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('privacy_policy')->default(0);
-            $table->boolean('is_active')->default(0);
-            $table->boolean('is_approve')->default(0);
+            $table->boolean('is_active')->default(1);
+            $table->boolean('is_approved')->default(1);
             $table->boolean('is_blocked')->default(0);
             $table->timestamps();
         });

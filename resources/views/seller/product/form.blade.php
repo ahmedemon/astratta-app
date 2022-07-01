@@ -1,19 +1,5 @@
 @extends('layouts.seller.app', ['pageTitle' => $pageTitle])
 @section('content')
-    <style>
-        dl,
-        ol,
-        ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .imgPreview img {
-            padding: 8px;
-            max-width: 100px;
-        }
-    </style>
     <div class="container-fluid px-0 bg-light">
         <div class="container px-lg-0 px-xl-0 px-xxl-0 pt96 pb96 vendor-section">
             <div class="row justify-content-between mx-auto">
@@ -30,12 +16,39 @@
                     @endif
                     <form method="POST" action="{{ route('seller.product.store') }}" enctype="multipart/form-data">
                         @csrf
-
                         <div class="row mb35">
-                            <div class="imgPreview"> </div>
-                            <div class="custom-file">
-                                <input type="file" name="images[]" class="custom-file-input" id="images" multiple="multiple">
-                                <label class="custom-file-label" for="images">Choose image</label>
+                            <div class="avatar-upload text-center">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUpload-1" name="image" accept=".png, .jpg, .jpeg" class="imageUpload-1" onclick="productImage1();" />
+                                    <input type="hidden" id="base_image_data-1" name="base64image[]" />
+                                    <label for="imageUpload-1" class="d-flex justify-content-center align-items-center"><i class="lni lni-plus"></i></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview-1" style="background-image: url('{{ asset('') }}')"></div>
+                                </div>
+                                <label for="image" class="small">Main Image</label>
+                            </div>
+                            <div class="avatar-upload text-center">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUpload-2" name="image" accept=".png, .jpg, .jpeg" class="imageUpload-2" onclick="productImage2();" />
+                                    <input type="hidden" id="base_image_data-2" name="base64image[]" />
+                                    <label for="imageUpload-2" class="d-flex justify-content-center align-items-center"><i class="lni lni-plus"></i></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview-2" style="background-image: url('{{ asset('') }}')"></div>
+                                </div>
+                                <label for="image" class="small">Second Image</label>
+                            </div>
+                            <div class="avatar-upload text-center">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUpload-3" name="image" accept=".png, .jpg, .jpeg" class="imageUpload-3" onclick="productImage3();" />
+                                    <input type="hidden" id="base_image_data-3" name="base64image[]" />
+                                    <label for="imageUpload-3" class="d-flex justify-content-center align-items-center"><i class="lni lni-plus"></i></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview-3" style="background-image: url('{{ asset('') }}')"></div>
+                                </div>
+                                <label for="image" class="small">Third Image</label>
                             </div>
                         </div>
 
@@ -73,7 +86,7 @@
                         <div class="mb35">
                             <select name="tags[]" value="{{ old('tags') }}" id="" class="form-control tags" aria-placeholder="tags">
                                 @foreach ($tags as $tag)
-                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                    <option value="{{ $tag->name }}" @if ($product->tags()->pluck('name')->contains($tag->name)) selected @endif>{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             @error('tags')
@@ -119,6 +132,7 @@
 @endsection
 
 @push('js')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(function() {
             $(".tags").select2({
@@ -126,24 +140,87 @@
                 multiple: true,
             });
         });
-
-        $(function() {
-            // Multiple images preview with JavaScript
-            var multiImgPreview = function(input, imgPreviewPlaceholder) {
-                if (input.files) {
-                    var filesAmount = input.files.length;
-                    for (i = 0; i < filesAmount; i++) {
-                        var reader = new FileReader();
-                        reader.onload = function(event) {
-                            $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
-                        }
-                        reader.readAsDataURL(input.files[i]);
-                    }
+        $(".sign-up-button").click(function() {
+            if (!$("#imageUpload-1").val() || !$("#imageUpload-2").val() || !$("#imageUpload-3").val()) {
+                if ($("#imageUpload-1").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
                 }
-            };
-            $('#images').on('change', function() {
-                multiImgPreview(this, 'div.imgPreview');
-            });
+                if ($("#imageUpload-2").val() && !$("#imageUpload-3").val()) {
+                    swal("Please select first image!", "", "warning");
+                }
+                if ($("#imageUpload-3").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
+                }
+                if ($("#imageUpload-3").val() && $("#imageUpload-2").val() && !$("#imageUpload-1").val()) {
+                    swal("Please select first image!", "", "warning");
+                }
+                if ($("#imageUpload-1").val() && $("#imageUpload-2").val() && !$("#imageUpload-3").val()) {
+                    swal("Please select third image!", "", "warning");
+                }
+                if ($("#imageUpload-1").val() && $("#imageUpload-3").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
+                }
+            }
         });
+
+        function productImage1() {
+            function readURL(input1) {
+                if (input1.files && input1.files[0]) {
+                    var reader1 = new FileReader();
+                    reader1.onload = function(e) {
+                        $('#imagePreview-1').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-1').hide();
+                        $('#imagePreview-1').fadeIn(650);
+
+                        var base64data1 = reader1.result;
+                        $('#base_image_data-1').val(base64data1);
+                    }
+                    reader1.readAsDataURL(input1.files[0]);
+                }
+            }
+            $("#imageUpload-1").change(function() {
+                readURL(this);
+            });
+        }
+
+        function productImage2() {
+            function readURL(input2) {
+                if (input2.files && input2.files[0]) {
+                    var reader2 = new FileReader();
+                    reader2.onload = function(e) {
+                        $('#imagePreview-2').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-2').hide();
+                        $('#imagePreview-2').fadeIn(650);
+
+                        var base64data2 = reader2.result;
+                        $('#base_image_data-2').val(base64data2);
+                    }
+                    reader2.readAsDataURL(input2.files[0]);
+                }
+            }
+            $("#imageUpload-2").change(function() {
+                readURL(this);
+            });
+        }
+
+        function productImage3() {
+            function readURL(input3) {
+                if (input3.files && input3.files[0]) {
+                    var reader3 = new FileReader();
+                    reader3.onload = function(e) {
+                        $('#imagePreview-3').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-3').hide();
+                        $('#imagePreview-3').fadeIn(650);
+
+                        var base64data3 = reader3.result;
+                        $('#base_image_data-3').val(base64data3);
+                    }
+                    reader3.readAsDataURL(input3.files[0]);
+                }
+            }
+            $("#imageUpload-3").change(function() {
+                readURL(this);
+            });
+        }
     </script>
 @endpush

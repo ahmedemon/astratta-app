@@ -12,6 +12,7 @@ use App\Models\ProductTag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -33,23 +34,37 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-
         $tags = $request->tags;
         $product = new Product($request->all());
         $product->seller_id = Auth::guard('seller')->user()->id;
         $product->tags = json_encode($tags);
         $product->save();
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $img) {
-                $image = new ProductImage();
-                $file = new FileManager();
-                $file->folder('products')->prefix('product')
-                    ->postfix(Str::slug($request->product_name, '-'))
-                    ->upload($img) ?
-                    $image->image = $file->getName() : null;
-                $image->product_id = $product->id;
-                $image->save();
+        $image_array = array_filter($request['base64image']);
+        if (count($image_array) > 0) {
+            if (isset($request->base64image) && count($request->base64image) > 0) {
+                foreach ($request['base64image'] as $img) {
+                    $product_image = new ProductImage();
+                    $parts = explode(";base64,", $img);
+                    $type_aux = explode("image/", $parts[0]);
+                    $type = $type_aux[1];
+                    $image_base64 = base64_decode($parts[1]);
+
+                    // file naming convension
+                    $separator = '-';
+                    $prefix = 'product-';
+                    $postfix = '';
+                    $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+                    // file naming convension
+
+                    if ($product_image->image != null) {
+                        Storage::disk('product')->delete($product_image->image);
+                    }
+                    Storage::disk('product')->put($filename, $image_base64);
+                    $product_image->product_id = $product->id;
+                    $product_image->image = $filename;
+                    $product_image->save();
+                }
             }
         }
 
@@ -86,26 +101,38 @@ class ProductController extends Controller
         $product->about_this_paint = $request->about_this_paint;
         $product->details_1 = $request->details_1;
         $product->details_2 = $request->details_2;
+        $image_array = array_filter($request['base64image']);
+        if (count($image_array) < 0) {
+            if (isset($request->base64image) && count($request->base64image) > 0) {
+                foreach ($request['base64image'] as $key => $img) {
+                    $product_images = ProductImage::where('product_id', $product->id)->get();
+                    foreach ($product_images as $product_image) {
+                        $parts = explode(";base64,", $img);
+                        $type_aux = explode("image/", $parts[0]);
+                        $type = $type_aux[1];
+                        $image_base64 = base64_decode($parts[1]);
 
-        // not completed fully
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $img) {
-                $images = ProductImage::where('product_id', $id)->get();
-                foreach ($images as $image) {
-                    $file = new FileManager();
-                    $file->folder('products')->prefix('product')->update($img, $image->image);
-                    $image->image = $file->getName();
+                        // file naming convension
+                        $separator = '-';
+                        $prefix = 'product-';
+                        $postfix = '';
+                        $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+                        // file naming convension
 
-                    $image->product_id = $product->id;
-                    $image->save();
+                        if ($product_image->image) {
+                            Storage::disk('product')->delete($product_image->image);
+                        }
+                        Storage::disk('product')->put($filename, $image_base64);
+                        $product_image->image = $filename;
+                        $product_image->save();
+                    }
                 }
             }
         }
-        // not completed fully
 
 
         if (isset($request->tags) && count($request->tags) > 0) {
-            foreach ($request->tags as $key => $tag) {
+            foreach ($request->tags as $tag) {
                 $product->tags()->update([
                     'product_id'  => $product->id,
                     'name'  => $tag,
@@ -121,6 +148,12 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        $product_images = ProductImage::where('product_id', $product->id)->get();
+        foreach ($product_images as $image) {
+            if ($image->image) {
+                Storage::disk('product')->delete($image->image);
+            }
+        }
         $product->delete();
         alert('Product Deleted Successfully!', '', 'success');
         return redirect()->back();

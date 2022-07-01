@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\Frontend\AccountSettingController;
 use App\Http\Controllers\Frontend\ArtistsController;
+use App\Http\Controllers\Frontend\BillingController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\MyAccountController;
 use App\Http\Controllers\Frontend\MyCartController;
 use App\Http\Controllers\Frontend\PaintingsController;
+use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\HomeController;
+use App\Models\ShippingDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +61,14 @@ Route::controller(MyAccountController::class)->prefix('my-account')->as('my-acco
 Route::controller(AccountSettingController::class)->prefix('settings')->as('settings.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::put('save-changes/{id}', 'update')->name('update');
+});
+Route::controller(BillingController::class)->prefix('billing')->as('billing.')->group(function () {
+    Route::get('edit', 'edit')->name('edit');
+    Route::put('update-billing/{id}', 'update')->name('update');
+});
+Route::controller(ShippingController::class)->prefix('shipping')->as('shipping.')->group(function () {
+    Route::get('edit', 'edit')->name('edit');
+    Route::put('update-shipping/{id}', 'update')->name('update');
 });
 Route::controller(MyCartController::class)->prefix('my-cart')->as('my-cart.')->group(function () {
     Route::get('/', 'index')->name('index');

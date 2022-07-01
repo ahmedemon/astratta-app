@@ -20,8 +20,9 @@
                 @include('layouts.seller.side-menu')
                 <div class="col-md-12 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
                     <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    <small>Note: If you want to change images then you should select all images again or else just leave as it is.</small>
                     <h3 class="my-0 d-flex align-items-center justify-content-between mb35-i">
-                        Add New Product <a href="{{ route('seller.product.index') }}" class="text-decoration-none text-dark"><i class="fas fa-times"></i></a>
+                        Edit "{{ $product->product_name }}" <a href="{{ route('seller.product.index') }}" class="text-decoration-none text-dark"><i class="fas fa-times"></i></a>
                     </h3>
                     @if (count($errors) > 0)
                         @foreach ($errors->all() as $error)
@@ -34,16 +35,20 @@
                         @php
                             $images = $product->productImages;
                         @endphp
-                        <div class="row mb35">
-                            <div class="imgPreview">
-                                @foreach ($images as $image)
-                                    <img src="{{ asset('storage/products/' . $image->image) }}" alt="">
-                                @endforeach
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" name="images[]" class="custom-file-input" id="images" multiple="multiple">
-                                <label class="custom-file-label" for="images">Choose image</label>
-                            </div>
+                        <div class="row mb35 justify-content-between">
+                            @foreach ($images as $key => $image)
+                                <div class="avatar-upload text-center">
+                                    <div class="avatar-edit">
+                                        <input type="file" id="imageUpload-{{ $key + 1 }}" name="image" accept=".png, .jpg, .jpeg" class="imageUpload-{{ $key + 1 }}" onclick="productImage{{ $key + 1 }}();" />
+                                        <input type="hidden" id="base_image_data-{{ $key + 1 }}" name="base64image[]" />
+                                        <label for="imageUpload-{{ $key + 1 }}" class="d-flex justify-content-center align-items-center"><i class="fas fa-pen"></i></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePreview-{{ $key + 1 }}" style="background-image: url('{{ asset('storage/products/' . $image->image) }}')"></div>
+                                    </div>
+                                    <label for="image" class="small">{{ ($loop->iteration == 1 ? 'Main Image' : '') . ($loop->iteration == 2 ? 'Second Image' : '') . ($loop->iteration == 3 ? 'Third Image' : '') }}</label>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="mb35">
@@ -126,6 +131,7 @@
 @endsection
 
 @push('js')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(function() {
             $('.select2').select2()
@@ -134,24 +140,88 @@
                 multiple: true,
             });
         });
-
-        $(function() {
-            // Multiple images preview with JavaScript
-            var multiImgPreview = function(input, imgPreviewPlaceholder) {
-                if (input.files) {
-                    var filesAmount = input.files.length;
-                    for (i = 0; i < filesAmount; i++) {
-                        var reader = new FileReader();
-                        reader.onload = function(event) {
-                            $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
-                        }
-                        reader.readAsDataURL(input.files[i]);
-                    }
+        $(".sign-up-button").click(function() {
+            if (!$("#imageUpload-1").val() || !$("#imageUpload-2").val() || !$("#imageUpload-3").val()) {
+                return confirm('Update without new images?');
+                if ($("#imageUpload-1").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
                 }
-            };
-            $('#images').on('change', function() {
-                multiImgPreview(this, 'div.imgPreview');
-            });
+                if ($("#imageUpload-2").val() && !$("#imageUpload-3").val()) {
+                    swal("Please select first image!", "", "warning");
+                }
+                if ($("#imageUpload-3").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
+                }
+                if ($("#imageUpload-3").val() && $("#imageUpload-2").val() && !$("#imageUpload-1").val()) {
+                    swal("Please select first image!", "", "warning");
+                }
+                if ($("#imageUpload-1").val() && $("#imageUpload-2").val() && !$("#imageUpload-3").val()) {
+                    swal("Please select third image!", "", "warning");
+                }
+                if ($("#imageUpload-1").val() && $("#imageUpload-3").val() && !$("#imageUpload-2").val()) {
+                    swal("Please select second image!", "", "warning");
+                }
+            }
         });
+
+        function productImage1() {
+            function readURL(input1) {
+                if (input1.files && input1.files[0]) {
+                    var reader1 = new FileReader();
+                    reader1.onload = function(e) {
+                        $('#imagePreview-1').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-1').hide();
+                        $('#imagePreview-1').fadeIn(650);
+
+                        var base64data1 = reader1.result;
+                        $('#base_image_data-1').val(base64data1);
+                    }
+                    reader1.readAsDataURL(input1.files[0]);
+                }
+            }
+            $("#imageUpload-1").change(function() {
+                readURL(this);
+            });
+        }
+
+        function productImage2() {
+            function readURL(input2) {
+                if (input2.files && input2.files[0]) {
+                    var reader2 = new FileReader();
+                    reader2.onload = function(e) {
+                        $('#imagePreview-2').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-2').hide();
+                        $('#imagePreview-2').fadeIn(650);
+
+                        var base64data2 = reader2.result;
+                        $('#base_image_data-2').val(base64data2);
+                    }
+                    reader2.readAsDataURL(input2.files[0]);
+                }
+            }
+            $("#imageUpload-2").change(function() {
+                readURL(this);
+            });
+        }
+
+        function productImage3() {
+            function readURL(input3) {
+                if (input3.files && input3.files[0]) {
+                    var reader3 = new FileReader();
+                    reader3.onload = function(e) {
+                        $('#imagePreview-3').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-3').hide();
+                        $('#imagePreview-3').fadeIn(650);
+
+                        var base64data3 = reader3.result;
+                        $('#base_image_data-3').val(base64data3);
+                    }
+                    reader3.readAsDataURL(input3.files[0]);
+                }
+            }
+            $("#imageUpload-3").change(function() {
+                readURL(this);
+            });
+        }
     </script>
 @endpush

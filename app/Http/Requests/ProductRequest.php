@@ -29,9 +29,9 @@ class ProductRequest extends FormRequest
             'product_price' => ['required', 'integer'],
             'category' => ['required', 'integer'],
             'tags' => ['required'],
-            'about_paint' => ['nullable', 'string'],
-            'details_1' => ['nullable', 'string'],
-            'details_2' => ['nullable', 'string'],
+            'about_this_paint' => ['required', 'string'],
+            'details_1' => ['required', 'string'],
+            'details_2' => ['required', 'string'],
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\BillingDetail;
+use App\Models\ShippingDetail;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -67,11 +69,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'privacy_policy' => request()->privacy_policy,
         ]);
+        ShippingDetail::create([
+            'user_id' => $user->id,
+        ]);
+        BillingDetail::create([
+            'user_id' => $user->id,
+        ]);
+        return $user;
     }
 }

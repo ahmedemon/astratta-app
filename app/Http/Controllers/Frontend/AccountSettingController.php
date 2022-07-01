@@ -30,13 +30,18 @@ class AccountSettingController extends Controller
         ]);
         $user = User::find($id);
         $user->name = $request->name;
+        $checkPass = Hash::check($request->current_password, $user->password);
+        if ($checkPass != true) {
+            alert('Incorrect Password!', 'Your current password is incorrect!', 'error');
+            return redirect()->back();
+        }
         if ($request->has('new_password')) {
-            $checkPass = Hash::check($request->new_password, $user->password);
-            if ($checkPass) {
-                if ($request->new_password == $request->confirm_password) {
-                    $user->password = Hash::make($request->new_password);
-                }
+            $if_matched = $request->new_password == $request->confirm_password;
+            if ($if_matched != true) {
+                alert('Password Not Matched!', '', 'error');
+                return redirect()->back();
             }
+            $user->password = Hash::make($request->new_password);
         }
         $user->save();
         alert('Profile Updated Successfully!', '', 'success');

@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ordered_items', function (Blueprint $table) {
+        Schema::create('current_balances', function (Blueprint $table) {
             $table->id();
-            $table->integer('seller_id');
-            $table->unsignedBigInteger('order_id');
-            $table->integer('product_id');
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->onDelete('cascade');
+            $table->integer('seller_id')->nullable();
+            $table->integer('credit_point')->nullable();
+            $table->integer('debit_point')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ordered_items');
+        Schema::dropIfExists('current_balances');
     }
 };

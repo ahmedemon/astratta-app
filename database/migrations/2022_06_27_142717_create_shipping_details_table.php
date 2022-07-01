@@ -15,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('shipping_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('country');
-            $table->string('state');
-            $table->string('town_city');
-            $table->string('street');
-            $table->string('post_or_zip');
+            $table->integer('user_id')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('town_city')->nullable();
+            $table->string('street')->nullable();
+            $table->string('post_or_zip')->nullable();
             $table->timestamps();
         });
     }
