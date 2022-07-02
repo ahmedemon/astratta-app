@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\BillingDetail;
 use App\Models\MyCart;
 use App\Models\Order;
-use App\Models\OrderedItem;
 use App\Models\Product;
 use App\Models\ShippingDetail;
 use App\Models\User;
@@ -29,6 +28,11 @@ class CheckoutController extends Controller
     public function buyNow($id)
     {
         $product = Product::find($id);
+        if ($product->is_purchased) {
+            alert('Stock Out!', 'This product has veen sold!', 'warning');
+            return redirect()->back();
+        }
+        $product = Product::find($id);
         $productId = $product->id;
         $cartItemId = null;
         $items = array('1' => array('product_id' => $productId, 'cart_item_id' => $cartItemId));
@@ -39,24 +43,6 @@ class CheckoutController extends Controller
     }
     public function placeOrder(Request $request)
     {
-        // if (!Auth::guard('web')->check()) {
-        //     $password = base64_encode(openssl_random_pseudo_bytes(3 * (8 >> 2)));
-        //     $user = User::create([
-        //         'name' => $request->first_name . ' ' . $request->last_name,
-        //         'username' => Str::lower($request->first_name . $request->last_name),
-        //         'email' => $request->email,
-        //         'phone' => $request->phone,
-        //         'email_verified_at' => now(),
-        //         'password' => Hash::make($password),
-        //     ]);
-        // }
-        $order = Order::create([
-            'user_id' => Auth::user()->id ?? Auth::guest(),
-            'order_track_id' => mt_rand(1000000000, 9999999999),
-            'order_date' => date(now()),
-            'total_cost' => Crypt::decrypt($request->total_cost),
-            'method_id' => 1,
-        ]);
         if (isset($request->items) && count($request->items) > 0) {
             foreach ($request->items as $key => $value) {
                 $id = $value['product_id'];
@@ -69,10 +55,14 @@ class CheckoutController extends Controller
                 $product->is_purchased = 1;
                 $product->save();
 
-                OrderedItem::create([
+                $order = Order::create([
+                    'user_id' => Auth::user()->id ?? Auth::guest(),
                     'seller_id' => $product->seller_id,
-                    'order_id' => $order->id,
                     'product_id' => $value['product_id'],
+                    'order_track_id' => mt_rand(1000000000, 9999999999),
+                    'order_date' => date(now()),
+                    'total_cost' => Crypt::decrypt($request->total_cost),
+                    'method_id' => 1,
                 ]);
             }
         }
@@ -201,9 +191,11 @@ class CheckoutController extends Controller
 
     public function completed($order)
     {
-        $order = Crypt::decrypt($order);
-        $viewOrder = Order::find($order->id);
+        alert('Take a screenshot of this page!', '', 'info');
+        $sent_order = Crypt::decrypt($order);
+        $order = Order::find($sent_order->id);
+        $all_orders = Order::where('user_id', Auth::user()->id)->where('id', $order->id)->get();
         $pageTitle = "Thank you!!";
-        return view('frontend.checkout.thank-you', compact('pageTitle', 'viewOrder'));
+        return view('frontend.checkout.thank-you', compact('pageTitle', 'all_orders', 'order'));
     }
 }

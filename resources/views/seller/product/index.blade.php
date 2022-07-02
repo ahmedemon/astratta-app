@@ -23,9 +23,6 @@
                         </thead>
                         <tbody>
                             @foreach ($products as $product)
-                                @php
-                                    $image = $product->productImages->first();
-                                @endphp
                                 <tr class="data-row">
                                     <td class="align-middle" width="50%">
                                         <div class="py15 d-flex align-items-center">
@@ -37,7 +34,7 @@
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             </div>
-                                            <img src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                                            <img src="{{ asset('storage/products/' . $product->main_image) }}" alt="" />
                                             <a href="{{ route('painting.show', $product->id) }}" class="ml20">{{ $product->product_name }}</a>
                                         </div>
                                     </td>

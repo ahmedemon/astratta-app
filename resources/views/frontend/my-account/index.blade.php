@@ -46,15 +46,17 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
-                                        @foreach ($order->orderItems as $item)
-                                            <tr>
-                                                <td class="ps-0">#{{ $order->order_track_id }}</td>
-                                                <td>{{ $order->created_at->format('m:d:Y') }}</td>
-                                                <td>{{ $order->status == 1 ? 'Complete' : 'Processing' }}</td>
-                                                <td>${{ str_replace('.00', '', $item->product->product_price ?? '--') }}</td>
-                                                <td><a href="javascript:void();" class="refund-link">Refund</a></td>
-                                            </tr>
-                                        @endforeach
+                                        <tr>
+                                            <td class="ps-0 order_track">
+                                                #{{ $order->order_track_id }}
+                                            </td>
+                                            <td>{{ $order->created_at->format('m:d:Y') }}</td>
+                                            <td>{{ $order->status == 1 ? 'Complete' : 'Processing' }}</td>
+                                            <td>${{ str_replace('.00', '', $order->product->product_price ?? '--') }}</td>
+                                            <td>
+                                                <a href="javascript:void();" class="refund-link">Refund</a>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

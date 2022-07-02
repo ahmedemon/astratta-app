@@ -23,10 +23,7 @@
                     </div>
                     <div class="px-0 art col-md-12 col-lg-6 col-xl-6 col-xxl-6 col-12">
                         <div class="d-flex justify-content-lg-end justify-content-xl-end justify-content-xxl-end justify-content-center">
-                            @php
-                                $heroImage = $painting->productImages->first();
-                            @endphp
-                            <img id="main-image" class="" src="{{ asset($heroImage->image ? 'storage/products/' . $heroImage->image : 'frontend/images/art/art2.png') }}" alt="" />
+                            <img id="main-image" class="" src="{{ asset($painting->main_image ? 'storage/products/' . $painting->main_image : 'frontend/images/art/art2.png') }}" alt="" />
                         </div>
                     </div>
                 </div>
@@ -42,7 +39,7 @@
                     <div class="col-md-8 px-lg-0 px-xl-0 px-xxl-0 d-flex justify-content-lg-end justify-content-xl-end justify-content-xxl-end justify-content-between">
                         @foreach ($painting->productImages as $key => $image)
                             <a class="thumbnails {{ $key == 0 ? 'text-left' : '' }} {{ $key == 1 ? 'text-center' : '' }} {{ $key == 2 ? 'text-end' : '' }}" href="javascript:void();">
-                                <img onclick="change_image(this)" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                                <img onclick="change_image(this)" src="{{ asset($image->image ? 'storage/products/' . $image->image : 'frontend/images/art/art2.png') }}" alt="" />
                             </a>
                         @endforeach
                     </div>

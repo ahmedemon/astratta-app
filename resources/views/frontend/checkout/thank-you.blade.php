@@ -28,104 +28,122 @@
         <!-- breadcrumb end -->
 
         <!-- rescript -->
-        <div class="rescript bg-white pb96">
-            <div class="container px-lg-0 px-xl-0 px-xxl-0">
-                <p class="my-0 thank-you-greetings pt96">Thank you, your order has been received.</p>
-                <div class="table-responsive pt15">
-                    <table class="rescript-table table table-sm mb-0">
-                        <thead>
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Date</th>
-                                <th>Email</th>
-                                <th>Total</th>
-                                <th>Payment Mehtod</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#{{ $viewOrder->order_track_id }}</td>
-                                <td>{{ $viewOrder->order_date }}</td>
-                                <td>{{ $viewOrder->user->email ?? '---' }}</td>
-                                <td>${{ $viewOrder->total_cost }}</td>
-                                <td>{{ $viewOrder->method_id }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- rescript -->
-
-        <!-- ordered item -->
-        <div class="ordered-items">
-            <div class="container px-lg-0 px-xl-0 px-xxl-0 px-0">
-                <div class="row justify-content-center mx-auto">
-                    <div class="col-md-12 bg-white items px-lg-0 px-xl-0 px-xxl-0">
-                        <div class="row items-heading">
-                            <div class="col-6">
-                                <p class="my-0">Your Order</p>
-                            </div>
-                            <div class="col-6 text-end">
-                                <p class="my-0">Price</p>
-                            </div>
-                        </div>
-
-                        @foreach ($viewOrder->orderItems as $item)
-                            @php
-                                $image = $item->product->productImages->first() ?? '--';
-                            @endphp
-                            <div class="row cart-body">
-                                <div class="col-8 d-flex align-items-center">
-                                    <img class="item-image" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
-                                    <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-1">{{ $item->product->product_name ?? '---' }}</a>
-                                </div>
-                                <div class="col-4 d-flex align-items-center justify-content-end">
-                                    <p class="my-0 color-1">${{ $item->product->product_price ?? '--' }}</p>
-                                </div>
-                            </div>
-                        @endforeach
+        {{-- <button class="btn btn-sm btn-success" id="save">Save PDF</button> --}}
+        <div id="content">
+            <div class="rescript bg-white pb96">
+                <div class="container px-lg-0 px-xl-0 px-xxl-0">
+                    <p class="my-0 thank-you-greetings pt96">Thank you, your order has been received.</p>
+                    <div class="table-responsive pt15">
+                        <table class="rescript-table table table-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Date</th>
+                                    <th>Email</th>
+                                    <th>Total</th>
+                                    <th>Payment Mehtod</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#{{ $order->order_track_id }}</td>
+                                    <td>{{ $order->order_date }}</td>
+                                    <td>{{ $order->user->email ?? '---' }}</td>
+                                    <td>${{ $order->total_cost }}</td>
+                                    <td>{{ $order->method_id }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+            <!-- rescript -->
 
-                <!-- shipping billing address -->
-                <div class="container pb96 shipping-billing px-lg-0 px-xl-0 px-xxl-0">
-                    <div class="row justify-content-between mx-auto">
-                        <div class="col-md-5 address p40">
-                            <div class="d-flex justify-content-between align-items-center address-heading mb30">
-                                <p class="my-0">Billing Address</p>
-                                <a href="javascript::void();" class="">Edit</a>
+            <!-- ordered item -->
+            <div class="ordered-items">
+                <div class="container px-lg-0 px-xl-0 px-xxl-0 px-0">
+                    <div class="row justify-content-center mx-auto">
+                        <div class="col-md-12 bg-white items px-lg-0 px-xl-0 px-xxl-0">
+                            <div class="row items-heading">
+                                <div class="col-6">
+                                    <p class="my-0">Your Order</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <p class="my-0">Price</p>
+                                </div>
                             </div>
-                            <div class="described-address">
-                                <p class="my-0">{{ $viewOrder->billing->first_name ?? '---' }} {{ $viewOrder->billing->last_name ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->first_name ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->street ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->state ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->town_city ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->town_city ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->billing->post_or_zip ?? '---' }}</p>
-                            </div>
+
+                            @foreach ($all_orders as $item)
+                                <div class="row cart-body">
+                                    <div class="col-8 d-flex align-items-center">
+                                        <img class="item-image" src="{{ asset('storage/products/' . $item->product->main_image) }}" alt="" />
+                                        <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-1">{{ $item->product->product_name ?? '---' }}</a>
+                                    </div>
+                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                        <p class="my-0 color-1">${{ $item->product->product_price ?? '--' }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="col-md-5 address p40">
-                            <div class="d-flex justify-content-between align-items-center address-heading mb30">
-                                <p class="my-0">Shipping Address</p>
-                                <a href="javascript::void();" class="">Edit</a>
+                    </div>
+
+                    <!-- shipping billing address -->
+                    <div class="container pb96 shipping-billing px-lg-0 px-xl-0 px-xxl-0">
+                        <div class="row justify-content-between mx-auto">
+                            <div class="col-md-5 address p40">
+                                <div class="d-flex justify-content-between align-items-center address-heading mb30">
+                                    <p class="my-0">Billing Address</p>
+                                    <a href="{{ route('billing.edit', $order->user->billing->id) }}" class="">Edit</a>
+                                </div>
+                                <div class="described-address">
+                                    <p class="my-0">{{ $order->user->billing->first_name ?? '---' }} {{ $order->user->billing->last_name ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->first_name ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->street ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->state ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->town_city ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->town_city ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->billing->post_or_zip ?? '---' }}</p>
+                                </div>
                             </div>
-                            <div class="described-address">
-                                <p class="my-0">{{ $viewOrder->shipping->first_name ?? '---' }} {{ $viewOrder->shipping->last_name ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->first_name ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->street ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->state ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->town_city ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->town_city ?? '---' }}</p>
-                                <p class="my-0">{{ $viewOrder->shipping->post_or_zip ?? '---' }}</p>
+                            <div class="col-md-5 address p40">
+                                <div class="d-flex justify-content-between align-items-center address-heading mb30">
+                                    <p class="my-0">Shipping Address</p>
+                                    <a href="{{ route('shipping.edit', $order->user->shipping->id) }}" class="">Edit</a>
+                                </div>
+                                <div class="described-address">
+                                    <p class="my-0">{{ $order->user->shipping->first_name ?? '---' }} {{ $order->user->shipping->last_name ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->first_name ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->street ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->state ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->town_city ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->town_city ?? '---' }}</p>
+                                    <p class="my-0">{{ $order->user->shipping->post_or_zip ?? '---' }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- shipping billing address -->
                 </div>
-                <!-- shipping billing address -->
             </div>
+            <!-- ordered item -->
         </div>
-        <!-- ordered item -->
     </div>
 @endsection
+@push('js')
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+
+    <script>
+        $('#save').click(function() {
+            domtoimage.toPng(document.getElementById('content'))
+                .then(function(blob) {
+                    var pdf = new jsPDF('l', 'pt', [$('#content').width(), $('#content').height()]);
+
+                    pdf.addImage(blob, 'PNG', 0, 0, $('#content').width(), $('#content').height());
+                    pdf.save("test.pdf");
+
+                    that.options.api.optionsChanged();
+                });
+        });
+    </script> --}}
+@endpush

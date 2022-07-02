@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaintingsController extends Controller
 {
@@ -18,9 +20,12 @@ class PaintingsController extends Controller
     public function show($id)
     {
         $painting = Product::find($id);
-        if ($painting->is_purchased == 1) {
-            alert('Stock Out!', 'That product has been sold!', 'warning');
-            return redirect()->route('painting.index');
+        $order = Order::where('product_id', $painting->id)->first();
+        if ($order->user_id != Auth::user()->id) {
+            if ($painting->is_purchased == 1) {
+                alert('Stock Out!', 'That product has been sold!', 'warning');
+                return redirect()->route('painting.index');
+            }
         }
         $relatedProducts = Product::where('status', 1)->where('category', $painting->category)->take(3)->get();
         $pageTitle = $painting->product_name;

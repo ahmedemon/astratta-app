@@ -22,7 +22,7 @@ class MyAccountController extends Controller
             return redirect()->route('login');
         }
         $pageTitle = "My Account";
-        $orders = Order::where('user_id', Auth::user()->id)->with('orderItems')->paginate(8);
+        $orders = Order::where('user_id', Auth::user()->id)->paginate(8);
         return view('frontend.my-account.index', compact('pageTitle', 'orders'));
     }
 }

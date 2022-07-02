@@ -53,12 +53,9 @@
         <div class="container section2-container-2 px-lg-0">
             <div class="row best-selling-container justify-content-lg-between justify-content-md-between justify-content-center w-100">
                 @foreach ($paintings as $painting)
-                    @php
-                        $image = $painting->productImages->first();
-                    @endphp
                     <div class="col-lg-6 col-xl-4 col-md-6 col-6 painting">
                         <a href="{{ route('painting.show', $painting->id) }}">
-                            <img class="p-3" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                            <img class="p-3" src="{{ asset('storage/products/' . $painting->main_image) }}" alt="" />
                             <h3>{{ $painting->product_name }}</h3>
                             <p class="my-0">{{ str_replace('.00', '', $painting->product_price) }}</p>
                             <div class="d-flex align-items-center justify-content-lg-start justify-content-between buy-now">

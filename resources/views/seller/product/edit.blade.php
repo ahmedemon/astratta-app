@@ -35,6 +35,19 @@
                         @php
                             $images = $product->productImages;
                         @endphp
+                        <div class="row mb35">
+                            <div class="avatar-upload text-center">
+                                <div class="avatar-edit">
+                                    <input type="file" id="imageUpload-0" name="main_image" accept=".png, .jpg, .jpeg" class="imageUpload-0" onclick="productImage0();" />
+                                    <input type="hidden" id="base_image_data-0" name="base64image1" />
+                                    <label for="imageUpload-0" class="d-flex justify-content-center align-items-center"><i class="lni lni-plus"></i></label>
+                                </div>
+                                <div class="avatar-preview">
+                                    <div id="imagePreview-0" style="background-image: url('{{ asset('storage/products/' . $product->main_image) }}')"></div>
+                                </div>
+                                <label for="image" class="small">Main Image</label>
+                            </div>
+                        </div>
                         <div class="row mb35 justify-content-between">
                             @foreach ($images as $key => $image)
                                 <div class="avatar-upload text-center">
@@ -163,6 +176,26 @@
                 }
             }
         });
+
+        function productImage0() {
+            function readURL(input0) {
+                if (input0.files && input0.files[0]) {
+                    var reader0 = new FileReader();
+                    reader0.onload = function(e) {
+                        $('#imagePreview-0').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview-0').hide();
+                        $('#imagePreview-0').fadeIn(650);
+
+                        var base64data0 = reader0.result;
+                        $('#base_image_data-0').val(base64data0);
+                    }
+                    reader0.readAsDataURL(input0.files[0]);
+                }
+            }
+            $("#imageUpload-0").change(function() {
+                readURL(this);
+            });
+        }
 
         function productImage1() {
             function readURL(input1) {

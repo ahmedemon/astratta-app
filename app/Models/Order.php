@@ -9,14 +9,13 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'order_track_id', 'order_date', 'total_cost', 'method_id'
+        'user_id', 'seller_id', 'product_id', 'order_track_id', 'order_date', 'total_cost', 'method_id'
     ];
 
-    public function orderItems()
+    public function product()
     {
-        return $this->hasMany(OrderedItem::class);
+        return $this->hasOne(Product::class, 'id', 'product_id');
     }
-
 
     public function user()
     {

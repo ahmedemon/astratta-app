@@ -19,7 +19,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('seller_id', Auth::guard('seller')->user()->id)->with('productImages')->latest()->paginate(4);
+        $products = Product::where('seller_id', Auth::guard('seller')->user()->id)->latest()->paginate(4);
         $pageTitle = "Products";
         return view('seller.product.index', compact('pageTitle', 'products'));
     }
@@ -38,6 +38,28 @@ class ProductController extends Controller
         $product = new Product($request->all());
         $product->seller_id = Auth::guard('seller')->user()->id;
         $product->tags = json_encode($tags);
+
+        if ($request->has('main_image')) {
+            $input = $request->all();
+            $parts = explode(";base64,", $input['base64image1']);
+            $type_aux = explode("image/", $parts[0]);
+            $type = $type_aux[1];
+            $image_base64 = base64_decode($parts[1]);
+
+            // file naming convension
+            $separator = '-';
+            $prefix = 'main-product-';
+            $postfix = '';
+            $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+            // file naming convension
+
+            if ($product->image != null) {
+                Storage::disk('product')->delete($product->image);
+            }
+            Storage::disk('product')->put($filename, $image_base64);
+
+            $product->main_image = $filename;
+        }
         $product->save();
 
         $image_array = array_filter($request['base64image']);
@@ -101,6 +123,30 @@ class ProductController extends Controller
         $product->about_this_paint = $request->about_this_paint;
         $product->details_1 = $request->details_1;
         $product->details_2 = $request->details_2;
+
+        if ($request->has('main_image')) {
+            $input = $request->all();
+            $parts = explode(";base64,", $input['base64image1']);
+            $type_aux = explode("image/", $parts[0]);
+            $type = $type_aux[1];
+            $image_base64 = base64_decode($parts[1]);
+
+            // file naming convension
+            $separator = '-';
+            $prefix = 'main-product-';
+            $postfix = '';
+            $filename = $prefix . Str::uuid() . $separator . $postfix .  date('Y-m-d') . '.' . $type;
+            // file naming convension
+
+            if ($product->main_image) {
+                Storage::disk('product')->delete($product->main_image);
+            }
+            Storage::disk('product')->put($filename, $image_base64);
+
+            $product->main_image = $filename;
+        }
+        $product->save();
+
         $image_array = array_filter($request['base64image']);
         if (count($image_array) < 0) {
             if (isset($request->base64image) && count($request->base64image) > 0) {
