@@ -158,14 +158,17 @@
                             @foreach ($items as $key => $item)
                                 <input type="hidden" name="items[{{ $key }}][product_id]" value="{{ $item['product_id'] }}">
                                 <input type="hidden" name="items[{{ $key }}][cart_item_id]" value="{{ $item['cart_item_id'] }}">
+                                @php
+                                    $product = \App\Models\Product::find($item['product_id']);
+                                @endphp
                                 <div class="row cart-body">
                                     <div class="col-8 d-flex align-items-center">
                                         <i class="lni lni-close"></i>
-                                        <img class="product-image" src="{{ asset('storage/products/' . config('image.product')->image) }}" alt="" />
-                                        <a class="text-decoration-none">La Réunion Acryilic</a>
+                                        <img class="product-image" src="{{ asset('storage/products/' . $product->main_image) }}" alt="" />
+                                        <a class="text-decoration-none">{{ $product->product_name }}</a>
                                     </div>
                                     <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0">$400</p>
+                                        <p class="my-0">${{ $product->product_price }}</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -173,12 +176,12 @@
                                 <hr class="mb10" style="opacity: 1 !important" />
                                 <div class="d-flex discounted justify-content-between mb10">
                                     <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">$11,600</p>
+                                    <p class="my-0 discounted-amount">${{ $coupon_code }}</p>
                                 </div>
-                                <div class="d-flex shipping justify-content-between mb10">
+                                {{-- <div class="d-flex shipping justify-content-between mb10">
                                     <p class="my-0 shipping-title">Shipping to Dhaka</p>
                                     <p class="my-0 shipping-amount">$20</p>
-                                </div>
+                                </div> --}}
                                 <div class="d-flex shipping justify-content-between">
                                     <p class="my-0 total-title">Total</p>
                                     <p class="my-0 total-amount d-flex align-items-center justify-content-end">{{ '$' . $total_cost }}</p>
@@ -201,7 +204,7 @@
                                         <p class="my-0">Pay</p>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <p class="my-0">$11,620</p>
+                                        <p class="my-0">{{ '$' . $total_cost }}</p>
                                     </div>
                                 </div>
                                 <div class="payment-body">

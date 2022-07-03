@@ -14,6 +14,7 @@ class Seller extends User
         'email',
         'phone',
         'password',
+        'card_number',
         'paintings',
         'privacy_policy',
         'contact_agreement',

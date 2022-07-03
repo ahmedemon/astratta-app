@@ -14,22 +14,22 @@
     <div class="menu-group">
         <ul class="list-group">
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.dashboard.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/dashboard') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ route('seller.dashboard.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/dashboard*') ? 'active' : '' }}">Dashboard</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.profile.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/profile') ? 'active' : '' }}">Profile</a>
+                <a href="{{ route('seller.profile.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/profile*') ? 'active' : '' }}">Profile</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.product.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/products') ? 'active' : '' }}">Products</a>
+                <a href="{{ route('seller.product.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/products*') ? 'active' : '' }}">Products</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.orders.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders') ? 'active' : '' }}">Orders</a>
+                <a href="{{ route('seller.orders.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders*') ? 'active' : '' }}">Orders</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="javascript:void();" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw') ? 'active' : '' }}">Withdraw</a>
+                <a href="{{ route('seller.withdraw.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }}">Withdraw</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="javascript:void();" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings') ? 'active' : '' }}">Settings</a>
+                <a href="{{ route('seller.setting.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings*') ? 'active' : '' }}">Settings</a>
             </li>
             <li class="list-group-item p-0 border-0" style="top: 190px">
                 <a href="{{ route('seller.logout') }}" class="btn btn-light pl35 w-100 rounded-0 border-0" onclick="event.preventDefault(); document.getElementById('vendor-logout-form').submit();">Logout</a>

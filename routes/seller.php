@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Seller\AccountSettingController;
 use App\Http\Controllers\Seller\Auth\SellerLoginController;
 use App\Http\Controllers\Seller\Auth\SellerRegisterController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Seller\ProfileController;
+use App\Http\Controllers\Seller\WithdrawController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('join-us', [SellerRegisterController::class, 'index'])->name('join-us');
@@ -34,5 +36,14 @@ Route::middleware('seller')->group(function () {
 
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
+    });
+    Route::group(['prefix' => 'withdraws', 'as' => 'withdraw.'], function () {
+        Route::get('/', [WithdrawController::class, 'index'])->name('index');
+        Route::get('create', [WithdrawController::class, 'create'])->name('create');
+        Route::post('store', [WithdrawController::class, 'store'])->name('store');
+    });
+    Route::group(['prefix' => 'settings', 'as' => 'setting.'], function () {
+        Route::get('/', [AccountSettingController::class, 'index'])->name('index');
+        Route::put('update/{id}', [AccountSettingController::class, 'updateuAccount'])->name('update');
     });
 });

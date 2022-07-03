@@ -40,21 +40,25 @@
                                         <th class="ps-0">Orders</th>
                                         <th>Date</th>
                                         <th>Status</th>
+                                        <th>Qty</th>
                                         <th>Total</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders as $order)
+                                    @foreach ($orders->unique('order_tract_id') as $order)
                                         <tr>
                                             <td class="ps-0 order_track">
                                                 #{{ $order->order_track_id }}
                                             </td>
                                             <td>{{ $order->created_at->format('m:d:Y') }}</td>
                                             <td>{{ $order->status == 1 ? 'Complete' : 'Processing' }}</td>
-                                            <td>${{ str_replace('.00', '', $order->product->product_price ?? '--') }}</td>
-                                            <td>
+                                            <td>{{ count($orders) }} Items</td>
+                                            <td>${{ str_replace('.00', '', $order->total_cost ?? '--') }}</td>
+                                            <td class="align-middle">
                                                 <a href="javascript:void();" class="refund-link">Refund</a>
+                                                <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
+                                                <a target="_blank" href="{{ route('checkout.completed', Crypt::encrypt($order)) }}" class="refund-link">Rescript</a>
                                             </td>
                                         </tr>
                                     @endforeach

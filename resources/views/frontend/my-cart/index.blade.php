@@ -44,9 +44,6 @@
                                 </div>
                             </div>
                             @foreach ($cartItems as $item)
-                                @php
-                                    $image = $item->product->productImages->first();
-                                @endphp
                                 <label for="chk-{{ $item->id }}" class="row-label">
                                     <div class="row cart-body" id="row-{{ $item->id }}">
                                         <input type="hidden" name="items[{{ $item->id }}][cart_item_id]" value="{{ $item->id }}" />
@@ -55,7 +52,7 @@
                                             <a href="{{ route('my-cart.remove-from-cart', $item->id) }}" class="m-0">
                                                 <i class="lni lni-close" id="close-{{ $item->id }}"></i>
                                             </a>
-                                            <img class="product-image" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                                            <img class="product-image" src="{{ asset('storage/products/' . $item->product->main_image) }}" alt="" />
                                             <a href="{{ route('painting.show', $item->id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
                                         </div>
                                         <div class="col-4 d-flex align-items-center justify-content-end">

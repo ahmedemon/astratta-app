@@ -9,19 +9,19 @@
                     <div class="row mx-auto">
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">
                             <h3 class="my-0 mb15-i">Orders</h3>
-                            <h1 class="my-0">5</h1>
+                            <h1 class="my-0">{{ $wallet['current_order_quantity'] }}</h1>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">
                             <h3 class="my-0 mb15-i">Finished Order</h3>
-                            <h1 class="my-0">36</h1>
+                            <h1 class="my-0">{{ $wallet['finished_orders_quantity'] }}</h1>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">
                             <h3 class="my-0 mb15-i">Balance</h3>
-                            <h1 class="my-0">$5,800</h1>
+                            <h1 class="my-0">${{ $wallet['current_balance'] }}</h1>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-6 mb60">
                             <h3 class="my-0 mb15-i">Earning This Month</h3>
-                            <h1 class="my-0">$3,800</h1>
+                            <h1 class="my-0">${{ $wallet['monthly_income_balance'] }}</h1>
                         </div>
                         <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 col-12 mb30">
                             <h3 class="my-0">Sales</h3>

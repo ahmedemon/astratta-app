@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\BillingDetail;
+use App\Models\CurrentBalance;
 use App\Models\MyCart;
 use App\Models\Order;
 use App\Models\Product;
@@ -44,12 +45,11 @@ class CheckoutController extends Controller
     public function placeOrder(Request $request)
     {
         if (isset($request->items) && count($request->items) > 0) {
+            $order_track_id = mt_rand(100000, 999999);
             foreach ($request->items as $key => $value) {
                 $id = $value['product_id'];
-                if ($value['cart_item_id'] != null) {
-                    $my_cart = MyCart::where('product_id', $id)->first();
-                    $my_cart->delete();
-                }
+                $my_cart = MyCart::where('product_id', $id)->first();
+                $my_cart->delete();
 
                 $product = Product::find($id);
                 $product->is_purchased = 1;
@@ -59,10 +59,18 @@ class CheckoutController extends Controller
                     'user_id' => Auth::user()->id ?? Auth::guest(),
                     'seller_id' => $product->seller_id,
                     'product_id' => $value['product_id'],
-                    'order_track_id' => mt_rand(1000000000, 9999999999),
+                    'order_track_id' => $order_track_id,
                     'order_date' => date(now()),
                     'total_cost' => Crypt::decrypt($request->total_cost),
                     'method_id' => 1,
+                ]);
+
+                CurrentBalance::create([
+                    'seller_id' => $product->seller_id,
+                    'credit_amount' => $product->product_price,
+                    'debit_amount' => null,
+                    'note' => 'Order amount from ' . Auth::user()->name . '',
+                    'trnx_id' => Str::random(16),
                 ]);
             }
         }
@@ -191,10 +199,9 @@ class CheckoutController extends Controller
 
     public function completed($order)
     {
-        alert('Take a screenshot of this page!', '', 'info');
         $sent_order = Crypt::decrypt($order);
         $order = Order::find($sent_order->id);
-        $all_orders = Order::where('user_id', Auth::user()->id)->where('id', $order->id)->get();
+        $all_orders = Order::where('user_id', Auth::user()->id)->where('order_track_id', $sent_order->order_track_id)->get();
         $pageTitle = "Thank you!!";
         return view('frontend.checkout.thank-you', compact('pageTitle', 'all_orders', 'order'));
     }

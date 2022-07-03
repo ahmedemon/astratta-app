@@ -30,7 +30,7 @@ class MyCartController extends Controller
     public function addToCart($id)
     {
         $product = Product::find($id);
-        if ($product->is_purchased) {
+        if ($product->is_purchased == 1) {
             alert('Stock Out!', 'This product has veen sold!', 'warning');
             return redirect()->back();
         }

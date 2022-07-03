@@ -99,7 +99,7 @@
                         <div class="mb35">
                             <select name="tags[]" value="{{ old('tags') }}" id="" class="form-control tags" aria-placeholder="tags">
                                 @foreach ($tags as $tag)
-                                    <option value="{{ $tag->name }}" @if ($product->tags()->pluck('name')->contains($tag->name)) selected @endif>{{ $tag->name }}</option>
+                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             @error('tags')

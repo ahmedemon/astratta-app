@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('current_balances', function (Blueprint $table) {
+        Schema::create('withdraws', function (Blueprint $table) {
             $table->id();
-            $table->integer('seller_id')->nullable();
-            $table->integer('credit_amount')->nullable();
-            $table->integer('debit_amount')->nullable();
-            $table->string('note')->nullable();
-            $table->string('trnx_id')->nullable();
+            $table->integer('seller_id');
+            $table->integer('method_id');
+            $table->decimal('amount', 10, 2);
+            $table->string('note');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('current_balances');
+        Schema::dropIfExists('withdraws');
     }
 };

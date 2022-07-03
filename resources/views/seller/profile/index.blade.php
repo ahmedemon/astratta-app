@@ -28,18 +28,33 @@
                                 <h3 class="my-0 mb15-i">Name</h3>
                             </label>
                             <input type="text" name="name" class="form-control rounded-0" placeholder="Etel Fresko" value="{{ old('name', Auth::guard('seller')->user()->name) }}" />
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
                         </div>
                         <div class="mb30">
                             <label for="name">
                                 <h3 class="my-0 mb15-i">Designation</h3>
                             </label>
                             <input type="text" name="designation" class="form-control rounded-0" placeholder="Abstract Painter" value="{{ old('designation', Auth::guard('seller')->user()->designation) }}" />
+                            @error('designation')
+                                <span class="invalid-feedback" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
                         </div>
                         <div class="mb30">
                             <label for="description">
                                 <h3 class="my-0 mb15-i">Description</h3>
                             </label>
                             <textarea type="text" name="description" class="form-control rounded-0" placeholder="Etel Fresko">{{ old('description', Auth::guard('seller')->user()->description) }}</textarea>
+                            @error('description')
+                                <span class="invalid-feedback" role="alert">
+                                    <small>{{ $message }}</small>
+                                </span>
+                            @enderror
                         </div>
                         <button type="submit" class="btn rounded-0 sign-in-button">Save Changes</button>
                     </form>
