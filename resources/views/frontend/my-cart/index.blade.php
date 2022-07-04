@@ -76,7 +76,6 @@
                             <div class="coupon-body bg-white d-flex">
                                 <input type="text" name="coupon_code" id="couponCodeInput" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
                                 <button class="btn rounded-0 sign-in-button" type="button" id="discountButton">Apply Coupon</button>
-
                             </div>
                         </div>
                     </div>
@@ -172,7 +171,8 @@
                 console.log(couponCodeInput);
                 if (compare === couponCodeInput) {
                     document.getElementsByClassName("discounted-amount")[0].innerHTML = '$' + couponAmount;
-                    $('#couponCodeInput').attr('disabled', '');
+                    $('#couponCodeInput').attr('readonly', '');
+                    $('#discountButton').attr('disabled', '');
                     swal("Coupon Accepted!", "", "success");
                 } else {
                     console.log('not ok');

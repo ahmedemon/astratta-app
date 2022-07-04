@@ -19,49 +19,55 @@ class MyCartController extends Controller
         }
         $cartItems = $items->get();
         $pageTitle = "Cart";
-
-        // // my location
-        // $json = file_get_contents('https://geolocation-db.com/json');
-        // $location = json_decode($json);
-        // // my location
         return view('frontend.my-cart.index', compact('pageTitle', 'cartItems'));
     }
 
     public function addToCart($id)
     {
         $product = Product::find($id);
+        // check if product is already purchased
         if ($product->is_purchased == 1) {
             alert('Stock Out!', 'This product has veen sold!', 'warning');
             return redirect()->back();
         }
+        // check if product is already purchased
+
+        // check this is not a buyer account
         if (Auth::guard('seller')->check()) {
             alert('Warning!', 'Please login from a buyer account!');
             return redirect()->back();
         }
+        // check this is not a buyer account
+
+        // check user is logged in or not
         if (Auth::guard('web')->check()) {
+            // add to cart for user
             $check = MyCart::where('product_id', $id)->where('buyer_id', Auth::user()->id)->count();
             if ($check > 0) {
                 alert('Note!', 'You`ve already added to your cart!', 'info');
                 return redirect()->back();
             }
+            // add to cart for user
             MyCart::create([
                 'product_id' => $id,
                 'buyer_id' => Auth::user()->id,
                 'guest_id' => null,
             ]);
+        } else {
+            // add to cart for guest
+            $check = MyCart::where('product_id', $id)->where('guest_id', Auth::guest())->count();
+            if ($check > 0) {
+                alert('Note!', 'You`ve already added to your cart!', 'info');
+                return redirect()->back();
+            }
+            // add to cart for guest
+            MyCart::create([
+                'product_id' => $id,
+                'buyer_id' => null,
+                'guest_id' => Auth::guest(),
+            ]);
         }
-
-
-        $check = MyCart::where('product_id', $id)->where('guest_id', Auth::guest())->count();
-        if ($check > 0) {
-            alert('Note!', 'You`ve already added to your cart!', 'info');
-            return redirect()->back();
-        }
-        MyCart::create([
-            'product_id' => $id,
-            'buyer_id' => null,
-            'guest_id' => Auth::guest(),
-        ]);
+        // check user is logged in or not
         toastr()->success('Product added to the cart!', 'Success!');
         return redirect()->back();
     }

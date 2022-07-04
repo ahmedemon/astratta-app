@@ -50,6 +50,6 @@ class SellerRegisterController extends Controller
         $seller->password = Hash::make($request['password']);
         $seller->save();
         toastr()->info('You`ve just registered as an artist. Please wait for confirmation!', 'Success!');
-        return redirect()->route('seller.login');
+        return redirect()->route('seller.log-in');
     }
 }

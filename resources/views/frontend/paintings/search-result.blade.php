@@ -32,6 +32,7 @@
                         <a href="javascript:void();" class="btn border border-dark">10K - 50K</a>
                         <a href="javascript:void();" class="btn border border-dark">100K - 200K</a>
                         <a href="javascript:void();" class="btn border border-dark">500K - 1M</a>
+                        {{-- <a href="{{ route('asdf', $start_range, $end_range) }}" class="btn border border-dark">500K - 1M</a> --}}
                     </div>
                 </div>
 

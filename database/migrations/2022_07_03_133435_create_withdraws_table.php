@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('seller_id');
             $table->integer('method_id');
+            $table->integer('account_number');
             $table->decimal('amount', 10, 2);
             $table->string('note');
             $table->integer('status')->default(0);

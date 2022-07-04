@@ -51,7 +51,7 @@
 
     <div class="footer-nav">
         <div class="container d-flex justify-content-between">
-            <div class="">© 2022 Astratta | All Rights Reserved.</div>
+            <div class="">© {{ date('Y') }} Astratta | All Rights Reserved.</div>
             <div class="">
                 <a href="" class="">Contract</a>
                 <a href="" class="">Privacy Policy</a>

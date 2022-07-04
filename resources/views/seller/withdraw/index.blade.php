@@ -18,20 +18,24 @@
                                 <thead class="mb30-i">
                                     <tr>
                                         <th class="align-middle active">Amount</th>
+                                        <th class="align-middle active text-center">Method</th>
                                         <th class="align-middle active text-center">Status</th>
-                                        <th class="align-middle active text-center">Trnx ID</th>
+                                        <th class="align-middle active text-center">Date</th>
                                         <th class="align-middle active text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($withdraws as $withdraw)
                                         <tr class="data-row">
-                                            <td class="align-middle">{{ $withdraw->amount }}</td>
+                                            <td class="align-middle">{{ '$' . str_replace('.00', '', $withdraw->amount) }}</td>
+                                            <td class="align-middle text-center">{{ $withdraw->withdrawMethod->name ?? '--' }}</td>
                                             <td class="align-middle text-center">
                                                 {{ ($withdraw->status == 0 ? 'Processing' : '') . ($withdraw->status == 1 ? 'Processing' : '') . ($withdraw->status == 2 ? 'Complete' : '') . ($withdraw->status == 3 ? 'Rejected' : '') }}
                                             </td>
-                                            <td class="align-middle text-center">{{ $withdraw->trnx_id }}</td>
                                             <td class="align-middle text-center">{{ $withdraw->created_at->format('M:d:Y') }}</td>
+                                            <td class="align-middle text-center">
+                                                <a href="javascript:void();" class="text-success"><i class="fas fa-check"></i></a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -10,4 +10,9 @@ class WithdrawMethod extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function withdraw()
+    {
+        return $this->hasMany(Withdraw::class);
+    }
 }

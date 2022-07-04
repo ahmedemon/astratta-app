@@ -40,11 +40,15 @@
                                         </span>
                                     @enderror
                                 </div>
-                                @foreach ($methods as $method)
-                                    <div class="mb20 {{ $loop->iteration == 1 ? '' : 'd-none' }}" id="{{ $method->id }}">
-                                        <input type="number" name="{{ $method->name }}" class="form-control" placeholder="Enter {{ $method->name }} number">
-                                    </div>
-                                @endforeach
+                                <div class="mb20">
+                                    <label for="amount"> Account Number </label>
+                                    <input type="number" name="account_number" class="form-control" placeholder="Enter account number">
+                                    @error('account_number')
+                                        <span class="invalid-feedback" role="alert">
+                                            <small>{{ $message }}</small>
+                                        </span>
+                                    @enderror
+                                </div>
                                 <div class="mb20">
                                     <label for="amount"> Withdrawal Amount </label>
                                     <div class="input-group">

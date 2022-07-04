@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\BillingDetail;
+use App\Models\Coupon;
 use App\Models\CurrentBalance;
 use App\Models\MyCart;
 use App\Models\Order;
@@ -44,16 +45,38 @@ class CheckoutController extends Controller
     }
     public function placeOrder(Request $request)
     {
+        $coupon_code = Crypt::decrypt($request->coupon_code) ?? 0;
+        if ($coupon_code != 0) {
+            $coupon = Coupon::where('is_active', 1)->where('code', $coupon_code)->first();
+            $percentage = $coupon->percentage;
+        } else {
+            $percentage = 0;
+        }
         if (isset($request->items) && count($request->items) > 0) {
             $order_track_id = mt_rand(100000, 999999);
             foreach ($request->items as $key => $value) {
                 $id = $value['product_id'];
-                $my_cart = MyCart::where('product_id', $id)->first();
-                $my_cart->delete();
+                if ($value['cart_item_id'] != null) {
+                    if (Auth::guard('web')->check()) {
+                        $my_cart = MyCart::where('product_id', $id)->where('buyer_id', Auth::user()->id)->first();
+                        $my_cart->delete();
+                    } else {
+                        $my_cart = MyCart::where('product_id', $id)->where('guest_id', Auth::guest())->first();
+                        $my_cart->delete();
+                    }
+                }
 
                 $product = Product::find($id);
                 $product->is_purchased = 1;
                 $product->save();
+
+                $total_cost = Crypt::decrypt($request->total_cost);
+                if ($coupon_code != 0) {
+                    $sub_amount = ($percentage / 100) * $total_cost;
+                    $amount = $total_cost - $sub_amount;
+                } else {
+                    $amount = Crypt::decrypt($request->total_cost);
+                }
 
                 $order = Order::create([
                     'user_id' => Auth::user()->id ?? Auth::guest(),
@@ -61,7 +84,8 @@ class CheckoutController extends Controller
                     'product_id' => $value['product_id'],
                     'order_track_id' => $order_track_id,
                     'order_date' => date(now()),
-                    'total_cost' => Crypt::decrypt($request->total_cost),
+                    'total_cost' => $amount,
+                    'coupon_code' => $coupon_code,
                     'method_id' => 1,
                 ]);
 

@@ -16,15 +16,14 @@ class BalanceHelper
         $totalDebit = $balance->sum('debit_amount'); // total amount of withdraw
 
         // if (CurrentBalance::class == $balanceModel) { // buyer request debited amount
-        //     $order = Order::with('product')->where('seller_id', $seller_id)->whereIn('status', [0, 1, 2])->get();
-        //     $total_order_amount = $order->sum('total_cost');
-        //     return $totalCredit -= $total_order_amount;
+        //     $order = Order::with('product')->where('seller_id', $seller_id)->sum('total_cost');
+        //     return $totalCredit -= $totalDebit;
         // }
         return $totalCredit -= $totalDebit;
     }
     public static function getTotalCurrentOrderQuantity($seller_id) //processing
     {
-        return Order::where('seller_id', $seller_id)->where('status', 0)->count();
+        return Order::where('seller_id', $seller_id)->whereIn('status', [0, 1])->count();
     }
     public static function getTotalFinishedOrderQuantity($seller_id) //completed
     {
@@ -34,17 +33,23 @@ class BalanceHelper
     {
         return Order::where('seller_id', $seller_id)->where('status', 0)->get();
     }
-    public static function getTotalFinishedOrderData($seller_id) //completed
+    public static function getTotalFinishedOrderData($seller_id) //processing
     {
         return Order::where('seller_id', $seller_id)->where('status', 2)->get();
     }
 
     public static function getCurrentBalance($seller_id)
     {
-        return (float) self::getBalance(CurrentBalance::class, $seller_id);
+        //how to get data after waiting 20 days
+        $order = Order::where('seller_id', $seller_id)->where('status', 2);
+        $current_blance = CurrentBalance::where('seller_id', $seller_id);
+
+        $credit_amount = $order->sum('total_cost');
+        $debit_amount = $current_blance->sum('debit_amount');
+        return $credit_amount -= $debit_amount;
     }
     public static function getBalanceByMonth($seller_id) //completed
     {
-        return CurrentBalance::where('seller_id', $seller_id)->whereMonth('created_at', Carbon::now()->month)->sum('debit_amount');
+        return Order::where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('order_date');
             $table->decimal('total_cost', 10, 2);
             $table->integer('method_id');
+            $table->string('coupon_code')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

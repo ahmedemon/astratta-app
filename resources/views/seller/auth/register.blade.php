@@ -14,7 +14,7 @@
                                     <small class="text-danger">{{ $error }}</small>
                                 @endforeach
                             @endif
-                            <form action="{{ route('seller.join') }}" method="POST">
+                            <form action="{{ route('seller.join') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="inputGroup mb30">
                                     <label for="username">Username</label>
