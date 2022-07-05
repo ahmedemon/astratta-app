@@ -13,19 +13,17 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">{{ $pageTitle }}</h6>
-                <a href="#addNew" class="py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="addNew">
-                    <h6 class="m-0 font-weight-bold text-primary">Add New</h6>
-                </a>
             </div>
             <div class="card-body">
-                <div class="collapse" id="addNew">
+                <div class="collapse show" id="addNew">
                     <div class="row justify-content-center">
                         <div class="col-md-4">
-                            <form action="{{ route('admin.category.store') }}" method="POST">
+                            <form action="{{ route('admin.category.update', $category->id) }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="input-group">
-                                    <input type="text" name="name" class="form-control">
-                                    <button class="btn btn-success rounded-0">Add</button>
+                                    <input type="text" name="name" value="{{ old('name', $category->name) }}" class="form-control" autofocus>
+                                    <button class="btn btn-success rounded-0">Update</button>
                                 </div>
                             </form>
                         </div>

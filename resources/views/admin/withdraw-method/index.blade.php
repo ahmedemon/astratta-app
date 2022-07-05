@@ -21,7 +21,7 @@
                 <div class="collapse" id="addNew">
                     <div class="row justify-content-center">
                         <div class="col-md-4">
-                            <form action="{{ route('admin.category.store') }}" method="POST">
+                            <form action="{{ route('admin.method.store') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" name="name" class="form-control">

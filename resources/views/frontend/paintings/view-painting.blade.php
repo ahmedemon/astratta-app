@@ -7,7 +7,7 @@
                 <div class="row align-items-center justify-content-lg-between justify-content-center hero-section">
                     <div class="product-details px-0 mb-3 mb-lg-0 col-md-12 col-lg-6 col-xl-6 col-xxl-6 col-12">
                         <div class="d-flex align-items-center title">
-                            <p class="my-0">{{ $painting->category }}</p>
+                            <p class="my-0">{{ $painting->category->name ?? 'Not declared!' }}</p>
                             <img class="h-100" src="{{ asset('frontend/images/line1.png') }}" alt="" />
                         </div>
                         <h1>{{ $painting->product_name }}</h1>

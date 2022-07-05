@@ -83,8 +83,8 @@ class SellerController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="' . route('admin.seller.reject', $data->id) . '" class="edit btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Reject</a>
                         <a href="' . route('admin.seller.approve', $data->id) . '" class="edit btn btn-success btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Approve</a>
+                        <a href="' . route('admin.seller.reject', $data->id) . '" class="edit btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Reject</a>
                         <a href="' . route('admin.seller.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Delete</a>
                     ';
                     return $actionBtn;

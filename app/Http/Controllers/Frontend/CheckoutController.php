@@ -45,8 +45,8 @@ class CheckoutController extends Controller
     }
     public function placeOrder(Request $request)
     {
-        $coupon_code = Crypt::decrypt($request->coupon_code) ?? 0;
-        if ($coupon_code != 0) {
+        $coupon_code = Crypt::decrypt($request->coupon_code) ?? null;
+        if ($coupon_code != null) {
             $coupon = Coupon::where('is_active', 1)->where('code', $coupon_code)->first();
             $percentage = $coupon->percentage;
         } else {

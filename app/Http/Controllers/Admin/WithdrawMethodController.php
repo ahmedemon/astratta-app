@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\WithdrawMethod;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class CategoryController extends Controller
+class WithdrawMethodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = Category::latest()->get();
+            $data = WithdrawMethod::latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('status', function ($data) {
@@ -30,19 +30,19 @@ class CategoryController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     if ($data->status == 0) {
-                        $activation = '<a href="' . route('admin.category.active', $data->id) . '" class="delete btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this category?')" . '">Active</a>';
+                        $activation = '<a href="' . route('admin.method.active', $data->id) . '" class="delete btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this method?')" . '">Active</a>';
                     } else {
-                        $activation = '<a href="' . route('admin.category.deactive', $data->id) . '" class="delete btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this category?')" . '">Deactive</a>';
+                        $activation = '<a href="' . route('admin.method.deactive', $data->id) . '" class="delete btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this method?')" . '">Deactive</a>';
                     }
-                    $edit = '<a href="' . route('admin.category.edit', $data->id) . '" class="delete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this category?')" . '">Edit</a>';
-                    $delete = '<a href="' . route('admin.category.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                    $edit = '<a href="' . route('admin.method.edit', $data->id) . '" class="delete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this method?')" . '">Edit</a>';
+                    $delete = '<a href="' . route('admin.method.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this method?')" . '">Delete</a>';
                     return $activation . ' ' . $edit . ' ' . $delete;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }
-        $pageTitle = "Categories";
-        return view('admin.category.index', compact('pageTitle'));
+        $pageTitle = "Withdraw Methods";
+        return view('admin.withdraw-method.index', compact('pageTitle'));
     }
 
 
@@ -57,9 +57,9 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
         ]);
-        $category = new Category($request->all());
-        $category->save();
-        alert('Category Added!', '', 'success');
+        $method = new WithdrawMethod($request->all());
+        $method->save();
+        alert('Method Added!', '', 'success');
         return redirect()->back();
     }
     /**
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         if (request()->ajax()) {
-            $data = Category::latest()->get();
+            $data = WithdrawMethod::latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('status', function ($data) {
@@ -89,21 +89,21 @@ class CategoryController extends Controller
                         $activation = '';
                     } else {
                         if ($data->status == 0) {
-                            $activation = '<a href="' . route('admin.category.active', $data->id) . '" class="delete btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this category?')" . '">Active</a>';
+                            $activation = '<a href="' . route('admin.method.active', $data->id) . '" class="delete btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this method?')" . '">Active</a>';
                         } else {
-                            $activation = '<a href="' . route('admin.category.deactive', $data->id) . '" class="delete btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this category?')" . '">Deactive</a>';
+                            $activation = '<a href="' . route('admin.method.deactive', $data->id) . '" class="delete btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this method?')" . '">Deactive</a>';
                         }
-                        $edit = '<a href="' . route('admin.category.edit', $data->id) . '" class="delete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this category?')" . '">Edit</a>';
-                        $delete = '<a href="' . route('admin.category.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                        $edit = '<a href="' . route('admin.method.edit', $data->id) . '" class="delete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this method?')" . '">Edit</a>';
+                        $delete = '<a href="' . route('admin.method.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this method?')" . '">Delete</a>';
                     }
                     return $activation . ' ' . $edit . ' ' . $delete;
                 })
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }
-        $category = Category::find($id);
-        $pageTitle = "Edit " . $category->name;
-        return view('admin.category.edit', compact('category', 'pageTitle'));
+        $method = WithdrawMethod::find($id);
+        $pageTitle = "Edit " . $method->name;
+        return view('admin.withdraw-method.edit', compact('method', 'pageTitle'));
     }
 
     /**
@@ -118,11 +118,11 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
         ]);
-        $category = Category::find($id);
-        $category->name = $request->name;
-        $category->save();
-        alert('Category Updated!', '', 'success');
-        return redirect()->route('admin.category.index');
+        $method = WithdrawMethod::find($id);
+        $method->name = $request->name;
+        $method->save();
+        alert('Method Updated!', '', 'success');
+        return redirect()->route('admin.method.index');
     }
 
     /**
@@ -133,25 +133,25 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        alert('Category Deleted!', '', 'warning');
+        $method = WithdrawMethod::find($id);
+        $method->delete();
+        alert('Method Deleted!', '', 'warning');
         return redirect()->back();
     }
     public function active($id)
     {
-        $category = Category::find($id);
-        $category->status = 1;
-        $category->save();
-        alert('Category activated!', '', 'success');
+        $method = WithdrawMethod::find($id);
+        $method->status = 1;
+        $method->save();
+        alert('Method activated!', '', 'success');
         return redirect()->back();
     }
     public function deactive($id)
     {
-        $category = Category::find($id);
-        $category->status = 0;
-        $category->save();
-        alert('Category deactivated!', '', 'warning');
+        $method = WithdrawMethod::find($id);
+        $method->status = 0;
+        $method->save();
+        alert('Method deactivated!', '', 'warning');
         return redirect()->back();
     }
 }

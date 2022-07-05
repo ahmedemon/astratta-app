@@ -3,6 +3,9 @@
     <div class="vendor-info d-grid justify-content-center align-items-center mb45">
         <img class="vendor-profile-image mx-auto mb20 rounded-circle" src="{{ Auth::guard('seller')->user()->image ? asset('storage/seller/' . Auth::guard('seller')->user()->image) : asset('vendor/images/artist/avatar.svg') }}" alt="" />
         <h1 class="my-0 mb5-i">{{ Auth::guard('seller')->user()->name ?? Auth::guard('seller')->user()->username }}</h1>
+        @if (Auth::guard('seller')->user()->is_approved == 0)
+            <small class="text-danger">(Account Inactivate)</small>
+        @endif
         <p class="my-0">
             @if (Auth::guard('seller')->user()->designation)
                 {{ Auth::guard('seller')->user()->designation }}
@@ -14,22 +17,22 @@
     <div class="menu-group">
         <ul class="list-group">
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.dashboard.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/dashboard*') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.dashboard.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/dashboard*') ? 'active' : '' }} deactivated">Dashboard</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.profile.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/profile*') ? 'active' : '' }}">Profile</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.profile.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/profile*') ? 'active' : '' }} deactivated">Profile</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.product.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/products*') ? 'active' : '' }}">Products</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.product.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/products*') ? 'active' : '' }} deactivated">Products</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.orders.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders*') ? 'active' : '' }}">Orders</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.orders.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/orders*') ? 'active' : '' }} deactivated">Orders</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.withdraw.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }}">Withdraw</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.withdraw.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }} deactivated">Withdraw</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ route('seller.setting.index') }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings*') ? 'active' : '' }}">Settings</a>
+                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.setting.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings*') ? 'active' : '' }} deactivated">Settings</a>
             </li>
             <li class="list-group-item p-0 border-0" style="top: 190px">
                 <a href="{{ route('seller.logout') }}" class="btn btn-light pl35 w-100 rounded-0 border-0" onclick="event.preventDefault(); document.getElementById('vendor-logout-form').submit();">Logout</a>

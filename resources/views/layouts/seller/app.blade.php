@@ -82,14 +82,12 @@
 <!-- cdn scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-{{-- <script src="{{ asset('vendor/js/owl.carousel.min.js') }}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"></script>
 
 {{-- select2 & images loader --}}
 @if (Request::is('seller/products/*'))
     <script src="{{ asset('vendor/js/select2.min.js') }}"></script>
-    {{-- <script src="{{ asset('vendor/js/jquery.imagesloader-1.0.1.js') }}"></script> --}}
 @endif
 {{-- select2 & images loader --}}
 
@@ -127,6 +125,14 @@
     });
 </script>
 
+@if (Auth::guard('seller')->user()->is_approved == 0)
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('.deactivated').click(function() {
+            swal("Notice!", "Your account is not approved yet! Please be patient!", "info");
+        });
+    </script>
+@endif
 {{-- toastr --}}
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 {!! Toastr::message() !!}

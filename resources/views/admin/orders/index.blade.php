@@ -4,39 +4,29 @@
     <style>
         td {
             vertical-align: middle !important;
-            text-align: center;
         }
     </style>
 @endpush
 @section('content')
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+            <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">{{ $pageTitle }}</h6>
-                <a href="#addNew" class="py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="addNew">
-                    <h6 class="m-0 font-weight-bold text-primary">Add New</h6>
-                </a>
             </div>
             <div class="card-body">
-                <div class="collapse" id="addNew">
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
-                            <form action="{{ route('admin.category.store') }}" method="POST">
-                                @csrf
-                                <div class="input-group">
-                                    <input type="text" name="name" class="form-control">
-                                    <button class="btn btn-success rounded-0">Add</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>SL No</th>
-                                <th>Name</th>
+                                <th>Seller</th>
+                                <th>Buyer</th>
+                                <th>Product</th>
+                                <th>Track ID</th>
+                                <th>Total Cost</th>
+                                <th>Method</th>
+                                <th>Coupon</th>
+                                <th>Order Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -63,10 +53,38 @@
                         searchable: false,
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'seller',
+                        name: 'seller'
                     },
                     {
+                        data: 'buyer',
+                        name: 'buyer'
+                    },
+                    {
+                        data: 'product_main_image',
+                        name: 'product_main_image'
+                    },
+                    {
+                        data: 'order_track_id',
+                        name: 'order_track_id'
+                    },
+                    {
+                        data: 'total_cost',
+                        name: 'total_cost'
+                    },
+                    {
+                        data: 'method_id',
+                        name: 'method_id'
+                    },
+                    {
+                        data: 'coupon_code',
+                        name: 'coupon_code'
+                    },
+                    {
+                        data: 'order_date',
+                        name: 'order_date'
+                    },
+                    d {
                         data: 'status',
                         name: 'status'
                     },

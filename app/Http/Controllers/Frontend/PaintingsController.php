@@ -25,7 +25,7 @@ class PaintingsController extends Controller
             alert('Stock Out!', 'That product has been sold!', 'warning');
             return redirect()->route('painting.index');
         }
-        $relatedProducts = Product::where('status', 1)->where('category', $painting->category)->take(3)->get();
+        $relatedProducts = Product::where('status', 1)->where('category_id', $painting->category_id)->take(3)->get();
         $pageTitle = $painting->product_name;
         return view('frontend.paintings.view-painting', compact('pageTitle', 'painting', 'relatedProducts'));
     }

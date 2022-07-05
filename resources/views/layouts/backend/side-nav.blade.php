@@ -50,6 +50,24 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Categories</span>
         </a>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.method.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Withdraw Methods</span>
+        </a>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link {{ Request::is('admin/orders*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Orders</span>
+        </a>
+        <div id="collapseThree" class="collapse {{ Request::is('admin/orders*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.order.request') }}">Order Request</a>
+                <a class="collapse-item" href="{{ route('admin.order.index') }}">Approved Orders</a>
+                <a class="collapse-item" href="{{ route('admin.order.rejected') }}">Rejected Orders</a>
+                <a class="collapse-item" href="{{ route('admin.order.soldOut') }}">Sold Out Orders</a>
+            </div>
+        </div>
     </li>
 
 
