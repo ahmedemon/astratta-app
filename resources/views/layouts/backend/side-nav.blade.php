@@ -21,27 +21,35 @@
             <span class="text-white">Dashboard</span>
         </a>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link collapsed" href="javascript:void();" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="nav-link {{ Request::is('admin/sellers*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             <i class="fas fa-fw fa-cog"></i>
             <span>Sellers</span>
         </a>
-        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseOne" class="collapse {{ Request::is('admin/sellers*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.seller.index') }}">Seller</a>
-                <a class="collapse-item" href="{{ route('admin.seller.request') }}">Request</a>
+                <a class="collapse-item" href="{{ route('admin.seller.index') }}">Sellers</a>
+                <a class="collapse-item" href="{{ route('admin.seller.request') }}">Seller Request</a>
+                <a class="collapse-item" href="{{ route('admin.seller.rejected') }}">Rejected Sellers</a>
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link collapsed" href="javascript:void();" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link {{ Request::is('admin/products*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
             <span>Products</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse {{ Request::is('admin/products*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Products</a>
-                <a class="collapse-item" href="cards.html">Request</a>
+                <a class="collapse-item" href="{{ route('admin.product.request') }}">Product Request</a>
+                <a class="collapse-item" href="{{ route('admin.product.index') }}">Approved Products</a>
+                <a class="collapse-item" href="{{ route('admin.product.rejected') }}">Rejected Products</a>
+                <a class="collapse-item" href="{{ route('admin.product.soldOut') }}">Sold Out Products</a>
             </div>
         </div>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.category.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Categories</span>
+        </a>
     </li>
 
 

@@ -19,12 +19,16 @@
                         <thead>
                             <tr>
                                 <th>SL No</th>
-                                <th>Image</th>
+                                <th>Seller</th>
+                                <th>Product</th>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Account Number</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Tags</th>
+                                <th>About Paint</th>
+                                <th>Details 1</th>
+                                <th>Details 2</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,28 +54,44 @@
                         searchable: false,
                     },
                     {
-                        data: 'profile_image',
-                        name: 'profile_image'
+                        data: 'seller',
+                        name: 'seller'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'product_main_image',
+                        name: 'product_main_image'
                     },
                     {
-                        data: 'username',
-                        name: 'username'
+                        data: 'product_name',
+                        name: 'product_name'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'product_price',
+                        name: 'product_price'
                     },
                     {
-                        data: 'phone',
-                        name: 'phone'
+                        data: 'category',
+                        name: 'category'
                     },
                     {
-                        data: 'account_number',
-                        name: 'account_number'
+                        data: 'tags',
+                        name: 'tags'
+                    },
+                    {
+                        data: 'about_this_paint',
+                        name: 'about_this_paint'
+                    },
+                    {
+                        data: 'details_1',
+                        name: 'details_1'
+                    },
+                    {
+                        data: 'details_2',
+                        name: 'details_2'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'action',

@@ -9,11 +9,6 @@
                     <h3 class="my-0 d-flex align-items-center justify-content-between mb35-i">
                         Add New Product <a href="{{ route('seller.product.index') }}" class="text-decoration-none text-dark"><i class="fas fa-times"></i></a>
                     </h3>
-                    @if (count($errors) > 0)
-                        @foreach ($errors->all() as $error)
-                            <small class="text-danger">{{ $error }}</small>
-                        @endforeach
-                    @endif
                     <form method="POST" action="{{ route('seller.product.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb35">
@@ -66,7 +61,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="text" name="product_name" value="{{ old('product_name') }}" placeholder="Product Name" class="form-control @error('product_name') in-valid @enderror" />
+                            <input type="text" name="product_name" value="{{ old('product_name') }}" placeholder="Product Name" class="form-control @error('product_name') border-danger @enderror" />
                             @error('product_name')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -75,7 +70,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="number" name="product_price" value="{{ old('product_price') }}" placeholder="Price In Doller" class="form-control @error('product_price') in-valid @enderror" />
+                            <input type="number" name="product_price" value="{{ old('product_price') }}" placeholder="Price In Doller" class="form-control @error('product_price') border-danger @enderror" />
                             @error('product_price')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -84,12 +79,12 @@
                         </div>
 
                         <div class="mb35">
-                            <select name="category" value="{{ old('category') }}" id="" class="form-control">
+                            <select name="category_id" value="{{ old('category_id') }}" id="" class="form-control">
                                 @foreach ($categories as $category)
                                     <option {{ $loop->first ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            @error('category')
+                            @error('category_id')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
                                 </span>
@@ -97,7 +92,7 @@
                         </div>
 
                         <div class="mb35">
-                            <select name="tags[]" value="{{ old('tags') }}" id="" class="form-control tags" aria-placeholder="tags">
+                            <select name="tags[]" id="" class="form-control tags @error('tags') border-danger @enderror" aria-placeholder="tags">
                                 @foreach ($tags as $tag)
                                     <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                 @endforeach
@@ -110,7 +105,7 @@
                         </div>
 
                         <div class="mb35">
-                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') in-valid @enderror"></textarea>
+                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') border-danger @enderror"></textarea>
                             @error('about_this_paint')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -120,7 +115,7 @@
 
                         <div class="row">
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') in-valid @enderror"></textarea>
+                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') border-danger @enderror"></textarea>
                                 @error('details_1')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -128,7 +123,7 @@
                                 @enderror
                             </div>
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') in-valid @enderror"></textarea>
+                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') border-danger @enderror"></textarea>
                                 @error('details_2')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -255,5 +250,12 @@
                 readURL(this);
             });
         }
+    </script>
+    <script>
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
     </script>
 @endpush

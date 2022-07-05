@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/css/vendor/chart.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="{{ asset('vendor/css/select2.min.css') }}" />
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <!-- local link -->
 </head>
 
@@ -125,5 +126,10 @@
         });
     });
 </script>
+
+{{-- toastr --}}
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
+{{-- toastr --}}
 
 @stack('js')

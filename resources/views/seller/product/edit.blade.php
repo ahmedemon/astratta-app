@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" placeholder="Product Name" class="form-control @error('product_name') in-valid @enderror" />
+                            <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}" placeholder="Product Name" class="form-control @error('product_name') border-danger @enderror" />
                             @error('product_name')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="mb35">
-                            <input type="number" name="product_price" value="{{ old('product_price', intval($product->product_price)) }}" placeholder="Price In Doller" class="form-control @error('product_price') in-valid @enderror" />
+                            <input type="number" name="product_price" value="{{ old('product_price', intval($product->product_price)) }}" placeholder="Price In Doller" class="form-control @error('product_price') border-danger @enderror" />
                             @error('product_price')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="mb35">
-                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') in-valid @enderror">{{ old('about_this_paint', $product->about_this_paint) }}</textarea>
+                            <textarea type="text" name="about_this_paint" placeholder="About this paint" class="form-control @error('about_this_paint') border-danger @enderror">{{ old('about_this_paint', $product->about_this_paint) }}</textarea>
                             @error('about_this_paint')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -119,7 +119,7 @@
 
                         <div class="row">
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') in-valid @enderror">{{ old('details_1', $product->details_1) }}</textarea>
+                                <textarea type="text" name="details_1" placeholder="Details Column 1" class="form-control @error('details_1') border-danger @enderror">{{ old('details_1', $product->details_1) }}</textarea>
                                 @error('details_1')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -127,7 +127,7 @@
                                 @enderror
                             </div>
                             <div class="mb35 col-md-6 col-lg-6 col-xl-6 col-xxl-6 col-12">
-                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') in-valid @enderror">{{ old('details_2', $product->details_2) }}</textarea>
+                                <textarea type="text" name="details_2" placeholder="Details Column 2" class="form-control @error('details_2') border-danger @enderror">{{ old('details_2', $product->details_2) }}</textarea>
                                 @error('details_2')
                                     <span class="invalid-feedback" role="alert">
                                         <small>{{ $message }}</small>
@@ -256,5 +256,12 @@
                 readURL(this);
             });
         }
+    </script>
+    <script>
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
     </script>
 @endpush

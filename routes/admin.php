@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductRequestController;
 use App\Http\Controllers\Admin\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +18,30 @@ Route::middleware('admin')->group(function () {
     Route::group(['prefix' => 'sellers', 'as' => 'seller.'], function () {
         Route::get('/', [SellerController::class, 'index'])->name('index');
         Route::get('requests', [SellerController::class, 'sellerRequest'])->name('request');
+        Route::get('rejected', [SellerController::class, 'rejected'])->name('rejected');
         Route::get('approve/{id}', [SellerController::class, 'approve'])->name('approve');
+        Route::get('reject/{id}', [SellerController::class, 'reject'])->name('reject');
+        Route::get('recall/{id}', [SellerController::class, 'recall'])->name('recall');
+        Route::get('active/{id}', [SellerController::class, 'active'])->name('active');
+        Route::get('deactive/{id}', [SellerController::class, 'deactive'])->name('deactive');
+        Route::get('block/{id}', [SellerController::class, 'block'])->name('block');
+        Route::get('unblock/{id}', [SellerController::class, 'unblock'])->name('unblock');
+        Route::get('addtop/{id}', [SellerController::class, 'addtop'])->name('addtop');
+        Route::get('removetop/{id}', [SellerController::class, 'removetop'])->name('removetop');
         Route::get('delete/{id}', [SellerController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'products', 'as' => 'product.'], function () {
+        Route::get('/', [ProductRequestController::class, 'index'])->name('index');
+        Route::get('requests', [ProductRequestController::class, 'requested'])->name('request');
+        Route::get('rejected', [ProductRequestController::class, 'rejected'])->name('rejected');
+        Route::get('soldOut', [ProductRequestController::class, 'soldOut'])->name('soldOut');
+
+        Route::get('approve/{id}', [ProductRequestController::class, 'approve'])->name('approve');
+        Route::get('reject/{id}', [ProductRequestController::class, 'reject'])->name('reject');
+        Route::get('recall/{id}', [ProductRequestController::class, 'recall'])->name('recall');
+        Route::get('delete/{id}', [ProductRequestController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'categories', 'as' => 'category.'], function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
     });
 });

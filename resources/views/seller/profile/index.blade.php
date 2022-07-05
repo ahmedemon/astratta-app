@@ -27,7 +27,7 @@
                             <label for="name">
                                 <h3 class="my-0 mb15-i">Name</h3>
                             </label>
-                            <input type="text" name="name" class="form-control rounded-0" placeholder="Etel Fresko" value="{{ old('name', Auth::guard('seller')->user()->name) }}" />
+                            <input type="text" id="name" name="name" class="form-control rounded-0" placeholder="Etel Fresko" value="{{ old('name', Auth::guard('seller')->user()->name) }}" />
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <small>{{ $message }}</small>
@@ -141,5 +141,12 @@
                 };
             });
         });
+    </script>
+    <script>
+        @if (count($errors) > 0)
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
     </script>
 @endpush

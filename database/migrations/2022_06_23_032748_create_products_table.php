@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('main_image');
             $table->string('product_name');
             $table->decimal('product_price', 10, 2);
-            $table->integer('category');
+            $table->integer('category_id');
             $table->string('tags');
             $table->text('about_this_paint')->nullable();
             $table->text('details_1')->nullable();

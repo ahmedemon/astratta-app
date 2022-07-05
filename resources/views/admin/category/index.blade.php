@@ -4,27 +4,34 @@
     <style>
         td {
             vertical-align: middle !important;
+            text-align: center;
         }
     </style>
 @endpush
 @section('content')
-    <div class="container-fluid mt-5">
+    <div class="container mt-5">
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">{{ $pageTitle }}</h6>
+                <a href="#addNew" class="py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="addNew">
+                    <h6 class="m-0 font-weight-bold text-primary">Add New</h6>
+                </a>
             </div>
             <div class="card-body">
+                <div class="collapse" id="addNew">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form action=""></form>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>SL No</th>
-                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Account Number</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,28 +57,12 @@
                         searchable: false,
                     },
                     {
-                        data: 'profile_image',
-                        name: 'profile_image'
-                    },
-                    {
                         data: 'name',
                         name: 'name'
                     },
                     {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'phone',
-                        name: 'phone'
-                    },
-                    {
-                        data: 'account_number',
-                        name: 'account_number'
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'action',
