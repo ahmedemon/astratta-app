@@ -46,16 +46,6 @@
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link" href="{{ route('admin.category.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Categories</span>
-        </a>
-        <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link" href="{{ route('admin.method.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Withdraw Methods</span>
-        </a>
-        <hr class="sidebar-divider d-none d-md-block">
         <a class="nav-link {{ Request::is('admin/orders*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-fw fa-cog"></i>
             <span>Orders</span>
@@ -64,10 +54,38 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.order.request') }}">Order Request</a>
                 <a class="collapse-item" href="{{ route('admin.order.index') }}">Approved Orders</a>
+                <a class="collapse-item" href="{{ route('admin.order.completed') }}">Completed Orders</a>
                 <a class="collapse-item" href="{{ route('admin.order.rejected') }}">Rejected Orders</a>
-                <a class="collapse-item" href="{{ route('admin.order.soldOut') }}">Sold Out Orders</a>
             </div>
         </div>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link {{ Request::is('admin/withdraws*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Withdraws</span>
+        </a>
+        <div id="collapseFour" class="collapse {{ Request::is('admin/withdraws*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.withdraw.requested') }}">Withdraw Request</a>
+                <a class="collapse-item" href="{{ route('admin.withdraw.index') }}">Approved Withdraws</a>
+                <a class="collapse-item" href="{{ route('admin.withdraw.completed') }}">Completed Withdraws</a>
+                <a class="collapse-item" href="{{ route('admin.withdraw.rejected') }}">Rejected Withdraws</a>
+            </div>
+        </div>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.category.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Categories</span>
+        </a>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.coupon.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Coupons</span>
+        </a>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.method.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Withdraw Method</span>
+        </a>
     </li>
 
 

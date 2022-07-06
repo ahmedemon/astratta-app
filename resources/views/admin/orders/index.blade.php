@@ -4,6 +4,7 @@
     <style>
         td {
             vertical-align: middle !important;
+            text-align: center;
         }
     </style>
 @endpush
@@ -18,17 +19,17 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>SL No</th>
-                                <th>Seller</th>
-                                <th>Buyer</th>
-                                <th>Product</th>
-                                <th>Track ID</th>
-                                <th>Total Cost</th>
-                                <th>Method</th>
-                                <th>Coupon</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th class="text-center">SL No</th>
+                                <th class="text-center">Seller</th>
+                                <th class="text-center">Buyer</th>
+                                <th class="text-center">Product</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Track ID</th>
+                                <th class="text-center">Total Cost</th>
+                                <th class="text-center">Coupon</th>
+                                <th class="text-center">Order Date</th>
+                                <th class="text-center">Status</th>
+                                <th width="18%" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,16 +54,20 @@
                         searchable: false,
                     },
                     {
-                        data: 'seller',
-                        name: 'seller'
+                        data: 'seller_id',
+                        name: 'seller_id'
                     },
                     {
-                        data: 'buyer',
-                        name: 'buyer'
+                        data: 'user_id',
+                        name: 'user_id'
                     },
                     {
                         data: 'product_main_image',
                         name: 'product_main_image'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
                     },
                     {
                         data: 'order_track_id',
@@ -73,10 +78,6 @@
                         name: 'total_cost'
                     },
                     {
-                        data: 'method_id',
-                        name: 'method_id'
-                    },
-                    {
                         data: 'coupon_code',
                         name: 'coupon_code'
                     },
@@ -84,7 +85,7 @@
                         data: 'order_date',
                         name: 'order_date'
                     },
-                    d {
+                    {
                         data: 'status',
                         name: 'status'
                     },

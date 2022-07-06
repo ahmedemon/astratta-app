@@ -15,4 +15,9 @@ class Withdraw extends Model
     {
         return $this->belongsTo(WithdrawMethod::class, 'method_id');
     }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
 }

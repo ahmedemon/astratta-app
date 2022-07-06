@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderRequestController;
 use App\Http\Controllers\Admin\ProductRequestController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\WithdrawMethodController;
+use App\Http\Controllers\Admin\WithdrawRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', [AdminLoginController::class, 'viewLogin'])->name('log-in');
@@ -56,6 +58,17 @@ Route::middleware('admin')->group(function () {
         Route::get('deactive/{id}', [CategoryController::class, 'deactive'])->name('deactive');
     });
 
+    Route::group(['prefix' => 'coupons', 'as' => 'coupon.'], function () {
+        Route::get('/', [CouponController::class, 'index'])->name('index');
+        Route::post('store', [CouponController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [CouponController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [CouponController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [CouponController::class, 'destroy'])->name('destroy');
+
+        Route::get('active/{id}', [CouponController::class, 'active'])->name('active');
+        Route::get('deactive/{id}', [CouponController::class, 'deactive'])->name('deactive');
+    });
+
     Route::group(['prefix' => 'methods', 'as' => 'method.'], function () {
         Route::get('/', [WithdrawMethodController::class, 'index'])->name('index');
         Route::post('store', [WithdrawMethodController::class, 'store'])->name('store');
@@ -69,13 +82,27 @@ Route::middleware('admin')->group(function () {
 
     Route::group(['prefix' => 'orders', 'as' => 'order.'], function () {
         Route::get('/', [OrderRequestController::class, 'index'])->name('index');
-        Route::get('requests', [OrderRequestController::class, 'requested'])->name('request');
+        Route::get('requested', [OrderRequestController::class, 'requested'])->name('request');
         Route::get('rejected', [OrderRequestController::class, 'rejected'])->name('rejected');
-        Route::get('soldOut', [OrderRequestController::class, 'soldOut'])->name('soldOut');
+        Route::get('completed', [OrderRequestController::class, 'completed'])->name('completed');
 
         Route::get('approve/{id}', [OrderRequestController::class, 'approve'])->name('approve');
+        Route::get('complete/{id}', [OrderRequestController::class, 'complete'])->name('complete');
         Route::get('reject/{id}', [OrderRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [OrderRequestController::class, 'recall'])->name('recall');
         Route::get('delete/{id}', [OrderRequestController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'withdraws', 'as' => 'withdraw.'], function () {
+        Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
+        Route::get('requested', [WithdrawRequestController::class, 'requested'])->name('requested');
+        Route::get('rejected', [WithdrawRequestController::class, 'rejected'])->name('rejected');
+        Route::get('completed', [WithdrawRequestController::class, 'completed'])->name('completed');
+
+        Route::get('approve/{id}', [WithdrawRequestController::class, 'approve'])->name('approve');
+        Route::get('complete/{id}', [WithdrawRequestController::class, 'complete'])->name('complete');
+        Route::get('reject/{id}', [WithdrawRequestController::class, 'reject'])->name('reject');
+        Route::get('recall/{id}', [WithdrawRequestController::class, 'recall'])->name('recall');
+        Route::get('delete/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
     });
 });

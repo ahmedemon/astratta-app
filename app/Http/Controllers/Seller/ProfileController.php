@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $seller_profile->designation = $request->designation;
         $seller_profile->description = $request->description;
 
-        if ($request->has('image')) {
+        if ($request->image == !null) {
             $input = $request->all();
             $parts = explode(";base64,", $input['base64image']);
             $type_aux = explode("image/", $parts[0]);
