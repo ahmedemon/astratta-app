@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\MyCart;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +24,30 @@ class MyCartController extends Controller
         return view('frontend.my-cart.index', compact('pageTitle', 'cartItems'));
     }
 
-    public function coupon_check()
+    public function coupon_check(Request $request)
     {
-        if (request()->coupon_code) {
-            $coupon_code = request()->coupon_code;
-            $data = Coupon::where('code', $coupon_code)->where('is_active', 1)->count();
+        if ($request->get('code')) {
+            $code = $request->get('code');
+            $data = Coupon::where('code', $code)->where('is_active', 1)->count();
             if ($data > 0) {
-                return "not_unique";
+                if (Auth::guard('web')->check()) {
+                    $order = Order::where('coupon_code', $code)->where('user_id', Auth::user()->id)->count();
+                    if ($order < 1) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    $order = Order::where('coupon_code', $code)->where('user_id', Auth::guest())->count();
+                    if ($order < 1) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+                return 1;
             } else {
-                return "unique";
+                return 0;
             }
         }
     }

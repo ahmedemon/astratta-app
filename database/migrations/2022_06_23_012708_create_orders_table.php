@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('method_id');
             $table->string('coupon_code')->nullable();
             $table->integer('seller_approval')->default(0);
+            $table->integer('guest_id')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

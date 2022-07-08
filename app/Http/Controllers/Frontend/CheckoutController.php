@@ -22,10 +22,25 @@ class CheckoutController extends Controller
     public function checkout()
     {
         $items = request()->items;
-        $coupon_code = request()->coupon_code;
+        $code = request()->code;
         $total_cost = request()->total_cost;
         $pageTitle = "Checkout";
-        return view('frontend.checkout.checkout', compact('items', 'coupon_code', 'total_cost', 'pageTitle'));
+        if (request()->code != null) {
+            $coupon = Coupon::where('code', $code);
+            $couponData = $coupon->first();
+            $count = $coupon->count();
+            if ($count > 0) {
+                $percentage = ($couponData->percentage / 100) * $total_cost;
+                $total = $total_cost - $percentage;
+            } else {
+                $percentage = 0;
+                $total = $total_cost;
+            }
+        } else {
+            $percentage = 0;
+            $total = $total_cost;
+        }
+        return view('frontend.checkout.checkout', compact('items', 'code', 'total', 'percentage', 'total_cost', 'pageTitle'));
     }
     public function buyNow($id)
     {
@@ -72,19 +87,34 @@ class CheckoutController extends Controller
         $productId = $product->id;
         $cartItemId = null;
         $items = array('1' => array('product_id' => $productId, 'cart_item_id' => $cartItemId));
-        $coupon_code = null;
+        $code = null;
+        $total = $product->product_price;
         $total_cost = $product->product_price;
+        $percentage = 0;
         $pageTitle = "Checkout";
-        return view('frontend.checkout.checkout', compact('items', 'coupon_code', 'total_cost', 'pageTitle'));
+        return view('frontend.checkout.checkout', compact('items', 'code', 'total', 'total_cost', 'percentage', 'pageTitle'));
     }
     public function placeOrder(Request $request)
     {
-        $coupon_code = Crypt::decrypt($request->coupon_code) ?? 0;
-        if ($coupon_code != null) {
-            $coupon = Coupon::where('is_active', 1)->where('code', $coupon_code)->first();
-            $percentage = $coupon->percentage;
+        $authCheck = Auth::guard('web')->check();
+        if ($authCheck) {
+            $user = User::find(Auth::user()->id);
+            $user->name = Auth::user()->name ?? $request->first_name . ' ' . $request->last_name;
+            $user->phone = $request->phone;
+            $user->save();
         } else {
-            $percentage = 0;
+            $newuser = User::create([
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'username' => Str::slug($request->first_name . $request->last_name),
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'email_verified_at' => date(now()),
+                'password' => Hash::make(Str::random(10)),
+                'privacy_policy' => 1,
+                'is_active' => 1,
+                'is_approved' => 1,
+                'is_blocked' => 0,
+            ]);
         }
         if (isset($request->items) && count($request->items) > 0) {
             $order_track_id = mt_rand(100000, 999999);
@@ -104,23 +134,33 @@ class CheckoutController extends Controller
                 $product->is_purchased = 1;
                 $product->save();
 
+                // if ($code != null) {
+                //     $coupon = Coupon::where('is_active', 1)->where('code', $code)->first();
+                //     $percentage = $coupon->percentage;
+                // } else {
+                //     $percentage = 0;
+                // }
+
+                // if ($code != 0) {
+                //     $sub_amount = ($percentage / 100) * $total_cost;
+                //     $amount = $total_cost - $sub_amount;
+                // } else {
+                //     $amount = Crypt::decrypt($request->total_cost);
+                // }
+
+                $code = Crypt::decrypt($request->code) ?? null;
                 $total_cost = Crypt::decrypt($request->total_cost);
-                if ($coupon_code != 0) {
-                    $sub_amount = ($percentage / 100) * $total_cost;
-                    $amount = $total_cost - $sub_amount;
-                } else {
-                    $amount = Crypt::decrypt($request->total_cost);
-                }
 
                 $order = Order::create([
-                    'user_id' => Auth::user()->id ?? Auth::guest(),
+                    'user_id' => Auth::user()->id ?? $newuser->id,
                     'seller_id' => $product->seller_id,
                     'product_id' => $value['product_id'],
                     'order_track_id' => $order_track_id,
                     'order_date' => date(now()),
-                    'total_cost' => $amount,
-                    'coupon_code' => $coupon_code,
+                    'total_cost' => $total_cost,
+                    'coupon_code' => $code,
                     'method_id' => 1,
+                    'guest_id' => $newuser->id ?? null,
                 ]);
 
                 CurrentBalance::create([
@@ -145,26 +185,7 @@ class CheckoutController extends Controller
             'post_or_zip' => ['required', 'string'],
         ]);
 
-        $authCheck = Auth::guard('web')->check();
-        if ($authCheck) {
-            $user = User::find(Auth::user()->id);
-            $user->name = Auth::user()->name ?? $request->first_name . ' ' . $request->last_name;
-            $user->phone = $request->phone;
-            $user->save();
-        } else {
-            $user = User::create([
-                'name' => $request->first_name . ' ' . $request->last_name,
-                'username' => Str::slug($request->first_name . $request->last_name),
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'email_verified_at' => date(now()),
-                'password' => Hash::make(Str::random(10)),
-                'privacy_policy' => 1,
-                'is_active' => 1,
-                'is_approved' => 1,
-                'is_blocked' => 0,
-            ]);
-        }
+
         if ($authCheck) {
             $hasBilling = BillingDetail::where('user_id', Auth::user()->id)->count();
             if ($hasBilling == 1) {
@@ -181,7 +202,7 @@ class CheckoutController extends Controller
                 $billing->save();
             } else {
                 BillingDetail::create([
-                    'user_id'       => Auth::user()->id ?? $user->id,
+                    'user_id'       => Auth::user()->id ?? $newuser->id,
                     'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
                     'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
                     'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
@@ -195,7 +216,7 @@ class CheckoutController extends Controller
             }
         } else {
             BillingDetail::create([
-                'user_id'       => Auth::user()->id ?? $user->id,
+                'user_id'       => Auth::user()->id ?? $newuser->id,
                 'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
                 'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
                 'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
@@ -212,7 +233,7 @@ class CheckoutController extends Controller
             $hasShipping = ShippingDetail::where('user_id', Auth::user()->id)->count();
             if ($hasShipping == 1) {
                 $shipping  = ShippingDetail::find(Auth::user()->shipping->id);
-                $shipping->user_id       = Auth::user()->id ?? $user->id;
+                $shipping->user_id       = Auth::user()->id ?? $newuser->id;
                 $shipping->first_name    = $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name;
                 $shipping->last_name     = $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name;
                 $shipping->phone         = $authCheck ? $request->phone : $request->phone;
@@ -225,7 +246,7 @@ class CheckoutController extends Controller
                 $shipping->save();
             } else {
                 ShippingDetail::create([
-                    'user_id'       => Auth::user()->id ?? $user->id,
+                    'user_id'       => Auth::user()->id ?? $newuser->id,
                     'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
                     'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
                     'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
@@ -239,7 +260,7 @@ class CheckoutController extends Controller
             }
         } else {
             ShippingDetail::create([
-                'user_id'       => Auth::user()->id ?? $user->id,
+                'user_id'       => Auth::user()->id ?? $newuser->id,
                 'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
                 'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
                 'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
@@ -262,7 +283,7 @@ class CheckoutController extends Controller
         if (Auth::guard('web')->check()) {
             $id = Auth::user()->id;
         } else {
-            $id = Auth::guest();
+            $id = $order->guest_id;
         }
         $all_orders = Order::where('user_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
         if (Auth::guard('seller')->check()) {

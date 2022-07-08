@@ -73,7 +73,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="coupon-body bg-white d-flex">
-                                <input type="text" name="coupon_code" id="couponCodeInput" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
+                                <input type="text" name="code" id="code" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
                                 <button class="btn rounded-0 sign-in-button" type="button" id="discountButton">Apply Coupon</button>
                             </div>
                         </div>
@@ -91,21 +91,21 @@
                                 <h3 class="my-0">Cart Total</h3>
                                 <div class="d-flex subtotal justify-content-between mb25">
                                     <p class="my-0 subtotal-title">Subtotal</p>
-                                    <p class="my-0 subtotal-amount">$11,600</p>
+                                    <p class="my-0 subtotal-amount">{{ config('currency.usd') }}</p>
                                 </div>
                                 <div class="d-flex discounted justify-content-between mb25">
                                     <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">$0</p>
+                                    <p class="my-0 discounted-amount">{{ config('currency.usd') }}0</p>
                                 </div>
                                 <div class="d-flex shipping justify-content-between mb25">
                                     <p class="my-0 shipping-title">Shipping to <span class="shipping-location">Dhaka</span></p>
-                                    <p class="my-0 shipping-amount">$<span id="shippingCharge">20</span></p>
+                                    <p class="my-0 shipping-amount">{{ config('currency.usd') }}<span id="shippingCharge">20</span></p>
                                 </div>
                                 <hr class="mb25" />
                                 <div class="d-flex shipping justify-content-between mb25">
                                     <p class="my-0 shipping-title">Total</p>
                                     <p class="my-0 shipping-amount d-flex align-items-center justify-content-end">
-                                        $
+                                        {{ config('currency.usd') }}
                                         <input class="bg-transparent px-0 border-0 text-end form-control rounded-0 shadow-none w-50" id="total" type="number" name="total_cost" min="1" value="" readonly />
                                     </p>
                                 </div>
@@ -163,15 +163,29 @@
             document.getElementById("discountButton").addEventListener("click", addDiscount);
 
             function addDiscount() {
-                var code = $("#couponCodeInput").val();
+                var couponCode = document.getElementById('code');
+                var coupon = couponCode.value;
+
                 $.ajax({
                     url: "{{ route('my-cart.check.coupon') }}",
                     method: "GET",
                     data: {
-                        code: code
+                        code: coupon,
                     },
-                    success: function(data) {
-                        "unique" == data ? swal("Coupon Accepted!", "", "success") : swal("Coupon not accepted!", "", "error");
+                    success: function(response) {
+                        console.log(response);
+                        if (response == 1) {
+                            swal('Success!', 'Coupon Accepted!', 'success');
+                            document.getElementsByClassName("discounted-amount")[0].innerHTML = {{ config('currency.usd') }} + 10;
+                            $('#code').attr('readonly', '');
+                            $('#discountButton').attr('disabled', '');
+                        } else {
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Coupon not Accepted!'
+                            });
+                        }
                     }
                 });
             };
@@ -194,7 +208,7 @@
             // declare discounted amount
 
             document.getElementById("total").value = total; // .toFixed(2) 2 is for .00
-            document.getElementsByClassName("subtotal-amount")[0].innerHTML = ('$' + tots.toFixed(2));
+            document.getElementsByClassName("subtotal-amount")[0].innerHTML = ("{{ config('currency.usd') }}" + tots.toFixed(2));
 
         }
         $(function() {

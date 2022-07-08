@@ -153,8 +153,8 @@
                                     <p class="my-0">Price</p>
                                 </div>
                             </div>
-                            <input type="hidden" name="coupon_code" value="{{ Crypt::encrypt($coupon_code) }}">
-                            <input type="hidden" name="total_cost" value="{{ Crypt::encrypt($total_cost) }}">
+                            <input type="hidden" name="code" value="{{ Crypt::encrypt($code) }}">
+                            <input type="hidden" name="total_cost" value="{{ Crypt::encrypt($total) }}">
                             @foreach ($items as $key => $item)
                                 <input type="hidden" name="items[{{ $key }}][product_id]" value="{{ $item['product_id'] }}">
                                 <input type="hidden" name="items[{{ $key }}][cart_item_id]" value="{{ $item['cart_item_id'] }}">
@@ -168,15 +168,19 @@
                                         <a class="text-decoration-none">{{ $product->product_name }}</a>
                                     </div>
                                     <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0">${{ $product->product_price }}</p>
+                                        <p class="my-0">{{ config('currency.usd') . $product->product_price }}</p>
                                     </div>
                                 </div>
                             @endforeach
                             <div class="checkout-total bg-white">
                                 <hr class="mb10" style="opacity: 1 !important" />
                                 <div class="d-flex discounted justify-content-between mb10">
+                                    <p class="my-0 discounted-title">Sub Total</p>
+                                    <p class="my-0 discounted-amount">{{ config('currency.usd') . $total_cost }}</p>
+                                </div>
+                                <div class="d-flex discounted justify-content-between mb10">
                                     <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">${{ $coupon_code }}</p>
+                                    <p class="my-0 discounted-amount">{{ config('currency.usd') . $percentage }}</p>
                                 </div>
                                 {{-- <div class="d-flex shipping justify-content-between mb10">
                                     <p class="my-0 shipping-title">Shipping to Dhaka</p>
@@ -184,7 +188,7 @@
                                 </div> --}}
                                 <div class="d-flex shipping justify-content-between">
                                     <p class="my-0 total-title">Total</p>
-                                    <p class="my-0 total-amount d-flex align-items-center justify-content-end">{{ '$' . $total_cost }}</p>
+                                    <p class="my-0 total-amount d-flex align-items-center justify-content-end">{{ config('currency.usd') . $total }}</p>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +208,7 @@
                                         <p class="my-0">Pay</p>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <p class="my-0">{{ '$' . $total_cost }}</p>
+                                        <p class="my-0">{{ config('currency.usd') . $total }}</p>
                                     </div>
                                 </div>
                                 <div class="payment-body">

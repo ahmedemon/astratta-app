@@ -56,7 +56,7 @@
                                     <td>#{{ $order->order_track_id }}</td>
                                     <td>{{ $order->order_date }}</td>
                                     <td>{{ $order->user->email ?? '---' }}</td>
-                                    <td>${{ intval($order->total_cost) }}</td>
+                                    <td>{{ config('currency.usd') . $all_orders->sum('total_cost') }}</td>
                                     <td>{{ $order->method->name ?? '--' }}</td>
                                 </tr>
                             </tbody>
@@ -91,7 +91,7 @@
                                         <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-1">{{ $item->product->product_name ?? '---' }}</a>
                                     </div>
                                     <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <p class="my-0 color-1">${{ $item->product->product_price ?? '--' }}</p>
+                                        <p class="my-0 color-1">{{ config('currency.usd') . $item->total_cost ?? '--' }}</p>
                                     </div>
                                 </div>
                             @endforeach

@@ -35,6 +35,6 @@ class AppServiceProvider extends ServiceProvider
 
         $product = ProductImage::first();
         $top_artists = Seller::where('is_top', 1)->get();
-        config(['image.product' => $product, 'top_artists' => $top_artists]);
+        config(['image.product' => $product, 'top_artists' => $top_artists, 'currency.usd' => '$']);
     }
 }
