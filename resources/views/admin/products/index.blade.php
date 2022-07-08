@@ -18,18 +18,18 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>SL No</th>
-                                <th>Seller</th>
-                                <th>Product</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Tags</th>
-                                <th>About Paint</th>
-                                <th>Details 1</th>
-                                <th>Details 2</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th class="text-center">SL No</th>
+                                <th class="text-center">Seller</th>
+                                <th class="text-center">Product</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Tags</th>
+                                <th class="text-center">About Paint</th>
+                                <th class="text-center">Details 1</th>
+                                <th class="text-center">Details 2</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center" width="18%">Action</th>
                             </tr>
                         </thead>
                         <tbody>

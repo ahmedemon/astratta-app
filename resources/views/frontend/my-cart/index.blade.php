@@ -68,7 +68,6 @@
             <!-- product list -->
 
             <!-- apply coupon -->
-            <input type="hidden" id="couponCode" value="ahmedemon" data-price="{{ 100 }}">
             <div class="apply-coupon bg-light">
                 <div class="container px-lg-0 px-xl-0 px-xxl-0">
                     <div class="row justify-content-center">
@@ -163,21 +162,35 @@
 
             document.getElementById("discountButton").addEventListener("click", addDiscount);
 
-            // declare discounted amount
             function addDiscount() {
-                var compare = document.getElementById("couponCode").value; //real coupon code
-                var couponAmount = $("input#couponCode").data("price"); //real coupon code
-                var couponCodeInput = document.getElementById("couponCodeInput").value; //input coupon code
-                console.log(couponCodeInput);
-                if (compare === couponCodeInput) {
-                    document.getElementsByClassName("discounted-amount")[0].innerHTML = '$' + couponAmount;
-                    $('#couponCodeInput').attr('readonly', '');
-                    $('#discountButton').attr('disabled', '');
-                    swal("Coupon Accepted!", "", "success");
-                } else {
-                    console.log('not ok');
-                }
-            }
+                var code = $("#couponCodeInput").val();
+                $.ajax({
+                    url: "{{ route('my-cart.check.coupon') }}",
+                    method: "GET",
+                    data: {
+                        code: code
+                    },
+                    success: function(data) {
+                        "unique" == data ? swal("Coupon Accepted!", "", "success") : swal("Coupon not accepted!", "", "error");
+                    }
+                });
+            };
+
+            // declare discounted amount
+            // function addDiscount() {
+            //     var compare = document.getElementById("couponCode").value; //real coupon code
+            //     var couponAmount = $("input#couponCode").data("price"); //real coupon code
+            //     var couponCodeInput = document.getElementById("couponCodeInput").value; //input coupon code
+            //     console.log(couponCodeInput);
+            //     if (compare === couponCodeInput) {
+            //         document.getElementsByClassName("discounted-amount")[0].innerHTML = '$' + couponAmount;
+            //         $('#couponCodeInput').attr('readonly', '');
+            //         $('#discountButton').attr('disabled', '');
+            //         swal("Coupon Accepted!", "", "success");
+            //     } else {
+            //         console.log('not ok');
+            //     }
+            // }
             // declare discounted amount
 
             document.getElementById("total").value = total; // .toFixed(2) 2 is for .00

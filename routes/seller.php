@@ -36,6 +36,10 @@ Route::middleware('seller')->group(function () {
 
     Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('approve/{id}', [OrderController::class, 'approve'])->name('approve');
+        Route::get('reject/{id}', [OrderController::class, 'reject'])->name('reject');
+        Route::get('delete/{id}', [OrderController::class, 'destroy'])->name('destroy');
+        Route::get('make-delete/{id}', [OrderController::class, 'makeDelete'])->name('make.delete');
     });
     Route::group(['prefix' => 'withdraws', 'as' => 'withdraw.'], function () {
         Route::get('/', [WithdrawController::class, 'index'])->name('index');

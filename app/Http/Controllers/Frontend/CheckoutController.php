@@ -30,6 +30,40 @@ class CheckoutController extends Controller
     public function buyNow($id)
     {
         $product = Product::find($id);
+        $myCart = MyCart::where('product_id', $id);
+        $has_item = $myCart->first();
+        $count = $myCart->count();
+        if ($count > 0) {
+            if (!Auth::guard('web')->check()) {
+                if (Auth::guest() == $has_item->guest_id) {
+                    alert('Already Added!', 'This product is already added to your cart!', 'info');
+                    return redirect()->back();
+                }
+            }
+            if (Auth::guard('web')->check()) {
+                if (Auth::user()->id == $has_item->buyer_id) {
+                    alert('Already Added!', 'This product is already added to your cart!', 'info');
+                    return redirect()->back();
+                }
+            }
+            alert('Stock Out!', 'This product choose by another person!', 'warning');
+            return redirect()->back();
+        }
+        // check if product is already purchased
+        if ($product->is_purchased == 1) {
+            alert('Stock Out!', 'This product has been sold!', 'warning');
+            return redirect()->back();
+        }
+        // check if product is already purchased
+
+        // check this is not a buyer account
+        if (Auth::guard('seller')->check()) {
+            alert('Warning!', 'Please login from a buyer account!');
+            return redirect()->back();
+        }
+        // check this is not a buyer acacccount
+
+
         if ($product->is_purchased) {
             alert('Stock Out!', 'This product has veen sold!', 'warning');
             return redirect()->back();
@@ -45,7 +79,7 @@ class CheckoutController extends Controller
     }
     public function placeOrder(Request $request)
     {
-        $coupon_code = Crypt::decrypt($request->coupon_code) ?? null;
+        $coupon_code = Crypt::decrypt($request->coupon_code) ?? 0;
         if ($coupon_code != null) {
             $coupon = Coupon::where('is_active', 1)->where('code', $coupon_code)->first();
             $percentage = $coupon->percentage;
@@ -93,7 +127,7 @@ class CheckoutController extends Controller
                     'seller_id' => $product->seller_id,
                     'credit_amount' => $product->product_price,
                     'debit_amount' => null,
-                    'note' => 'Order amount from ' . Auth::user()->name . '',
+                    'note' => 'Order amount',
                     'trnx_id' => Str::random(16),
                 ]);
             }
@@ -225,8 +259,17 @@ class CheckoutController extends Controller
     {
         $sent_order = Crypt::decrypt($order);
         $order = Order::find($sent_order->id);
-        $all_orders = Order::where('user_id', Auth::user()->id)->where('order_track_id', $sent_order->order_track_id)->get();
-        $pageTitle = "Thank you!!";
+        if (Auth::guard('web')->check()) {
+            $id = Auth::user()->id;
+        } else {
+            $id = Auth::guest();
+        }
+        $all_orders = Order::where('user_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
+        if (Auth::guard('seller')->check()) {
+            $pageTitle = 'Order #' . $order->order_track_id;
+        } else {
+            $pageTitle = "Thank you!!";
+        }
         return view('frontend.checkout.thank-you', compact('pageTitle', 'all_orders', 'order'));
     }
 }

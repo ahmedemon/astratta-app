@@ -19,18 +19,18 @@ class ProductRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller', function ($data) {
-                    $name = $data->seller->name ?? '<span class="badge badge-warning rounded-0">Not Updated</span>';
-                    $username = '<small>(' . ($data->seller->username ?? '<span class="badge badge-warning rounded-0">Not Updated</span>') . ')</small>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning">Not Updated</span>';
+                    $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('product_main_image', function ($data) {
                     return $data->main_image ? '<img width="120" height="160" src="' . asset('storage/products/' . $data->main_image) . '">' : '<img width="120" height="160" src="' . asset('vendor/images/artist/avatar.svg') . '">';
                 })
                 ->editColumn('product_price', function ($data) {
-                    return '$' . $data->product_price ?? '<span class="badge badge-warning rounded-0">Not Updated Yet</span>';
+                    return '$' . $data->product_price ?? '<span class="btn btn-sm btn-warning">Not Updated Yet</span>';
                 })
                 ->editColumn('category', function ($data) {
-                    return '<span class="badge badge-info rounded-0">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
+                    return '<span class="btn btn-sm btn-info">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
                 })
                 ->editColumn('tags', function ($data) {
                     return str_replace(['[', ']', '"'], ['', ','], $data->tags);
@@ -46,17 +46,23 @@ class ProductRequestController extends Controller
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
-                        return '<span class="badge badge-warning rounded-0">Processing</span>';
+                        return '<span class="btn btn-sm btn-warning">Processing</span>';
                     }
                     if ($data->status == 1) {
-                        return '<span class="badge badge-success rounded-0">Approved</span>';
+                        return '<span class="btn btn-sm btn-success">Approved</span>';
                     }
                     if ($data->status == 2) {
-                        return '<span class="badge badge-danger rounded-0">Rejected</span>';
+                        return '<span class="btn btn-sm btn-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('action', function ($data) {
-                    return '<a href="' . route('admin.product.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                    if ($data->best_selling == 1) {
+                        $best = '<a href="' . route('admin.product.remove.best', $data->id) . '" class="removebest btn btn-warning btn-sm mb-1" onClick="' . "return confirm('Are you sure you want to remove this product from best selling?')" . '">Remove Best</a>';
+                    } else {
+                        $best = '<a href="' . route('admin.product.make.best', $data->id) . '" class="best btn btn-info btn-sm mb-1" onClick="' . "return confirm('Are you sure you want to add this product to best selling?')" . '">Make Best</a>';
+                    }
+                    $delete = '<a href="' . route('admin.product.destroy', $data->id) . '" class="delete btn btn-danger btn-sm mb-1" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                    return $best . ' ' . $delete;
                 })
                 ->rawColumns(['action', 'seller', 'category', 'product_main_image', 'tags', 'about_this_paint', 'details_1', 'details_2', 'status'])
                 ->make(true);
@@ -71,18 +77,18 @@ class ProductRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller', function ($data) {
-                    $name = $data->seller->name ?? '<span class="badge badge-warning rounded-0">Not Updated</span>';
-                    $username = '<small>(' . ($data->seller->username ?? '<span class="badge badge-warning rounded-0">Not Updated</span>') . ')</small>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning">Not Updated</span>';
+                    $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('product_main_image', function ($data) {
                     return $data->main_image ? '<img width="120" height="160" src="' . asset('storage/products/' . $data->main_image) . '">' : '<img width="120" height="160" src="' . asset('vendor/images/artist/avatar.svg') . '">';
                 })
                 ->editColumn('product_price', function ($data) {
-                    return '$' . $data->product_price ?? '<span class="badge badge-warning rounded-0">Not Updated Yet</span>';
+                    return '$' . $data->product_price ?? '<span class="btn btn-sm btn-warning">Not Updated Yet</span>';
                 })
                 ->editColumn('category', function ($data) {
-                    return '<span class="badge badge-info rounded-0">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
+                    return '<span class="btn btn-sm btn-info">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
                 })
                 ->editColumn('tags', function ($data) {
                     return str_replace(['[', ']', '"'], ['', ','], $data->tags);
@@ -98,13 +104,13 @@ class ProductRequestController extends Controller
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
-                        return '<span class="badge badge-warning rounded-0">Processing</span>';
+                        return '<span class="btn btn-sm btn-warning">Processing</span>';
                     }
                     if ($data->status == 1) {
-                        return '<span class="badge badge-success rounded-0">Approved</span>';
+                        return '<span class="btn btn-sm btn-success">Approved</span>';
                     }
                     if ($data->status == 2) {
-                        return '<span class="badge badge-danger rounded-0">Rejected</span>';
+                        return '<span class="btn btn-sm btn-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('action', function ($data) {
@@ -125,18 +131,18 @@ class ProductRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller', function ($data) {
-                    $name = $data->seller->name ?? '<span class="badge badge-warning rounded-0">Not Updated</span>';
-                    $username = '<small>(' . ($data->seller->username ?? '<span class="badge badge-warning rounded-0">Not Updated</span>') . ')</small>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning">Not Updated</span>';
+                    $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('product_main_image', function ($data) {
                     return $data->main_image ? '<img width="120" height="160" src="' . asset('storage/products/' . $data->main_image) . '">' : '<img width="120" height="160" src="' . asset('vendor/images/artist/avatar.svg') . '">';
                 })
                 ->editColumn('product_price', function ($data) {
-                    return '$' . $data->product_price ?? '<span class="badge badge-warning rounded-0">Not Updated Yet</span>';
+                    return '$' . $data->product_price ?? '<span class="btn btn-sm btn-warning">Not Updated Yet</span>';
                 })
                 ->editColumn('category', function ($data) {
-                    return '<span class="badge badge-info rounded-0">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
+                    return '<span class="btn btn-sm btn-info">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
                 })
                 ->editColumn('tags', function ($data) {
                     return str_replace(['[', ']', '"'], ['', ','], $data->tags);
@@ -152,13 +158,13 @@ class ProductRequestController extends Controller
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
-                        return '<span class="badge badge-warning rounded-0">Processing</span>';
+                        return '<span class="btn btn-sm btn-warning">Processing</span>';
                     }
                     if ($data->status == 1) {
-                        return '<span class="badge badge-success rounded-0">Approved</span>';
+                        return '<span class="btn btn-sm btn-success">Approved</span>';
                     }
                     if ($data->status == 2) {
-                        return '<span class="badge badge-danger rounded-0">Rejected</span>';
+                        return '<span class="btn btn-sm btn-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('action', function ($data) {
@@ -178,18 +184,18 @@ class ProductRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller', function ($data) {
-                    $name = $data->seller->name ?? '<span class="badge badge-warning rounded-0">Not Updated</span>';
-                    $username = '<small>(' . ($data->seller->username ?? '<span class="badge badge-warning rounded-0">Not Updated</span>') . ')</small>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning">Not Updated</span>';
+                    $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('product_main_image', function ($data) {
                     return $data->main_image ? '<img width="120" height="160" src="' . asset('storage/products/' . $data->main_image) . '">' : '<img width="120" height="160" src="' . asset('vendor/images/artist/avatar.svg') . '">';
                 })
                 ->editColumn('product_price', function ($data) {
-                    return '$' . $data->product_price ?? '<span class="badge badge-warning rounded-0">Not Updated Yet</span>';
+                    return '$' . $data->product_price ?? '<span class="btn btn-sm btn-warning">Not Updated Yet</span>';
                 })
                 ->editColumn('category', function ($data) {
-                    return '<span class="badge badge-info rounded-0">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
+                    return '<span class="btn btn-sm btn-info">' . $data->category->name ?? 'Not Updated Yet' . '</span>';
                 })
                 ->editColumn('tags', function ($data) {
                     return str_replace(['[', ']', '"'], ['', ','], $data->tags);
@@ -205,17 +211,18 @@ class ProductRequestController extends Controller
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
-                        return '<span class="badge badge-warning rounded-0">Processing</span>';
+                        return '<span class="btn btn-sm btn-warning">Processing</span>';
                     }
                     if ($data->status == 1) {
-                        return '<span class="badge badge-success rounded-0">Approved</span>';
+                        return '<span class="btn btn-sm btn-success">Approved</span>';
                     }
                     if ($data->status == 2) {
-                        return '<span class="badge badge-danger rounded-0">Rejected</span>';
+                        return '<span class="btn btn-sm btn-danger">Rejected</span>';
                     }
                 })
                 ->addColumn('action', function ($data) {
-                    return '<a href="' . route('admin.product.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                    $delete = '<a href="' . route('admin.product.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this product?')" . '">Delete</a>';
+                    return $delete;
                 })
                 ->rawColumns(['action', 'seller', 'category', 'product_main_image', 'tags', 'about_this_paint', 'details_1', 'details_2', 'status'])
                 ->make(true);
@@ -231,6 +238,22 @@ class ProductRequestController extends Controller
         $product->status = 1;
         $product->save();
         toastr()->success('Product approved successfully!');
+        return redirect()->back();
+    }
+    public function makeBest($id)
+    {
+        $product = Product::find($id);
+        $product->best_selling = 1;
+        $product->save();
+        toastr()->success('Product added to best sellings!');
+        return redirect()->back();
+    }
+    public function removeBest($id)
+    {
+        $product = Product::find($id);
+        $product->best_selling = 0;
+        $product->save();
+        toastr()->success('Product removed from best sellings!');
         return redirect()->back();
     }
     public function reject($id)

@@ -72,6 +72,7 @@ Route::controller(ShippingController::class)->prefix('shipping')->as('shipping.'
 });
 Route::controller(MyCartController::class)->prefix('my-cart')->as('my-cart.')->group(function () {
     Route::get('/', 'index')->name('index');
+    Route::get('check-coupon', 'coupon_check')->name('check.coupon');
     Route::get('add-to-cart/{id}', 'addToCart')->name('add-to-cart');
     Route::get('remove-from-cart/{id}', 'removeFromCart')->name('remove-from-cart');
 });

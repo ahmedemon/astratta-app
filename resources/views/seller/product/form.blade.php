@@ -150,6 +150,7 @@
         });
         $(".sign-up-button").click(function() {
             if (!$("#imageUpload-1").val() || !$("#imageUpload-2").val() || !$("#imageUpload-3").val()) {
+                return confirm('Update without images?');
                 if ($("#imageUpload-1").val() && !$("#imageUpload-2").val()) {
                     swal("Please select second image!", "", "warning");
                 }

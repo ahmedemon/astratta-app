@@ -41,6 +41,8 @@ Route::middleware('admin')->group(function () {
         Route::get('rejected', [ProductRequestController::class, 'rejected'])->name('rejected');
         Route::get('soldOut', [ProductRequestController::class, 'soldOut'])->name('soldOut');
 
+        Route::get('make-best/{id}', [ProductRequestController::class, 'makeBest'])->name('make.best');
+        Route::get('remove-best/{id}', [ProductRequestController::class, 'removeBest'])->name('remove.best');
         Route::get('approve/{id}', [ProductRequestController::class, 'approve'])->name('approve');
         Route::get('reject/{id}', [ProductRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [ProductRequestController::class, 'recall'])->name('recall');

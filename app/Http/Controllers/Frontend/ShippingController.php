@@ -11,6 +11,10 @@ class ShippingController extends Controller
 {
     public function edit()
     {
+        if (!Auth::guard('web')->check()) {
+            alert('Login First!', 'Please login into your account then edit your shipping address!', 'info');
+            return redirect()->route('login');
+        }
         $pageTitle = "Edit Shipping Address";
         $shipping = ShippingDetail::where('user_id', Auth::user()->id)->first();
         return view('frontend.my-account.edit-shipping', compact('pageTitle', 'shipping'));

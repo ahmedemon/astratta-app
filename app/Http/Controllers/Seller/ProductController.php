@@ -60,6 +60,7 @@ class ProductController extends Controller
 
             $product->main_image = $filename;
         }
+
         $product->save();
 
         $image_array = array_filter($request['base64image']);
@@ -90,6 +91,7 @@ class ProductController extends Controller
             }
         }
 
+
         if (isset($request->tags) && count($request->tags) > 0) {
             foreach ($request->tags as $key => $tag) {
                 $product->tags()->create([
@@ -118,7 +120,7 @@ class ProductController extends Controller
         $product->seller_id = Auth::guard('seller')->user()->id;
         $product->product_name = $request->product_name;
         $product->product_price = $request->product_price;
-        $product->category = $request->category;
+        $product->category_id = $request->category_id;
         $product->tags = json_encode($request->tags);
         $product->about_this_paint = $request->about_this_paint;
         $product->details_1 = $request->details_1;
@@ -176,7 +178,7 @@ class ProductController extends Controller
             }
         }
 
-
+        $product->save();
         if (isset($request->tags) && count($request->tags) > 0) {
             foreach ($request->tags as $tag) {
                 $product->tags()->update([
@@ -185,9 +187,7 @@ class ProductController extends Controller
                 ]);
             }
         }
-        $product->save();
-        toastr()->success('Success', 'Product added successfully!');
-        alert('Success!', 'Product added successfully!', 'success');
+        alert('Success!', 'Product updated successfully!', 'success');
         return redirect()->route('seller.product.index');
     }
 

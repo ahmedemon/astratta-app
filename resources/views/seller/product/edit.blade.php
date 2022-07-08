@@ -83,9 +83,9 @@
                         </div>
 
                         <div class="mb35">
-                            <select name="category" id="" class="form-control">
+                            <select name="category_id" id="" class="form-control">
                                 @foreach ($categories as $category)
-                                    <option {{ $product->category == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option {{ $product->category_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @error('category')

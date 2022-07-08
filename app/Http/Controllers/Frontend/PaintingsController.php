@@ -21,11 +21,13 @@ class PaintingsController extends Controller
     {
         $painting = Product::find($id);
         $order = Order::where('product_id', $painting->id)->first();
-        if ($painting->is_purchased == 1) {
-            alert('Stock Out!', 'That product has been sold!', 'warning');
-            return redirect()->route('painting.index');
-        }
-        $relatedProducts = Product::where('status', 1)->where('category_id', $painting->category_id)->take(3)->get();
+        // if ($painting->is_purchased == 1) {
+        //     if (!Auth::guard('web')->check() ?? $order->user_id != Auth::user()->id) {
+        //         alert('Stock Out!', 'That product has been sold!', 'warning');
+        //         return redirect()->back();
+        //     }
+        // }
+        $relatedProducts = Product::where('status', 1)->where('is_purchased', 0)->where('category_id', $painting->category_id)->take(3)->get();
         $pageTitle = $painting->product_name;
         return view('frontend.paintings.view-painting', compact('pageTitle', 'painting', 'relatedProducts'));
     }

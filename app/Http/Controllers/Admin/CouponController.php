@@ -58,7 +58,7 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'code' => 'required|string',
+            'code' => 'required|string|unique:coupons,code',
             'percentage' => 'required|integer',
         ]);
         $coupon = new Coupon($request->all());

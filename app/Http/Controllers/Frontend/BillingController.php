@@ -11,6 +11,10 @@ class BillingController extends Controller
 {
     public function edit()
     {
+        if (!Auth::guard('web')->check()) {
+            alert('Login First!', 'Please login into your account then edit your billing address!', 'info');
+            return redirect()->route('login');
+        }
         $pageTitle = "Edit Billing Address";
         $billing = BillingDetail::where('user_id', Auth::user()->id)->first();
         return view('frontend.my-account.edit-billing', compact('pageTitle', 'billing'));

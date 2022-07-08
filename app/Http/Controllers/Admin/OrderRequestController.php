@@ -14,7 +14,7 @@ class OrderRequestController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = Order::where('status', 1)->with('product', 'user', 'seller')->latest()->get();
+            $data = Order::where('status', 1)->whereIn('seller_approval', [1, 4])->with('product', 'user', 'seller')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
@@ -74,7 +74,7 @@ class OrderRequestController extends Controller
     public function requested()
     {
         if (request()->ajax()) {
-            $data = Order::where('status', 0)->with('product', 'user', 'seller')->latest()->get();
+            $data = Order::where('status', 0)->whereIn('seller_approval', [1, 4])->with('product', 'user', 'seller')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
@@ -132,7 +132,7 @@ class OrderRequestController extends Controller
     public function completed()
     {
         if (request()->ajax()) {
-            $data = Order::where('status', 2)->with('product', 'user', 'seller')->latest()->get();
+            $data = Order::where('status', 2)->whereIn('seller_approval', [1, 4])->with('product', 'user', 'seller')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
@@ -187,7 +187,7 @@ class OrderRequestController extends Controller
     public function rejected()
     {
         if (request()->ajax()) {
-            $data = Order::where('status', 3)->with('product', 'user', 'seller')->latest()->get();
+            $data = Order::where('status', 3)->whereIn('seller_approval', [1, 4])->with('product', 'user', 'seller')->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {

@@ -16,8 +16,15 @@
                             @if (Auth::guard('seller')->check() ? Auth::guard('seller')->user()->id == $painting->seller_id : '')
                                 <a href="{{ route('seller.product.edit', $painting->id) }}" class="btn rounded-0 border-0 buy-now-button">Edit</a>
                             @else
-                                <a href="{{ route('checkout.buy.now', $painting->id) }}" class="btn rounded-0 border-0 buy-now-button">Buy Now</a>
-                                <a href="{{ route('my-cart.add-to-cart', $painting->id) }}" class="btn rounded-0 border-0 add-to-cart-button">Add to Cart</a>
+                                @if ($painting->is_purchased == 1 && Auth::guard('web')->check() ? $painting->order->user_id == Auth::user()->id : '')
+                                    <a href="{{ route('my-account.index') }}" class="btn rounded-0 border-0 buy-now-button">Track</a>
+                                @else
+                                    @if ($painting->is_purchased == 1)
+                                    @else
+                                        <a href="{{ route('checkout.buy.now', $painting->id) }}" class="btn rounded-0 border-0 buy-now-button">Buy Now</a>
+                                        <a href="{{ route('my-cart.add-to-cart', $painting->id) }}" class="btn rounded-0 border-0 add-to-cart-button">Add to Cart</a>
+                                    @endif
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -109,12 +116,9 @@
                 </div>
                 <div class="row best-selling-container justify-content-lg-between justify-content-md-between justify-content-center w-100">
                     @foreach ($relatedProducts as $product)
-                        @php
-                            $image = $product->productImages->first();
-                        @endphp
                         <div class="col-lg-6 col-xl-4 col-md-6 col-6 painting">
                             <a href="{{ route('painting.show', $product->id) }}">
-                                <img class="p-3" src="{{ asset('storage/products/' . $image->image) }}" alt="" />
+                                <img class="p-3" src="{{ asset('storage/products/' . $product->main_image) }}" alt="" />
                                 <h3>{{ $product->product_name }}</h3>
                                 <p class="my-0">${{ str_replace('.00', '', $product->product_price) }}</p>
                                 <div class="d-flex align-items-center justify-content-lg-start justify-content-between buy-now">

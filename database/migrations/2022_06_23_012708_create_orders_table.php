@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('total_cost', 10, 2);
             $table->integer('method_id');
             $table->string('coupon_code')->nullable();
+            $table->integer('seller_approval')->default(0);
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

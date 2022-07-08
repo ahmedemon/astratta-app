@@ -52,7 +52,7 @@
                                                 #{{ $order->order_track_id }}
                                             </td>
                                             <td>{{ $order->created_at->format('m:d:Y') }}</td>
-                                            <td>{{ $order->status == 1 ? 'Complete' : 'Processing' }}</td>
+                                            <td>{{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}</td>
                                             <td>{{ count($orders) }} Items</td>
                                             <td>${{ str_replace('.00', '', $order->total_cost ?? '--') }}</td>
                                             <td class="align-middle">
