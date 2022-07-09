@@ -33,11 +33,11 @@
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link {{ Request::is('admin/products*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link {{ Request::is('admin/products*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseProducts" aria-expanded="true" aria-controls="collapseProducts">
             <i class="fas fa-fw fa-cog"></i>
             <span>Products</span>
         </a>
-        <div id="collapseTwo" class="collapse {{ Request::is('admin/products*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseProducts" class="collapse {{ Request::is('admin/products*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.product.request') }}">Product Request</a>
                 <a class="collapse-item" href="{{ route('admin.product.index') }}">Approved Products</a>
@@ -46,11 +46,11 @@
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link {{ Request::is('admin/orders*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+        <a class="nav-link {{ Request::is('admin/orders*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseOrders" aria-expanded="true" aria-controls="collapseOrders">
             <i class="fas fa-fw fa-cog"></i>
             <span>Orders</span>
         </a>
-        <div id="collapseThree" class="collapse {{ Request::is('admin/orders*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseOrders" class="collapse {{ Request::is('admin/orders*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.order.request') }}">Order Request</a>
                 <a class="collapse-item" href="{{ route('admin.order.index') }}">Approved Orders</a>
@@ -59,11 +59,22 @@
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
-        <a class="nav-link {{ Request::is('admin/withdraws*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+        <a class="nav-link {{ Request::is('admin/blogs*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseBlogs" aria-expanded="true" aria-controls="collapseBlogs">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Blogs</span>
+        </a>
+        <div id="collapseBlogs" class="collapse {{ Request::is('admin/blogs*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.order.request') }}">Add Blog</a>
+                <a class="collapse-item" href="{{ route('admin.order.index') }}">Blogs</a>
+            </div>
+        </div>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link {{ Request::is('admin/withdraws*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseWithdraws" aria-expanded="true" aria-controls="collapseWithdraws">
             <i class="fas fa-fw fa-cog"></i>
             <span>Withdraws</span>
         </a>
-        <div id="collapseFour" class="collapse {{ Request::is('admin/withdraws*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseWithdraws" class="collapse {{ Request::is('admin/withdraws*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.withdraw.requested') }}">Withdraw Request</a>
                 <a class="collapse-item" href="{{ route('admin.withdraw.index') }}">Approved Withdraws</a>

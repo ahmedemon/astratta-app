@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Stripe\Charge;
+use Stripe\Customer;
+use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -96,6 +99,16 @@ class CheckoutController extends Controller
     }
     public function placeOrder(Request $request)
     {
+        $order_track_id = mt_rand(100000, 999999);
+        $total  = Crypt::decrypt($request->total_cost);
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $charge = Charge::create([
+            "amount" => round($total * 100),
+            "currency" => "USD",
+            "source" => $request->stripeToken,
+            "description" => "Order Tracking No: #" . $order_track_id,
+        ]);
         $authCheck = Auth::guard('web')->check();
         if ($authCheck) {
             $user = User::find(Auth::user()->id);
@@ -117,7 +130,6 @@ class CheckoutController extends Controller
             ]);
         }
         if (isset($request->items) && count($request->items) > 0) {
-            $order_track_id = mt_rand(100000, 999999);
             foreach ($request->items as $key => $value) {
                 $id = $value['product_id'];
                 if ($value['cart_item_id'] != null) {

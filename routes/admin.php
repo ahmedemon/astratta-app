@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -58,6 +59,17 @@ Route::middleware('admin')->group(function () {
 
         Route::get('active/{id}', [CategoryController::class, 'active'])->name('active');
         Route::get('deactive/{id}', [CategoryController::class, 'deactive'])->name('deactive');
+    });
+
+    Route::group(['prefix' => 'blogs', 'as' => 'blog.'], function () {
+        Route::get('/', [BlogController::class, 'index'])->name('index');
+        Route::post('store', [BlogController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [BlogController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [BlogController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [BlogController::class, 'destroy'])->name('destroy');
+
+        Route::get('active/{id}', [BlogController::class, 'active'])->name('active');
+        Route::get('deactive/{id}', [BlogController::class, 'deactive'])->name('deactive');
     });
 
     Route::group(['prefix' => 'coupons', 'as' => 'coupon.'], function () {

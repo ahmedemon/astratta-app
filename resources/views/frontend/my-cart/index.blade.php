@@ -176,7 +176,7 @@
                         console.log(response);
                         if (response == 1) {
                             swal('Success!', 'Coupon Accepted!', 'success');
-                            document.getElementsByClassName("discounted-amount")[0].innerHTML = {{ config('currency.usd') }} + 10;
+                            document.getElementsByClassName("discounted-amount")[0].innerHTML = "%" + 10;
                             $('#code').attr('readonly', '');
                             $('#discountButton').attr('disabled', '');
                         } else {
