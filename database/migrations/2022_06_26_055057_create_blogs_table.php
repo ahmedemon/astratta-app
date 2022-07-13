@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('image');
             $table->string('topic');
-            $table->integer('category');
+            $table->integer('category_id');
             $table->string('title');
             $table->text('description');
             $table->integer('status')->default(0);

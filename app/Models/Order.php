@@ -30,4 +30,9 @@ class Order extends Model
     {
         return $this->hasOne(Coupon::class, 'id');
     }
+
+    public function refund()
+    {
+        return $this->hasOne(Refund::class);
+    }
 }

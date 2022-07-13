@@ -88,6 +88,7 @@
     {!! Toastr::message() !!}
     {{-- toastr --}}
 
+    @stack('js')
 </body>
 
 </html>

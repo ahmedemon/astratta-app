@@ -40,27 +40,63 @@
                                         <th class="ps-0">Orders</th>
                                         <th>Date</th>
                                         <th>Status</th>
-                                        <th>Qty</th>
+                                        {{-- <th>Qty</th> --}}
                                         <th>Total</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders->unique('order_tract_id') as $order)
+                                    @foreach ($orders->unique('order_track_id') as $order)
                                         <tr>
                                             <td class="ps-0 order_track">
                                                 #{{ $order->order_track_id }}
                                             </td>
                                             <td>{{ $order->created_at->format('m:d:Y') }}</td>
-                                            <td>{{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}</td>
-                                            <td>{{ count($orders) }} Items</td>
+                                            <td>
+                                                @if ($order->is_refunded == !null)
+                                                    Refund {{ ($order->is_refunded == 0 ? 'Pending' : '') . ($order->is_refunded == 1 ? 'In Review' : '') . ($order->is_refunded == 2 ? 'Rejected' : '') . ($order->is_refunded == 3 ? 'Completed' : '') }}
+                                                @else
+                                                    {{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}
+                                                @endif
+                                            </td>
+                                            {{-- <td>{{ $order->count('order_track_id') }} Items</td> --}}
                                             <td>${{ str_replace('.00', '', $order->total_cost ?? '--') }}</td>
                                             <td class="align-middle">
-                                                <a href="javascript:void();" class="refund-link">Refund</a>
+                                                @if ($order->is_refunded == !null)
+                                                    <a href="javascript:void();" class="text-secondary text-decoration-none refundedNote">Refund</a>
+                                                @else
+                                                    <a href="javascript:void();" id="{{ $order->id }}" class="refund-link" data-bs-toggle="modal" data-bs-target="#order{{ $order->id }}">Refund</a>
+                                                @endif
                                                 <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
                                                 <a target="_blank" href="{{ route('checkout.completed', Crypt::encrypt($order)) }}" class="refund-link">Rescript</a>
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="order{{ $order->id }}" tabindex="-1" aria-labelledby="refundModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="refundModalLabel">Refund</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('my-account.refund.update', $order->order_track_id) }}" method="POST">
+                                                            @csrf
+                                                            <div class="input-group">
+                                                                <select name="reason_id" id="" class="form-control">
+                                                                    @foreach ($reasons as $reason)
+                                                                        <option value="{{ $reason->id }}">{{ $reason->reason }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <button class="btn btn-success">Submit</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -76,3 +112,12 @@
         <!-- my account content -->
     </div>
 @endsection
+
+@push('js')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('.refundedNote').click(function() {
+            swal('Already requested!, Please wait for the confirmation!', '', 'info');
+        });
+    </script>
+@endpush

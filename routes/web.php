@@ -8,9 +8,11 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\MyAccountController;
 use App\Http\Controllers\Frontend\MyCartController;
 use App\Http\Controllers\Frontend\PaintingsController;
+use App\Http\Controllers\Frontend\RefundController;
 use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\HomeController;
 use App\Models\ShippingDetail;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -55,8 +57,10 @@ Route::controller(PaintingsController::class)->prefix('paintings')->as('painting
     Route::get('newest', 'newest')->name('newest');
     Route::get('oldest', 'oldest')->name('oldest');
 });
+
 Route::controller(MyAccountController::class)->prefix('my-account')->as('my-account.')->group(function () {
     Route::get('/', 'index')->name('index');
+    Route::post('update-refund/{id}', 'refundUpdate')->name('refund.update');
 });
 Route::controller(AccountSettingController::class)->prefix('settings')->as('settings.')->group(function () {
     Route::get('/', 'index')->name('index');
@@ -81,4 +85,8 @@ Route::controller(CheckoutController::class)->prefix('check-point')->as('checkou
     Route::get('buy-now/{id}', 'buyNow')->name('buy.now');
     Route::post('place-order', 'placeOrder')->name('place.order');
     Route::get('completed/{order}', 'completed')->name('completed');
+});
+
+Route::get('artisan-call', function () {
+    Artisan::call('storage:link');
 });

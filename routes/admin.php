@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderRequestController;
 use App\Http\Controllers\Admin\ProductRequestController;
+use App\Http\Controllers\Admin\RefundRequestController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\WithdrawMethodController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
@@ -63,6 +64,7 @@ Route::middleware('admin')->group(function () {
 
     Route::group(['prefix' => 'blogs', 'as' => 'blog.'], function () {
         Route::get('/', [BlogController::class, 'index'])->name('index');
+        Route::get('create', [BlogController::class, 'create'])->name('create');
         Route::post('store', [BlogController::class, 'store'])->name('store');
         Route::get('edit/{id}', [BlogController::class, 'edit'])->name('edit');
         Route::put('update/{id}', [BlogController::class, 'update'])->name('update');
@@ -99,6 +101,7 @@ Route::middleware('admin')->group(function () {
         Route::get('requested', [OrderRequestController::class, 'requested'])->name('request');
         Route::get('rejected', [OrderRequestController::class, 'rejected'])->name('rejected');
         Route::get('completed', [OrderRequestController::class, 'completed'])->name('completed');
+        Route::get('rejected/by/seller', [OrderRequestController::class, 'rejectedBySeller'])->name('rejectedBySeller');
 
         Route::get('approve/{id}', [OrderRequestController::class, 'approve'])->name('approve');
         Route::get('complete/{id}', [OrderRequestController::class, 'complete'])->name('complete');
@@ -118,5 +121,18 @@ Route::middleware('admin')->group(function () {
         Route::get('reject/{id}', [WithdrawRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [WithdrawRequestController::class, 'recall'])->name('recall');
         Route::get('delete/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'refunds', 'as' => 'refund.'], function () {
+        Route::get('/', [RefundRequestController::class, 'index'])->name('index');
+        Route::get('requested', [RefundRequestController::class, 'requested'])->name('requested');
+        Route::get('rejected', [RefundRequestController::class, 'rejected'])->name('rejected');
+        Route::get('completed', [RefundRequestController::class, 'completed'])->name('completed');
+
+        Route::get('approve/{id}', [RefundRequestController::class, 'approve'])->name('approve');
+        Route::get('complete/{id}', [RefundRequestController::class, 'complete'])->name('complete');
+        Route::get('reject/{id}', [RefundRequestController::class, 'reject'])->name('reject');
+        Route::get('recall/{id}', [RefundRequestController::class, 'recall'])->name('recall');
+        Route::get('delete/{id}', [RefundRequestController::class, 'destroy'])->name('destroy');
     });
 });

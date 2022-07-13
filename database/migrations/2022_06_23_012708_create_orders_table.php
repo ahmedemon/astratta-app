@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('coupon_code')->nullable();
             $table->integer('seller_approval')->default(0);
             $table->integer('guest_id')->nullable();
+            $table->integer('is_refunded')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

@@ -65,8 +65,8 @@
         </a>
         <div id="collapseBlogs" class="collapse {{ Request::is('admin/blogs*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('admin.order.request') }}">Add Blog</a>
-                <a class="collapse-item" href="{{ route('admin.order.index') }}">Blogs</a>
+                <a class="collapse-item" href="{{ route('admin.blog.create') }}">Add Blog</a>
+                <a class="collapse-item" href="{{ route('admin.blog.index') }}">Blogs</a>
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
@@ -80,6 +80,19 @@
                 <a class="collapse-item" href="{{ route('admin.withdraw.index') }}">Approved Withdraws</a>
                 <a class="collapse-item" href="{{ route('admin.withdraw.completed') }}">Completed Withdraws</a>
                 <a class="collapse-item" href="{{ route('admin.withdraw.rejected') }}">Rejected Withdraws</a>
+            </div>
+        </div>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link {{ Request::is('admin/refunds*') ? '' : 'collapsed' }}" href="javascript:void();" data-toggle="collapse" data-target="#collapseRefunds" aria-expanded="true" aria-controls="collapseRefunds">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Refunds</span>
+        </a>
+        <div id="collapseRefunds" class="collapse {{ Request::is('admin/refunds*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('admin.refund.requested') }}">Refund Request</a>
+                <a class="collapse-item" href="{{ route('admin.refund.index') }}">Approved Refunds</a>
+                <a class="collapse-item" href="{{ route('admin.refund.completed') }}">Completed Refunds</a>
+                <a class="collapse-item" href="{{ route('admin.refund.rejected') }}">Rejected Refunds</a>
             </div>
         </div>
         <hr class="sidebar-divider d-none d-md-block">
