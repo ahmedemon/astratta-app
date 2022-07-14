@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Refund;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -187,9 +188,14 @@ class RefundRequestController extends Controller
         foreach ($orders as $order) {
             $order->is_refunded = 3;
             $order->save();
+
+            $product = Product::find($order->product_id);
+            $product->is_purchased = 0;
+            $product->save();
         }
         $refund->save();
         toastr()->success('Refund Completed!', 'Succeed!');
+        toastr()->info('Product added to the list!', 'Product Recycled!');
         return redirect()->back();
     }
 

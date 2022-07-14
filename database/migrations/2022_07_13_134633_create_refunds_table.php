@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('refunds', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->integer('seller_id');
             $table->integer('order_id');
             $table->string('reason_id');
             $table->integer('seller_approval')->default(0);

@@ -33,6 +33,6 @@ class Order extends Model
 
     public function refund()
     {
-        return $this->hasOne(Refund::class);
+        return $this->hasOne(Refund::class, 'order_id', 'order_track_id');
     }
 }

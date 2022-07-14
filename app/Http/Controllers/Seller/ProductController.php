@@ -114,8 +114,19 @@ class ProductController extends Controller
         return view('seller.product.edit', compact('pageTitle', 'tags', 'product', 'categories'));
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'main_image' => ['nullable'],
+            'image' => ['nullable'],
+            'product_name' => ['required', 'string', 'max:50'],
+            'product_price' => ['required', 'integer'],
+            'category_id' => ['required', 'integer'],
+            'tags' => ['required'],
+            'about_this_paint' => ['required', 'string'],
+            'details_1' => ['required', 'string'],
+            'details_2' => ['required', 'string'],
+        ]);
         $product = Product::find($id);
         $product->seller_id = Auth::guard('seller')->user()->id;
         $product->product_name = $request->product_name;

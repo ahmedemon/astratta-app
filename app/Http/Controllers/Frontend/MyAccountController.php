@@ -25,14 +25,14 @@ class MyAccountController extends Controller
         }
         $pageTitle = "My Account";
         $orders = Order::where('user_id', Auth::user()->id)->with('refund')->latest()->paginate(8);
+        $count = Order::groupBy('order_track_id')->count('order_track_id');
         $reasons = RefundReason::where('status', 1)->get();
-        return view('frontend.my-account.index', compact('pageTitle', 'orders', 'reasons'));
+        return view('frontend.my-account.index', compact('pageTitle', 'orders', 'reasons', 'count'));
     }
 
     public function refundUpdate(Request $request, $id)
     {
-        $orderCollection = Order::where('order_track_id', $id);
-        $findOrder = $orderCollection->first();
+        $findOrder = Order::where('order_track_id', $id)->first();
         $orderDate = $findOrder->created_at->format('ymd');
         $today = date('ymd');
         if ($orderDate < $today) {
@@ -45,7 +45,7 @@ class MyAccountController extends Controller
             alert('Note!', 'You`ve already refund this order, please wait for the confirmation', 'info');
             return redirect()->back();
         }
-        $orders = $orderCollection->get();
+        $orders = Order::where('order_track_id', $id)->get();
         foreach ($orders as $order) {
             $order = Order::find($order->id);
             $order->is_refunded = 1;
@@ -53,6 +53,7 @@ class MyAccountController extends Controller
         }
         Refund::create([
             'user_id' => Auth::user()->id,
+            'seller_id' => $findOrder->seller_id,
             'order_id' => $id,
             'reason_id' => $request->reason_id,
         ]);

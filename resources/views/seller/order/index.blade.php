@@ -23,6 +23,7 @@
                             <tr>
                                 <th class="align-middle active">Product</th>
                                 <th class="align-middle active">Order Id</th>
+                                <th class="align-middle active">Items</th>
                                 <th class="align-middle active text-center">Status</th>
                                 <th class="align-middle active text-center">Date</th>
                                 <th class="align-middle active text-center">Price</th>
@@ -30,7 +31,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($orders as $order)
+                            @foreach ($orders->unique('order_track_id') as $order)
                                 <tr class="data-row">
                                     <td class="align-middle" width="50%">
                                         <div class="py15 d-flex align-items-center">
@@ -61,6 +62,7 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">#{{ $order->order_track_id }}</td>
+                                    <td class="align-middle text-center">{{ $count }}</td>
                                     <td class="align-middle text-center">
                                         @if ($order->seller_approval == 0)
                                             <span class="text-warning">Pending</span>
@@ -83,7 +85,7 @@
                                         @endif
                                     </td>
                                     <td class="align-middle text-center">{{ $order->product->created_at->format('M:d:Y') }}</td>
-                                    <td class="align-middle text-center">${{ str_replace('.00', '', $order->product->product_price ?? '---') }}</td>
+                                    <td class="align-middle text-center">${{ str_replace('.00', '', $order->total_cost ?? '---') }}</td>
                                     <td class="align-middle text-center"><a target="_blank" href="{{ route('checkout.completed', Crypt::encrypt($order)) }}" class="refund-link">Rescript</a></td>
                                 </tr>
                             @endforeach

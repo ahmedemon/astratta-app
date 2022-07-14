@@ -40,7 +40,7 @@
                                         <th class="ps-0">Orders</th>
                                         <th>Date</th>
                                         <th>Status</th>
-                                        {{-- <th>Qty</th> --}}
+                                        <th>Qty</th>
                                         <th>Total</th>
                                         <th>Action</th>
                                     </tr>
@@ -53,17 +53,21 @@
                                             </td>
                                             <td>{{ $order->created_at->format('m:d:Y') }}</td>
                                             <td>
-                                                @if ($order->is_refunded == !null)
-                                                    Refund {{ ($order->is_refunded == 0 ? 'Pending' : '') . ($order->is_refunded == 1 ? 'In Review' : '') . ($order->is_refunded == 2 ? 'Rejected' : '') . ($order->is_refunded == 3 ? 'Completed' : '') }}
+                                                @if ($order->refund->seller_approval == 2)
+                                                    Rejected
                                                 @else
-                                                    {{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}
+                                                    @if ($order->is_refunded == !null)
+                                                        Refund {{ ($order->is_refunded == 0 ? 'Pending' : '') . ($order->is_refunded == 1 ? 'In Review' : '') . ($order->is_refunded == 2 ? 'Rejected' : '') . ($order->is_refunded == 3 ? 'Completed' : '') }}
+                                                    @else
+                                                        {{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}
+                                                    @endif
                                                 @endif
                                             </td>
-                                            {{-- <td>{{ $order->count('order_track_id') }} Items</td> --}}
+                                            <td>{{ $count }} Items</td>
                                             <td>${{ str_replace('.00', '', $order->total_cost ?? '--') }}</td>
                                             <td class="align-middle">
                                                 @if ($order->is_refunded == !null)
-                                                    <a href="javascript:void();" class="text-secondary text-decoration-none refundedNote">Refund</a>
+                                                    <a href="javascript:void();" class="text-secondary text-decoration-none {{ $order->refund->seller_approval == 2 ? 'rejectNote' : 'refundedNote' }}">Refund</a>
                                                 @else
                                                     <a href="javascript:void();" id="{{ $order->id }}" class="refund-link" data-bs-toggle="modal" data-bs-target="#order{{ $order->id }}">Refund</a>
                                                 @endif
@@ -118,6 +122,9 @@
     <script>
         $('.refundedNote').click(function() {
             swal('Already requested!, Please wait for the confirmation!', '', 'info');
+        });
+        $('.rejectNote').click(function() {
+            swal('Rejected!', 'You can`t refund your product!', 'info');
         });
     </script>
 @endpush

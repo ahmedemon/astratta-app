@@ -292,12 +292,17 @@ class CheckoutController extends Controller
     {
         $sent_order = Crypt::decrypt($order);
         $order = Order::find($sent_order->id);
+        if (Auth::guard('seller')->check()) {
+            $id = Auth::guard('seller')->user()->id;
+            $all_orders = Order::where('seller_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
+        }
         if (Auth::guard('web')->check()) {
             $id = Auth::user()->id;
+            $all_orders = Order::where('user_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
         } else {
             $id = $order->guest_id;
+            $all_orders = Order::where('guest_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
         }
-        $all_orders = Order::where('user_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
         if (Auth::guard('seller')->check()) {
             $pageTitle = 'Order #' . $order->order_track_id;
         } else {
