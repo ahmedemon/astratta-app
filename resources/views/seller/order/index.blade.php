@@ -23,10 +23,9 @@
                             <tr>
                                 <th class="align-middle active">Product</th>
                                 <th class="align-middle active">Order Id</th>
-                                <th class="align-middle active">Items</th>
                                 <th class="align-middle active text-center">Status</th>
                                 <th class="align-middle active text-center">Date</th>
-                                <th class="align-middle active text-center">Price</th>
+                                <th class="align-middle active text-center">Total</th>
                                 <th class="align-middle active text-center">Action</th>
                             </tr>
                         </thead>
@@ -44,16 +43,26 @@
                                                         <i class="fas fa-times"></i>
                                                     </a>
                                                 @else
-                                                    <a href="javascript:void();" class="text-decoration-none d-flex align-items-center text-danger mx-2">
-                                                    </a>
                                                     @if ($order->seller_approval == 2)
-                                                        <a href="{{ route('seller.orders.destroy', $order->id) }}" class="text-decoration-none d-flex align-items-center text-danger mx-2" onclick="return confirm('Are you sure you want to delete?');">
-                                                            <i class="fas fa-times"></i>
-                                                        </a>
-                                                    @else
                                                         <a href="{{ route('seller.orders.make.delete', $order->id) }}" class="text-decoration-none d-flex align-items-center text-danger mx-2" onclick="return confirm('Are you sure you want to delete?');">
                                                             <i class="fas fa-times"></i>
                                                         </a>
+                                                    @else
+                                                        @if ($order->seller_approval == 5)
+                                                            <a href="{{ route('seller.orders.make.delete', $order->id) }}" class="text-decoration-none d-flex align-items-center text-danger mx-2" onclick="return confirm('Are you sure you want to delete?');">
+                                                                <i class="fas fa-times"></i>
+                                                            </a>
+                                                        @else
+                                                            @if ($order->seller_approval != 3)
+                                                                <a href="{{ route('seller.orders.sent', $order->id) }}" class="text-decoration-none d-flex align-items-center text-success mx-2" onclick="return confirm('Are you sure you want to send?');">
+                                                                    <i class="fas">Sent</i>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ route('seller.orders.make.delete', $order->id) }}" class="text-decoration-none d-flex align-items-center text-danger mx-2" onclick="return confirm('Are you sure you want to delete?');">
+                                                                    <i class="fas fa-times"></i>
+                                                                </a>
+                                                            @endif
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </div>
@@ -62,7 +71,6 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">#{{ $order->order_track_id }}</td>
-                                    <td class="align-middle text-center">{{ $count }}</td>
                                     <td class="align-middle text-center">
                                         @if ($order->seller_approval == 0)
                                             <span class="text-warning">Pending</span>
@@ -77,11 +85,20 @@
                                                 @if ($order->seller_approval == 2)
                                                     <span class="text-danger">Rejected</span>
                                                 @else
-                                                    <span class="text-{{ ($order->status == 1 ? 'warning' : '') . ($order->status == 2 ? 'success' : '') . ($order->status == 3 ? 'danger' : '') }}">
-                                                        {{ ($order->status == 1 ? 'Processing' : '') . ($order->status == 2 ? 'Complete' : '') . ($order->status == 3 ? 'Rejected' : '') }}
-                                                    </span>
+                                                    @if ($order->seller_approval == 5)
+                                                        <span class="text-success">Sending</span>
+                                                    @else
+                                                        @if ($order->seller_approval != 3)
+                                                            <span class="text-{{ ($order->status == 1 ? 'warning' : '') . ($order->status == 2 ? 'success' : '') . ($order->status == 3 ? 'danger' : '') }}">
+                                                                {{ ($order->status == 1 ? 'Processing' : '') . ($order->status == 2 ? 'Complete' : '') . ($order->status == 3 ? 'Rejected' : '') }}
+                                                            </span>
+                                                        @endif
+                                                    @endif
                                                 @endif
                                             @endif
+                                        @endif
+                                        @if ($order->seller_approval == 3)
+                                            <span class="text-success">Completed</span>
                                         @endif
                                     </td>
                                     <td class="align-middle text-center">{{ $order->product->created_at->format('M:d:Y') }}</td>

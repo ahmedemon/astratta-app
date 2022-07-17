@@ -110,6 +110,11 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Withdraw Method</span>
         </a>
+        <hr class="sidebar-divider d-none d-md-block">
+        <a class="nav-link" href="{{ route('admin.short-range.index') }}">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Shorting Range</span>
+        </a>
     </li>
 
 

@@ -9,6 +9,8 @@ trait WalletTrait
 {
     public function allWallets($seller_id)
     {
+        $wallet['upcoming_balance']             = number_format(round(Balance::getUpcomingAmount($seller_id), 2), 2);
+
         $wallet['current_balance']              = number_format(round(Balance::getCurrentBalance($seller_id), 2), 2);
         $wallet['monthly_income_balance']       = number_format(round(Balance::getBalanceByMonth($seller_id), 2), 2);
 
@@ -21,6 +23,8 @@ trait WalletTrait
 
     public function getWalletNames()
     {
+        $wallet_names['upcoming_balance'] = 'Upcoming Balance';
+
         $wallet_names['current_balance'] = 'Balance';
         $wallet_names['monthly_income_balance'] = 'Earning This Month';
 

@@ -25,7 +25,7 @@ class MyAccountController extends Controller
         }
         $pageTitle = "My Account";
         $orders = Order::where('user_id', Auth::user()->id)->with('refund')->latest()->paginate(8);
-        $count = Order::groupBy('order_track_id')->count('order_track_id');
+        $count = $orders->count('seller_id');
         $reasons = RefundReason::where('status', 1)->get();
         return view('frontend.my-account.index', compact('pageTitle', 'orders', 'reasons', 'count'));
     }
@@ -58,6 +58,20 @@ class MyAccountController extends Controller
             'reason_id' => $request->reason_id,
         ]);
         alert('Info!', 'Your request has been sent to the administrator!', 'info');
+        return redirect()->back();
+    }
+
+    public function gotTheProduct($id)
+    {
+        $orders = Order::where('order_track_id', $id)->get();
+        foreach ($orders as $order) {
+            $order = Order::find($order->id);
+            $order->status = 2;
+            $order->buyer_approval = 1;
+            $order->seller_approval = 3;
+            $order->save();
+        }
+        alert('Got The Product!', 'You`ve got your product, enjoy!', 'success');
         return redirect()->back();
     }
 }

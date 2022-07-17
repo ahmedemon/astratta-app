@@ -12,8 +12,8 @@ class OrderController extends Controller
     public function index()
     {
         $pageTitle = "Orders";
-        $orders = Order::where('seller_approval', '!=', 4)->where('is_refunded', null)->where('seller_id', Auth::guard('seller')->user()->id)->with('product')->paginate(5);
-        $count = Order::where('seller_approval', '!=', 4)->groupBy('order_track_id')->count('order_track_id');
+        $orders = Order::where('status', '!=', 0)->where('seller_approval', '!=', 4)->where('is_refunded', null)->where('seller_id', Auth::guard('seller')->user()->id)->with('product')->paginate(5);
+        $count = $orders->count('order_track_id');
         return view('seller.order.index', compact('pageTitle', 'orders', 'count'));
     }
     public function approve($id)
@@ -36,6 +36,17 @@ class OrderController extends Controller
             $order->save();
         }
         alert('Rejected!', 'Order Request Rejected!', 'error');
+        return redirect()->back();
+    }
+    public function sent($id)
+    {
+        $order = Order::find($id);
+        $orders = Order::where('order_track_id', $order->order_track_id)->get();
+        foreach ($orders as $order) {
+            $order->seller_approval = 5;
+            $order->save();
+        }
+        alert('Sending!', 'Order sending to the buyer!', 'info');
         return redirect()->back();
     }
     public function makeDelete($id)

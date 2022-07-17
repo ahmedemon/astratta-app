@@ -40,8 +40,7 @@
                                         <th class="ps-0">Orders</th>
                                         <th>Date</th>
                                         <th>Status</th>
-                                        <th>Qty</th>
-                                        <th>Total</th>
+                                        <th>Product Price</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -53,25 +52,54 @@
                                             </td>
                                             <td>{{ $order->created_at->format('m:d:Y') }}</td>
                                             <td>
-                                                @if ($order->refund->seller_approval == 2)
-                                                    Rejected
-                                                @else
-                                                    @if ($order->is_refunded == !null)
-                                                        Refund {{ ($order->is_refunded == 0 ? 'Pending' : '') . ($order->is_refunded == 1 ? 'In Review' : '') . ($order->is_refunded == 2 ? 'Rejected' : '') . ($order->is_refunded == 3 ? 'Completed' : '') }}
+                                                @if ($order->is_refunded == !null)
+                                                    @if ($order->refund->seller_approval == 2)
+                                                        Rejected
                                                     @else
-                                                        {{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'In Review' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}
+                                                        @if ($order->is_refunded == !null)
+                                                            Refund {{ ($order->is_refunded == 0 ? 'Pending' : '') . ($order->is_refunded == 1 ? 'In Review' : '') . ($order->is_refunded == 2 ? 'Rejected' : '') . ($order->is_refunded == 3 ? 'Completed' : '') }}
+                                                        @else
+                                                            {{ ($order->seller_approval == 0 ? 'Pending' : '') . ($order->seller_approval == 1 ? 'Processing' : '') . ($order->seller_approval == 4 ? 'Rejected' : '') }}
+                                                        @endif
+                                                    @endif
+                                                @else
+                                                    @if ($order->seller_approval == 0)
+                                                        Pending
+                                                    @endif
+                                                    @if ($order->seller_approval == 1)
+                                                        Processing
+                                                    @endif
+                                                    @if ($order->seller_approval == 4)
+                                                        Rejected
+                                                    @endif
+                                                    @if ($order->seller_approval == 5)
+                                                        On The Way
+                                                        <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
+                                                        <a href="{{ route('my-account.got.the.product', $order->order_track_id) }}" class="refund-link">Got It?</a>
+                                                    @endif
+                                                    @if ($order->buyer_approval == 1 && $order->seller_approval == 3)
+                                                        Completed
                                                     @endif
                                                 @endif
                                             </td>
-                                            <td>{{ $count }} Items</td>
-                                            <td>${{ str_replace('.00', '', $order->total_cost ?? '--') }}</td>
+                                            <td class="text-center">{{ config('currency.usd') . str_replace('.00', '', $order->product->product_price ?? '--') }}</td>
                                             <td class="align-middle">
-                                                @if ($order->is_refunded == !null)
-                                                    <a href="javascript:void();" class="text-secondary text-decoration-none {{ $order->refund->seller_approval == 2 ? 'rejectNote' : 'refundedNote' }}">Refund</a>
+                                                @if ($order->seller_approval != 5 && $order->seller_approval != 3)
+                                                    @if ($order->is_refunded == !null)
+                                                        <a href="javascript:void();" class="text-secondary text-decoration-none {{ $order->refund->seller_approval == 2 ? 'rejectNote' : 'refundedNote' }}">Refund</a>
+                                                    @else
+                                                        @if ($order->seller_approval == 5)
+                                                            <a href="javascript:void();" class="text-secondary text-decoration-none onTheWay">Refund</a>
+                                                            <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
+                                                        @else
+                                                            <a href="javascript:void();" id="{{ $order->id }}" class="refund-link" data-bs-toggle="modal" data-bs-target="#order{{ $order->id }}">Refund</a>
+                                                            <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
+                                                        @endif
+                                                    @endif
                                                 @else
-                                                    <a href="javascript:void();" id="{{ $order->id }}" class="refund-link" data-bs-toggle="modal" data-bs-target="#order{{ $order->id }}">Refund</a>
+                                                    {{-- <a href="{{ route('checkout.completed', $order->order_track_id) }}" class="refund-link">Report</a>
+                                                    <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span> --}}
                                                 @endif
-                                                <span class="d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">|</span>
                                                 <a target="_blank" href="{{ route('checkout.completed', Crypt::encrypt($order)) }}" class="refund-link">Rescript</a>
                                             </td>
                                         </tr>
@@ -123,8 +151,14 @@
         $('.refundedNote').click(function() {
             swal('Already requested!, Please wait for the confirmation!', '', 'info');
         });
+        $('.refundedNote').click(function() {
+            swal('Already requested!, Please wait for the confirmation!', '', 'info');
+        });
         $('.rejectNote').click(function() {
             swal('Rejected!', 'You can`t refund your product!', 'info');
+    });
+    $('.onTheWay').click(function() {
+        swal('Product is on the way!', 'You can`t refund your product!', 'info');
         });
     </script>
 @endpush

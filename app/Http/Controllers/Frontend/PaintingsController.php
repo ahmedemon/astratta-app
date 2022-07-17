@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ShortingRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,10 @@ class PaintingsController extends Controller
 {
     public function index()
     {
-        $paintings = Product::where('status', 1)->where('is_purchased', 0)->latest()->get();
+        $paintings = Product::where('status', 1)->where('is_purchased', 0)->latest()->paginate(24);
+        $shorting_ranges = ShortingRange::where('status', 1)->get();
         $pageTitle = "Paintings";
-        return view('frontend.paintings.paintings', compact('pageTitle', 'paintings'));
+        return view('frontend.paintings.paintings', compact('pageTitle', 'paintings', 'shorting_ranges'));
     }
 
     public function show($id)
@@ -44,16 +46,34 @@ class PaintingsController extends Controller
             // ->orWhereHas('category', function ($query) use ($key) {
             //     $query->where('status', 1)->where('name', 'like', $key . '%');
             // })
-            ->latest()->get();
+            ->latest()->paginate(24);
+        $shorting_ranges = ShortingRange::where('status', 1)->get();
         $pageTitle = "Result of " . '"' . $key . '"';
-        return view('frontend.paintings.search-result', compact('pageTitle', 'key', 'paintings'));
+        return view('frontend.paintings.search-result', compact('pageTitle', 'key', 'paintings', 'shorting_ranges'));
     }
 
-    public function default()
+    public function shortBy($start, $end)
     {
-        $key = request()->search_key;
-        $paintings = Product::where('status', 1)->with('category')->where('is_purchased', 0)->latest()->get();
-        $pageTitle = "Result of " . '"' . $key . '"';
-        return view('frontend.paintings.search-result', compact('pageTitle', 'key', 'paintings'));
+        $start = $start;
+        $end = $end;
+        $paintings = Product::where('status', 1)->with('category')->where('is_purchased', 0)->whereBetween('product_price', [$start, $end])->latest()->paginate(24);
+        $shorting_ranges = ShortingRange::where('status', 1)->get();
+        $pageTitle = "Price range " . '"' . intval($start) . ' to ' . intval($end) . '"';
+        return view('frontend.paintings.search-result', compact('pageTitle', 'start', 'end', 'paintings', 'shorting_ranges'));
+    }
+
+    public function newest()
+    {
+        $paintings = Product::where('status', 1)->with('category')->where('is_purchased', 0)->latest()->paginate(24);
+        $shorting_ranges = ShortingRange::where('status', 1)->get();
+        $pageTitle = "Showing New Paintings";
+        return view('frontend.paintings.search-result', compact('pageTitle', 'paintings', 'shorting_ranges'));
+    }
+    public function oldest()
+    {
+        $paintings = Product::where('status', 1)->with('category')->where('is_purchased', 0)->paginate(24);
+        $shorting_ranges = ShortingRange::where('status', 1)->get();
+        $pageTitle = "Showing Old Paintings";
+        return view('frontend.paintings.search-result', compact('pageTitle', 'paintings', 'shorting_ranges'));
     }
 }

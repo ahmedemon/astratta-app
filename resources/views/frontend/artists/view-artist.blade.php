@@ -19,10 +19,10 @@
                 </div>
                 <div class="right-side col-md-6 section2-container-2">
                     <div class="row justify-content-between">
-                        @if ($artist->products->count() == 0)
-                            <h3 class="text-center mt-5">Paint has not been uploaded yet!</h3>
+                        @if ($myProducts->count() == 0)
+                            <h3 class="text-center mt-5">No paint uploaded yet!</h3>
                         @else
-                            @foreach ($artist->products as $product)
+                            @foreach ($myProducts as $product)
                                 <div class="col-6 px-lg-0 best-selling-container painting">
                                     <a href="{{ route('painting.show', $product->id) }}">
                                         <img class="p-3" src="{{ asset('storage/products/' . $product->main_image) }}" alt="" />

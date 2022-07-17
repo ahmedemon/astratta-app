@@ -58,7 +58,7 @@
                 </div>
                 <div class="row best-selling-container justify-content-lg-between justify-content-md-between justify-content-center w-100">
                     @if ($best_sellings->count() == 0)
-                        <p class="text-center">Paint has not been uploaded yet!</p>
+                        <h4 class="text-center mt-5">No paint uploaded yet!!</h4>
                     @else
                         @foreach ($best_sellings as $best)
                             <div class="col-lg-6 col-xl-4 col-md-6 col-6 painting">
@@ -100,7 +100,7 @@
             </div>
 
             <!-- blog site -->
-            @include('frontend.related-blog')
+            @include('frontend.featured-blog')
             <!-- blog site -->
         </div>
 

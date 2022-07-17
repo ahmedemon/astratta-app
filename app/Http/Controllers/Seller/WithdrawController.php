@@ -16,9 +16,12 @@ class WithdrawController extends Controller
     use WalletTrait;
     public function index()
     {
+        $seller_id = Auth::guard('seller')->user()->id;
+        $wallets = $this->allWallets($seller_id);
+        $wallet_name = $this->getWalletNames($seller_id);
         $withdraws = Withdraw::where('seller_id', Auth::guard('seller')->user()->id)->with('withdrawMethod')->paginate(4);
-        $pageTitle = "Withdraw";
-        return view('seller.withdraw.index', compact('pageTitle', 'withdraws'));
+        $pageTitle = "Withdraws";
+        return view('seller.withdraw.index', compact('pageTitle', 'withdraws', 'wallets', 'wallet_name'));
     }
 
     public function create()
@@ -40,7 +43,7 @@ class WithdrawController extends Controller
         ]);
         $seller_id = Auth::guard('seller')->user()->id;
         $wallets = $this->allWallets($seller_id);
-        $current_balance = intval($wallets['current_balance']);
+        $current_balance = str_replace(',', '', $wallets['current_balance']);
         if ($request->amount > $current_balance) {
             alert('Not enought balance!', '', 'error');
             return redirect()->back();

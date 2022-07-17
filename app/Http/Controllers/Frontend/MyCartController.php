@@ -74,6 +74,14 @@ class MyCartController extends Controller
             alert('Stock Out!', 'This product choose by another person!', 'warning');
             return redirect()->back();
         }
+
+        // check if products status is approved
+        if ($product->status == 0) {
+            alert('Stock Out!', 'This product is not allowed buy!', 'warning');
+            return redirect()->back();
+        }
+        // check if products status is approved
+
         // check if product is already purchased
         if ($product->is_purchased == 1) {
             alert('Stock Out!', 'This product has been sold!', 'warning');
@@ -118,7 +126,7 @@ class MyCartController extends Controller
         }
         // check user is logged in or not
         toastr()->success('Product added to the cart!', 'Success!');
-        return redirect()->back();
+        return redirect()->route('my-cart.index');
     }
     public function removeFromCart($id)
     {

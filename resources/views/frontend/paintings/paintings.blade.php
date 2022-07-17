@@ -28,10 +28,9 @@
             <div class="row shorting-section justify-content-between">
                 <div class="col-lg-8">
                     <div class="d-flex justify-content-lg-start justify-content-xl-startjustify-content-lg-start justify-content-xxl-startjustify-content-lg-start justify-content-center">
-                        <a href="javascript:void();" class="btn border border-dark">1K - 5K</a>
-                        <a href="javascript:void();" class="btn border border-dark">10K - 50K</a>
-                        <a href="javascript:void();" class="btn border border-dark">100K - 200K</a>
-                        <a href="javascript:void();" class="btn border border-dark">500K - 1M</a>
+                        @foreach ($shorting_ranges as $range)
+                            <a href="{{ url('paintings/short/by', [$range->start, $range->end]) }}" class="btn border border-dark">{{ $range->name }}</a>
+                        @endforeach
                     </div>
                 </div>
 
@@ -39,9 +38,9 @@
                     <div class="dropdown">
                         <button class="btn border border-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Sort...<i class="fas fa-chevron-down"></i></button>
                         <ul class="dropdown-menu py-0 border-0" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item border border-dark mt-1" href="{{ route('painting.default') }}">Default</a></li>
-                            <li><a class="dropdown-item border border-dark mt-1" href="javascript:void();">Newest First</a></li>
-                            <li><a class="dropdown-item border border-dark mt-1" href="javascript:void();">Oldest First</a></li>
+                            <li><a class="dropdown-item border border-dark mt-1" href="{{ route('painting.index') }}">Default</a></li>
+                            <li><a class="dropdown-item border border-dark mt-1" href="{{ route('painting.newest') }}">Newest First</a></li>
+                            <li><a class="dropdown-item border border-dark mt-1" href="{{ route('painting.oldest') }}">Oldest First</a></li>
                         </ul>
                     </div>
                 </div>
@@ -70,6 +69,9 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+        <div class="container d-flex justify-content-center">
+            {{ $paintings->links() }}
         </div>
         <!-- paintings section -->
     </div>

@@ -39,7 +39,7 @@
                                         </div>
                                     </td>
                                     <td class="align-middle text-center">
-                                        {{ ($product->status == 0 ? 'Processing' : '') . ($product->status == 1 ? 'Processing' : '') . ($product->status == 2 ? 'Complete' : '') . ($product->status == 3 ? 'Rejected' : '') }}
+                                        {{ ($product->status == 0 ? 'Processing' : '') . ($product->status == 1 ? 'Approved' : '') . ($product->status == 2 ? 'Complete' : '') . ($product->status == 3 ? 'Rejected' : '') }}
                                     </td>
                                     <td class="align-middle text-center">{{ $product->created_at->format('m:d:Y') }}</td>
                                     <td class="align-middle text-center">${{ str_replace('.00', '', $product->product_price) }}</td>

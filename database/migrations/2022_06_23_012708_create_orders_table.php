@@ -20,10 +20,12 @@ return new class extends Migration
             $table->integer('product_id');
             $table->bigInteger('order_track_id');
             $table->date('order_date');
+            $table->decimal('product_price', 10, 2);
             $table->decimal('total_cost', 10, 2);
             $table->integer('method_id');
             $table->string('coupon_code')->nullable();
             $table->integer('seller_approval')->default(0);
+            $table->integer('buyer_approval')->default(0);
             $table->integer('guest_id')->nullable();
             $table->integer('is_refunded')->nullable();
             $table->boolean('status')->default(0);

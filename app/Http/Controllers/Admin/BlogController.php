@@ -32,6 +32,9 @@ class BlogController extends Controller
                     $category = $data->category->name ?? "---";
                     return '<span class="btn btn-sm btn-info">' . $category . '</span>';
                 })
+                ->editColumn('description', function ($data) {
+                    return Str::limit($data->description, 40, '...');
+                })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
                         return '<span class="btn btn-sm btn-warning">Deactivated</span>';
@@ -42,13 +45,18 @@ class BlogController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     if ($data->status == 0) {
-                        $activation = '<a href="' . route('admin.blog.active', $data->id) . '" class="delete btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this blog?')" . '">Active</a>';
+                        $activation = '<a href="' . route('admin.blog.active', $data->id) . '" class="delete mb-1 btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to active this blog?')" . '">Active</a>';
                     } else {
-                        $activation = '<a href="' . route('admin.blog.deactive', $data->id) . '" class="delete btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this blog?')" . '">Deactive</a>';
+                        $activation = '<a href="' . route('admin.blog.deactive', $data->id) . '" class="delete mb-1 btn btn-warning btn-sm" onClick="' . "return confirm('Are you sure you want to deactive this blog?')" . '">Deactive</a>';
                     }
-                    $edit = '<a href="' . route('admin.blog.edit', $data->id) . '" class="delete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this blog?')" . '">Edit</a>';
-                    $delete = '<a href="' . route('admin.blog.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this blog?')" . '">Delete</a>';
-                    return $activation . ' ' . $edit . ' ' . $delete;
+                    if ($data->is_featured == 0) {
+                        $feature = '<a href="' . route('admin.blog.feature.make', $data->id) . '" class="delete mb-1 btn btn-success btn-sm" onClick="' . "return confirm('Are you sure you want to add feature list?')" . '">Make Feature</a>';
+                    } else {
+                        $feature = '<a href="' . route('admin.blog.feature.remove', $data->id) . '" class="delete mb-1 btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want remove from feature list?')" . '">Remove Feature</a>';
+                    }
+                    $edit = '<a href="' . route('admin.blog.edit', $data->id) . '" class="delete mb-1 btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to edit this blog?')" . '">Edit</a>';
+                    $delete = '<a href="' . route('admin.blog.destroy', $data->id) . '" class="delete mb-1 btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this blog?')" . '">Delete</a>';
+                    return $feature . ' ' . $activation . ' ' . $edit . ' ' . $delete;
                 })
                 ->rawColumns(['action', 'image', 'status', 'category_id'])
                 ->make(true);
@@ -180,6 +188,7 @@ class BlogController extends Controller
     {
         $blog = Blog::find($id);
         $blog->status = 1;
+        $blog->save();
         alert('Blog activated Successfully!', '', 'success');
         return redirect()->back();
     }
@@ -187,7 +196,24 @@ class BlogController extends Controller
     {
         $blog = Blog::find($id);
         $blog->status = 0;
+        $blog->save();
         alert('Blog activated Successfully!', '', 'success');
+        return redirect()->back();
+    }
+    public function makeFeature($id)
+    {
+        $blog = Blog::find($id);
+        $blog->is_featured = 1;
+        $blog->save();
+        alert('Blog added to the featured list!', '', 'success');
+        return redirect()->back();
+    }
+    public function removeFeature($id)
+    {
+        $blog = Blog::find($id);
+        $blog->is_featured = 0;
+        $blog->save();
+        alert('Blog removed from the featured list!', '', 'success');
         return redirect()->back();
     }
     public function destroy($id)

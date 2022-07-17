@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('password');
-            $table->integer('account_number')->nullable();
+            $table->unsignedBigInteger('account_number')->nullable();
             $table->string('paintings')->nullable();
 
             $table->rememberToken();

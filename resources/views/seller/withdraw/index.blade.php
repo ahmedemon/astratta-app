@@ -9,7 +9,17 @@
                     <div class="card mb30 border-0">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <h3 class="my-0">{{ $pageTitle }}</h3>
-                            <a href="{{ route('seller.withdraw.create') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Add New</a>
+                            <a href="{{ route('seller.withdraw.create') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Withdraw</a>
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="col-md-6">
+                                <h3 class="mb-3">Upcoming</h3>
+                                <h1 class="my-0">{{ config('currency.usd') . $wallets['upcoming_balance'] }}</h1>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <h3 class="mb-3">{{ $wallet_name['current_balance'] }}</h3>
+                                <h1 class="my-0">{{ config('currency.usd') . $wallets['current_balance'] }}</h1>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -34,7 +44,7 @@
                                             </td>
                                             <td class="align-middle text-center">{{ $withdraw->created_at->format('M:d:Y') }}</td>
                                             <td class="align-middle text-center">
-                                                <a href="javascript:void();" class="text-success"><i class="fas fa-check"></i></a>
+                                                <a href="javascript:void();" class="text-{{ $withdraw->status == 2 ? 'success' : 'secondary' }}"><i class="fas fa-check"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

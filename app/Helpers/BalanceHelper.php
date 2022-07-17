@@ -40,16 +40,25 @@ class BalanceHelper
 
     public static function getCurrentBalance($seller_id)
     {
-        //how to get data after waiting 20 days
-        $order = Order::where('seller_id', $seller_id)->where('status', 2);
+        $order = Order::where('updated_at', '<=', Carbon::now()->subDays(20)->toDateTimeString())->where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
         $current_blance = CurrentBalance::where('seller_id', $seller_id);
 
-        $credit_amount = $order->sum('total_cost');
+        $credit_amount = $order;
         $debit_amount = $current_blance->sum('debit_amount');
         return $credit_amount -= $debit_amount;
     }
     public static function getBalanceByMonth($seller_id) //completed
     {
-        return Order::where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
+        $startMonth = Carbon::now()->startOfMonth()->subMonth();
+        $endMonth = Carbon::now()->startOfMonth();
+        return Order::whereBetween('updated_at', [$startMonth, $endMonth])->where('updated_at', '<=', Carbon::now()->subDays(20)->toDateTimeString())->where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
+    }
+    public static function getUpcomingAmount($seller_id) //upcoming amount
+    {
+        $startMonth = Carbon::now()->startOfMonth()->subMonth();
+        $endMonth = Carbon::now()->startOfMonth();
+        $total = Order::whereBetween('updated_at', [$startMonth, $endMonth])->where('updated_at', '<=', Carbon::now()->subDays(20)->toDateTimeString())->where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
+        $upcoming = Order::where('updated_at', '>=', Carbon::now()->subDays(20)->toDateTimeString())->where('seller_id', $seller_id)->where('status', 2)->sum('total_cost');
+        return $upcoming - $total;
     }
 }

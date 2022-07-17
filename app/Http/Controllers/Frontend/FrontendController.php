@@ -15,8 +15,9 @@ class FrontendController extends Controller
     public function index()
     {
         $best_sellings = Product::where('best_selling', 1)->where('status', 1)->where('is_purchased', 0)->with('productImages')->latest()->paginate(6);
+        $featuredBlogs = Blog::where('is_featured', 1)->get();
         $pageTitle = "Welcome to largest online painting platform!";
-        return view('welcome', compact('pageTitle', 'best_sellings'));
+        return view('welcome', compact('pageTitle', 'best_sellings', 'featuredBlogs'));
     }
 
     // ------------------------------------------------- about
@@ -57,7 +58,8 @@ class FrontendController extends Controller
     public function viewBlog($id)
     {
         $blog = Blog::find($id);
+        $relatedBlogs = Blog::where('category_id', $blog->category_id)->take(3)->get();
         $pageTitle = "View Blog";
-        return view('frontend.view-blog', compact('pageTitle', 'blog'));
+        return view('frontend.view-blog', compact('pageTitle', 'blog', 'relatedBlogs'));
     }
 }

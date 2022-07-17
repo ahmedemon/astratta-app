@@ -24,6 +24,10 @@ class CheckoutController extends Controller
 {
     public function checkout()
     {
+        if (request()->total_cost == 0) {
+            alert('Note!', 'You don`t have any item on your cart! Please select an item first!', 'info');
+            return redirect()->back();
+        }
         $items = request()->items;
         $code = request()->code;
         $total_cost = request()->total_cost;
@@ -101,14 +105,21 @@ class CheckoutController extends Controller
     {
         $order_track_id = mt_rand(100000, 999999);
         $total  = Crypt::decrypt($request->total_cost);
+        $method_id = Crypt::decrypt($request->method_id);
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        $charge = Charge::create([
-            "amount" => round($total * 100),
-            "currency" => "USD",
-            "source" => $request->stripeToken,
-            "description" => "Order Tracking No: #" . $order_track_id,
-        ]);
+        if ($method_id == 1) {
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $charge = Charge::create([
+                "amount" => round($total * 100),
+                "currency" => "USD",
+                "source" => $request->stripeToken,
+                "description" => "Order Tracking No: #" . $order_track_id,
+            ]);
+        } elseif ($method_id == 2) {
+            return 'paypal';
+        } else {
+            return 'none';
+        }
         $authCheck = Auth::guard('web')->check();
         if ($authCheck) {
             $user = User::find(Auth::user()->id);
@@ -169,6 +180,7 @@ class CheckoutController extends Controller
                     'product_id' => $value['product_id'],
                     'order_track_id' => $order_track_id,
                     'order_date' => date(now()),
+                    'product_price' => $product->product_price,
                     'total_cost' => $total_cost,
                     'coupon_code' => $code,
                     'method_id' => 1,
@@ -294,20 +306,23 @@ class CheckoutController extends Controller
         $order = Order::find($sent_order->id);
         if (Auth::guard('seller')->check()) {
             $id = Auth::guard('seller')->user()->id;
-            $all_orders = Order::where('seller_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $all_orders = Order::where('seller_id', $id)->where('seller_id', $order->seller_id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $total = $all_orders->sum('product_price');
         }
         if (Auth::guard('web')->check()) {
             $id = Auth::user()->id;
-            $all_orders = Order::where('user_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $all_orders = Order::where('user_id', $id)->where('seller_id', $order->seller_id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $total = $all_orders->sum('product_price');
         } else {
             $id = $order->guest_id;
-            $all_orders = Order::where('guest_id', $id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $all_orders = Order::where('guest_id', $id)->where('seller_id', $order->seller_id)->where('order_track_id', $sent_order->order_track_id)->get();
+            $total = $all_orders->sum('product_price');
         }
         if (Auth::guard('seller')->check()) {
             $pageTitle = 'Order #' . $order->order_track_id;
         } else {
             $pageTitle = "Thank you!!";
         }
-        return view('frontend.checkout.thank-you', compact('pageTitle', 'all_orders', 'order'));
+        return view('frontend.checkout.thank-you', compact('pageTitle', 'all_orders', 'order', 'total'));
     }
 }

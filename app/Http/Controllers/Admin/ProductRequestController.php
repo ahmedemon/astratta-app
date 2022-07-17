@@ -242,6 +242,11 @@ class ProductRequestController extends Controller
     }
     public function makeBest($id)
     {
+        $productCount = Product::where('best_selling', 1)->count();
+        if ($productCount >= 6) {
+            toastr()->warning('Best Product list is full, If you want to add this item then first remove one item from best selling!', 'List Full!');
+            return redirect()->back();
+        }
         $product = Product::find($id);
         $product->best_selling = 1;
         $product->save();

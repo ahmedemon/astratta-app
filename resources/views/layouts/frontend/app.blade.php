@@ -29,11 +29,17 @@
     <!-- navbar start -->
     @include('sweetalert::alert')
 
-    @include('layouts.frontend.header')
+    @if (Request::is('admin/orders/rescript*'))
+    @else
+        @include('layouts.frontend.header')
+    @endif
     <!-- navbar end -->
     @yield('content')
     <!-- footer start -->
-    @include('layouts.frontend.footer')
+    @if (Request::is('admin/orders/rescript*'))
+    @else
+        @include('layouts.frontend.footer')
+    @endif
     <!-- footer end -->
 </body>
 

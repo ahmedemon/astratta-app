@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderRequestController;
 use App\Http\Controllers\Admin\ProductRequestController;
 use App\Http\Controllers\Admin\RefundRequestController;
 use App\Http\Controllers\Admin\SellerController;
+use App\Http\Controllers\Admin\ShortingRangeController;
 use App\Http\Controllers\Admin\WithdrawMethodController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,17 @@ Route::middleware('admin')->group(function () {
         Route::get('deactive/{id}', [CategoryController::class, 'deactive'])->name('deactive');
     });
 
+    Route::group(['prefix' => 'shorting-range', 'as' => 'short-range.'], function () {
+        Route::get('/', [ShortingRangeController::class, 'index'])->name('index');
+        Route::post('store', [ShortingRangeController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [ShortingRangeController::class, 'edit'])->name('edit');
+        Route::put('update/{id}', [ShortingRangeController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [ShortingRangeController::class, 'destroy'])->name('destroy');
+
+        Route::get('active/{id}', [ShortingRangeController::class, 'active'])->name('active');
+        Route::get('deactive/{id}', [ShortingRangeController::class, 'deactive'])->name('deactive');
+    });
+
     Route::group(['prefix' => 'blogs', 'as' => 'blog.'], function () {
         Route::get('/', [BlogController::class, 'index'])->name('index');
         Route::get('create', [BlogController::class, 'create'])->name('create');
@@ -72,6 +84,8 @@ Route::middleware('admin')->group(function () {
 
         Route::get('active/{id}', [BlogController::class, 'active'])->name('active');
         Route::get('deactive/{id}', [BlogController::class, 'deactive'])->name('deactive');
+        Route::get('make/feature/{id}', [BlogController::class, 'makeFeature'])->name('feature.make');
+        Route::get('remove/feature/{id}', [BlogController::class, 'removeFeature'])->name('feature.remove');
     });
 
     Route::group(['prefix' => 'coupons', 'as' => 'coupon.'], function () {
@@ -108,6 +122,8 @@ Route::middleware('admin')->group(function () {
         Route::get('reject/{id}', [OrderRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [OrderRequestController::class, 'recall'])->name('recall');
         Route::get('delete/{id}', [OrderRequestController::class, 'destroy'])->name('destroy');
+
+        Route::get('rescript/{order_track_id}', [OrderRequestController::class, 'rescript'])->name('rescript');
     });
 
     Route::group(['prefix' => 'withdraws', 'as' => 'withdraw.'], function () {
@@ -117,7 +133,7 @@ Route::middleware('admin')->group(function () {
         Route::get('completed', [WithdrawRequestController::class, 'completed'])->name('completed');
 
         Route::get('approve/{id}', [WithdrawRequestController::class, 'approve'])->name('approve');
-        Route::get('complete/{id}', [WithdrawRequestController::class, 'complete'])->name('complete');
+        Route::post('complete/{id}', [WithdrawRequestController::class, 'complete'])->name('complete');
         Route::get('reject/{id}', [WithdrawRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [WithdrawRequestController::class, 'recall'])->name('recall');
         Route::get('delete/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');

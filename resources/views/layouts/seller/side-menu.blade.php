@@ -37,8 +37,10 @@
             <li class="list-group-item p-0 border-0 mb10">
                 <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.setting.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings*') ? 'active' : '' }} deactivated">Settings</a>
             </li>
-            <li class="list-group-item p-0 border-0" style="top: 190px">
-                <a href="{{ route('seller.logout') }}" class="btn btn-light pl35 w-100 rounded-0 border-0" onclick="event.preventDefault(); document.getElementById('vendor-logout-form').submit();">Logout</a>
+            <li class="list-group-item p-0 border-0">
+                <a href="{{ route('seller.logout') }}" class="btn btn-light pl35 w-100 rounded-0 border-0" onclick="event.preventDefault(); document.getElementById('vendor-logout-form').submit();">
+                    <i class="fas fa-sign-in-alt"></i> Logout
+                </a>
                 <form id="vendor-logout-form" action="{{ route('seller.logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>

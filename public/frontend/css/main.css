@@ -2077,7 +2077,8 @@ textarea{
 }
 
 .rescript-table thead tr th:nth-child(5){
-    padding-right: 50px;
+    float: right;
+    padding-right: 0px !important;
     text-align: right;
     font-family: 'Crucial' !important;
     font-style: normal;
@@ -2112,7 +2113,7 @@ textarea{
 }
 
 .rescript-table tbody tr td:nth-child(5){
-    padding-left: 50px;
+    float: right;
     text-align: left;
     font-family: 'Crucial' !important;
     font-style: normal;
@@ -2120,7 +2121,7 @@ textarea{
     font-size: 20px;
     line-height: 26px;
     color: #000000;
-    padding-top: 15px !important;
+    padding-top: 25px !important;
 }
 
 .rescript-table tr{

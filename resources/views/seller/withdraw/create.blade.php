@@ -19,11 +19,7 @@
                         @csrf
                         <div class="row justify-content-center">
                             <div class="col-md-8">
-                                @foreach ($wallets as $key => $wallet)
-                                    @if ($loop->iteration == 1)
-                                        <h3 class="my-0">{{ $wallet_name[$key] }} - ${{ $wallet }}</h3>
-                                    @endif
-                                @endforeach
+                                <h3 class="my-0">{{ $wallet_name['current_balance'] }} - ${{ $wallets['current_balance'] }}</h3>
                                 <br>
                                 <div class="mb20">
                                     <label for="amount">Payment Method</label>
@@ -52,7 +48,7 @@
                                 <div class="mb20">
                                     <label for="amount"> Withdrawal Amount </label>
                                     <div class="input-group">
-                                        <input type="number" min="0" id="amount" name="amount" class="form-control rounded-0" />
+                                        <input type="number" min="0" id="amount" name="amount" class="form-control" placeholder="Amount" />
                                         <button class="btn btn-outline-secondary btn-sm px-3" type="submit">Submit</button>
                                     </div>
                                     @error('amount')

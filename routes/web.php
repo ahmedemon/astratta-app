@@ -53,7 +53,7 @@ Route::controller(PaintingsController::class)->prefix('paintings')->as('painting
     Route::get('/', 'index')->name('index');
     Route::get('view/{id}', 'show')->name('show');
     Route::get('search', 'search')->name('search');
-    Route::get('default', 'default')->name('default');
+    Route::get('short/by/{start}/{end}', 'shortBy')->name('short.by');
     Route::get('newest', 'newest')->name('newest');
     Route::get('oldest', 'oldest')->name('oldest');
 });
@@ -61,6 +61,7 @@ Route::controller(PaintingsController::class)->prefix('paintings')->as('painting
 Route::controller(MyAccountController::class)->prefix('my-account')->as('my-account.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('update-refund/{id}', 'refundUpdate')->name('refund.update');
+    Route::get('buyer/approval/{id}', 'gotTheProduct')->name('got.the.product');
 });
 Route::controller(AccountSettingController::class)->prefix('settings')->as('settings.')->group(function () {
     Route::get('/', 'index')->name('index');

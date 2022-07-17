@@ -53,7 +53,7 @@
                                                 <i class="lni lni-close" id="close-{{ $item->id }}"></i>
                                             </a>
                                             <img class="product-image" src="{{ asset('storage/products/' . $item->product->main_image) }}" alt="" />
-                                            <a href="{{ route('painting.show', $item->id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
+                                            <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
                                         </div>
                                         <div class="col-4 d-flex align-items-center justify-content-end">
                                             <p class="my-0 color-{{ $item->id }}">${{ str_replace('.00', '', $item->product->product_price) }}</p>
@@ -95,11 +95,7 @@
                                 </div>
                                 <div class="d-flex discounted justify-content-between mb25">
                                     <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">{{ config('currency.usd') }}0</p>
-                                </div>
-                                <div class="d-flex shipping justify-content-between mb25">
-                                    <p class="my-0 shipping-title">Shipping to <span class="shipping-location">Dhaka</span></p>
-                                    <p class="my-0 shipping-amount">{{ config('currency.usd') }}<span id="shippingCharge">20</span></p>
+                                    <p class="my-0 discounted-amount">{{ config('symbol.percent') }}0</p>
                                 </div>
                                 <hr class="mb25" />
                                 <div class="d-flex shipping justify-content-between mb25">
@@ -139,13 +135,15 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         // for checking all product is selected
-        $(".checkout-button").click(function() {
+        $(".checkout-button").click(function(e) {
             var allCheckBox = $("[id^='chk-']")
             var count_checked = allCheckBox.filter(":checked").length;
             if (count_checked == 0) {
                 swal("Please select product!", "", "info");
+                e.preventDefault();
             } else if (count_checked != allCheckBox.length) {
                 swal("Some product is not selected!", "", "warning");
+                e.preventDefault();
             }
         });
         // for checking all product is selected
@@ -157,8 +155,7 @@
                 var price = $(this).attr("data-price");
                 tots += parseFloat(price);
             });
-            var shippingCharge = document.getElementById("shippingCharge").innerHTML;
-            var total = tots + parseInt(shippingCharge);
+            var total = tots;
 
             document.getElementById("discountButton").addEventListener("click", addDiscount);
 
@@ -173,7 +170,6 @@
                         code: coupon,
                     },
                     success: function(response) {
-                        console.log(response);
                         if (response == 1) {
                             swal('Success!', 'Coupon Accepted!', 'success');
                             document.getElementsByClassName("discounted-amount")[0].innerHTML = "%" + 10;
@@ -190,23 +186,6 @@
                 });
             };
 
-            // declare discounted amount
-            // function addDiscount() {
-            //     var compare = document.getElementById("couponCode").value; //real coupon code
-            //     var couponAmount = $("input#couponCode").data("price"); //real coupon code
-            //     var couponCodeInput = document.getElementById("couponCodeInput").value; //input coupon code
-            //     console.log(couponCodeInput);
-            //     if (compare === couponCodeInput) {
-            //         document.getElementsByClassName("discounted-amount")[0].innerHTML = '$' + couponAmount;
-            //         $('#couponCodeInput').attr('readonly', '');
-            //         $('#discountButton').attr('disabled', '');
-            //         swal("Coupon Accepted!", "", "success");
-            //     } else {
-            //         console.log('not ok');
-            //     }
-            // }
-            // declare discounted amount
-
             document.getElementById("total").value = total; // .toFixed(2) 2 is for .00
             document.getElementsByClassName("subtotal-amount")[0].innerHTML = ("{{ config('currency.usd') }}" + tots.toFixed(2));
 
@@ -217,16 +196,4 @@
         });
         // calculate price
     </script>
-
-    <!-- price calculation -->
-    {{-- <script>
-        window.onload = () => document.querySelectorAll(".input-x").forEach((input) => input.addEventListener("change", calculatePrize));
-
-        function calculatePrize() {
-            let sum = 0;
-            document.querySelectorAll(".input-x").forEach((input) => (sum += input.checked ? Number.parseFloat(input.getAttribute("data-price")) : 0));
-            document.getElementById("total").value = sum;
-        }
-    </script> --}}
-    <!-- price calculation -->
 @endpush

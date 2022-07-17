@@ -22,7 +22,7 @@
                                 <th class="text-center">SL No</th>
                                 <th class="text-center">Seller</th>
                                 <th class="text-center">Buyer</th>
-                                <th class="text-center">Product</th>
+                                <th class="text-center">Rescript</th>
                                 <th class="text-center">Category</th>
                                 <th class="text-center">Track ID</th>
                                 <th class="text-center">Total Cost</th>
@@ -62,8 +62,8 @@
                         name: 'user_id'
                     },
                     {
-                        data: 'product_main_image',
-                        name: 'product_main_image'
+                        data: 'rescript',
+                        name: 'rescript'
                     },
                     {
                         data: 'category',

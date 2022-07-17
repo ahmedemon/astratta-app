@@ -40,14 +40,15 @@ Route::middleware('seller')->group(function () {
         Route::get('approve/{id}', [OrderController::class, 'approve'])->name('approve');
         Route::get('reject/{id}', [OrderController::class, 'reject'])->name('reject');
         Route::get('delete/{id}', [OrderController::class, 'destroy'])->name('destroy');
-        Route::get('make-delete/{id}', [OrderController::class, 'makeDelete'])->name('make.delete');
+        Route::get('destroy/{id}', [OrderController::class, 'makeDelete'])->name('make.delete');
+        Route::get('sent/{id}', [OrderController::class, 'sent'])->name('sent');
     });
     Route::group(['prefix' => 'refunds', 'as' => 'refund.'], function () {
         Route::get('/', [RefundController::class, 'index'])->name('index');
         Route::get('approve/{id}', [RefundController::class, 'approve'])->name('approve');
         Route::get('reject/{id}', [RefundController::class, 'reject'])->name('reject');
         Route::get('delete/{id}', [RefundController::class, 'destroy'])->name('destroy');
-        Route::get('make-delete/{id}', [RefundController::class, 'makeDelete'])->name('make.delete');
+        Route::get('destroy/{id}', [RefundController::class, 'makeDelete'])->name('make.delete');
     });
     Route::group(['prefix' => 'withdraws', 'as' => 'withdraw.'], function () {
         Route::get('/', [WithdrawController::class, 'index'])->name('index');

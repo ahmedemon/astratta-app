@@ -218,36 +218,52 @@
                                     </p>
 
                                     <div class="method mt-2 mb40">
-                                        <a href="javascript::void();" class="d-flex justify-content-start align-items-center btn rounded-0 border-0 shadow-none w-100 bg-light payment-button mb30" type="button" data-bs-toggle="collapse" data-bs-target="#cardPaymentcollaspe" aria-expanded="false" aria-controls="cardPaymentcollaspe">Card Payment</a>
-                                        <div class="collapse collapse-vertical mb30" id="cardPaymentcollaspe">
-                                            <div class="card card-body">
-                                                <div class="row">
-                                                    <div class='col-xs-12 col-md-6 form-group required'>
-                                                        <label class='control-label'>Name on Card</label>
-                                                        <input type="text" class='form-control' size='4' type='text'>
-                                                    </div>
-                                                    <div class='col-xs-12 col-md-6 form-group required'>
-                                                        <label class='control-label'>Card Number</label>
-                                                        <input autocomplete='off' class='form-control card-number' size='20' type='tel'>
-                                                    </div>
-                                                    <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                                        <label class='control-label'>CVC</label>
-                                                        <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='number'>
-                                                    </div>
-                                                    <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                                        <label class='control-label'>Expiration Month</label>
-                                                        <input class='form-control card-expiry-month' placeholder='MM' size='2' type='number'>
-                                                    </div>
-                                                    <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                                        <label class='control-label'>Expiration Year</label>
-                                                        <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='number'>
+                                        <div class="accordion" id="accordionExample">
+                                            <div class="accordion-item border-0 rounded-0">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <a id="cardButton" href="javascript::void();" class="d-flex justify-content-start align-items-center btn rounded-0 border-0 shadow-none w-100 bg-light payment-button mb30" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <input type="radio" id="card" name="method_id" value="{{ Crypt::encrypt('1') }}" hidden>
+                                                        <label for="card">Card Payment</label>
+                                                    </a>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse collapse mb30" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                    <div class="card card-body">
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-md-6 form-group required">
+                                                                <label class="control-label">Name on Card</label>
+                                                                <input type="text" class="form-control" size="4" type="text" value="Test">
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-6 form-group required">
+                                                                <label class="control-label">Card Number</label>
+                                                                <input autocomplete="off" class="form-control card-number" size="20" type="tel" value="4242424242424242">
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-4 form-group cvc required">
+                                                                <label class="control-label">CVC</label>
+                                                                <input autocomplete="off" class="form-control card-cvc" placeholder="ex. 311" size="4" type="number" value="311">
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-4 form-group expiration required">
+                                                                <label class="control-label">Expiration Month</label>
+                                                                <input class="form-control card-expiry-month" placeholder="MM" size="2" type="number" value="02">
+                                                            </div>
+                                                            <div class="col-xs-12 col-md-4 form-group expiration required">
+                                                                <label class="control-label">Expiration Year</label>
+                                                                <input class="form-control card-expiry-year" placeholder="YYYY" size="4" type="number" value="2023">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <a href="javascript::void();" class="d-flex justify-content-start align-items-center btn rounded-0 border-0 shadow-none w-100 bg-light payment-button mb30" type="button" data-bs-toggle="collapse" data-bs-target="#paypalPaymentcollaspe" aria-expanded="false" aria-controls="paypalPaymentcollaspe">Paypal</a>
-                                        <div class="collapse collapse-vertical mb30" id="paypalPaymentcollaspe">
-                                            <div class="card card-body" style="width: 300px">This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.</div>
+                                            <div class="accordion-item border-0 rounded-0">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <a id="paypalButton" href="javascript::void();" class="d-flex justify-content-start align-items-center btn rounded-0 border-0 shadow-none w-100 bg-light payment-button mb30" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        <input type="radio" id="paypal" name="method_id" value="{{ Crypt::encrypt('2') }}" hidden>
+                                                        <label for="paypal">Paypal</label>
+                                                    </a>
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="card card-body" style="width: 300px">This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <button type="submit" class="d-flex align-items-center justify-content-center w-100 btn rounded-0 border-0 sign-up-button checkout-button">Proceed</button>
@@ -262,65 +278,75 @@
     </div>
 @endsection
 @push('js')
-    <script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script id="strip-validation" type="text/javascript">
         $(function() {
-            $("input:radio").click(function(e) {
-                e.stopPropagation();
-                $("li").removeClass("active");
-                $(this).parent().parent().addClass("active");
-            });
-            $("a").click(function(e) {
-                $(this).children().trigger("click");
+            $("#cardButton").click(function() {
+                $('form').attr("class", "require-validation");
+                $('form').attr("data-cc-on-file", "false");
+                $('form').attr("data-stripe-publishable-key", "{{ env('STRIPE_KEY') }}");
+                $('form').attr("id", "payment-form");
+
+                $("#card").prop("checked", true);
+                if ($('#card').is(':checked')) {
+                    var $form = $(".require-validation");
+                    $('form.require-validation').bind('submit', function(e) {
+                        var $form = $(".require-validation"),
+                            inputSelector = ['input[type=email]', 'input[type=password]', 'input[type=text]', 'input[type=file]', 'textarea'].join(', '),
+                            $inputs = $form.find('.required').find(inputSelector),
+                            $errorMessage = $form.find('div.error'),
+                            valid = true;
+                        $errorMessage.addClass('hide');
+                        $('.has-error').removeClass('has-error');
+                        $inputs.each(function(i, el) {
+                            var $input = $(el);
+                            if ($input.val() === '') {
+                                $input.parent().addClass('has-error');
+                                $errorMessage.removeClass('hide');
+                                e.preventDefault();
+                            }
+                        });
+                        if (!$form.data('cc-on-file')) {
+                            e.preventDefault();
+                            Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                            Stripe.createToken({
+                                number: $('.card-number').val(),
+                                cvc: $('.card-cvc').val(),
+                                exp_month: $('.card-expiry-month').val(),
+                                exp_year: $('.card-expiry-year').val()
+                            }, stripeResponseHandler);
+                        }
+                    });
+
+                    function stripeResponseHandler(status, response) {
+                        if (response.error) {
+                            $('.error')
+                                .removeClass('hide')
+                                .find('.alert')
+                                .text(response.error.message);
+                        } else {
+                            /* token contains id, last4, and card type */
+                            var token = response['id'];
+                            $form.find('input[type=text]').empty();
+                            $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                            $form.get(0).submit();
+                        }
+                    }
+                }
             });
         });
     </script>
-
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript">
+    <script id="paypal-validation">
         $(function() {
-            var $form = $(".require-validation");
-            $('form.require-validation').bind('submit', function(e) {
-                var $form = $(".require-validation"),
-                    inputSelector = ['input[type=email]', 'input[type=password]', 'input[type=text]', 'input[type=file]', 'textarea'].join(', '),
-                    $inputs = $form.find('.required').find(inputSelector),
-                    $errorMessage = $form.find('div.error'),
-                    valid = true;
-                $errorMessage.addClass('hide');
-                $('.has-error').removeClass('has-error');
-                $inputs.each(function(i, el) {
-                    var $input = $(el);
-                    if ($input.val() === '') {
-                        $input.parent().addClass('has-error');
-                        $errorMessage.removeClass('hide');
-                        e.preventDefault();
-                    }
-                });
-                if (!$form.data('cc-on-file')) {
-                    e.preventDefault();
-                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                    Stripe.createToken({
-                        number: $('.card-number').val(),
-                        cvc: $('.card-cvc').val(),
-                        exp_month: $('.card-expiry-month').val(),
-                        exp_year: $('.card-expiry-year').val()
-                    }, stripeResponseHandler);
-                }
-            });
+            $("#paypalButton").click(function() {
+                $('form').removeAttr("class");
+                $('form').removeAttr("data-cc-on-file");
+                $('form').removeAttr("data-stripe-publishable-key");
+                $('form').removeAttr("id");
 
-            function stripeResponseHandler(status, response) {
-                if (response.error) {
-                    $('.error')
-                        .removeClass('hide')
-                        .find('.alert')
-                        .text(response.error.message);
-                } else {
-                    /* token contains id, last4, and card type */
-                    var token = response['id'];
-                    $form.find('input[type=text]').empty();
-                    $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-                    $form.get(0).submit();
-                }
-            }
+                $("#paypal").prop("checked", true);
+                if ($('#paypal').is(':checked')) {}
+            });
         });
     </script>
     <script>

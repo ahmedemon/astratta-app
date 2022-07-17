@@ -3,21 +3,24 @@
         <h2 class="my-0">Meet Our Top Artists</h2>
         <img class="h-100" src="{{ asset('frontend/images/line1.png') }}" alt="" />
     </div>
-    <div class="artist-loop owl-carousel owl-theme">
-        @foreach (config('top_artists') as $item)
-            <div class="item">
-                <div class="col-md-12 d-flex justify-content-center">
-                    <a class="text-decoration-none" href="{{ route('artist.show', $item->id) }}">
-                        <div>
-                            <img height="247px" width="247px" src="{{ $item->image ? asset('storage/seller/' . $item->image) : asset('vendor/images/artist/avatar.svg') }}" alt="" />
-                            <p class="my-0">{{ $item->name ?? $item->username }}</p>
-                        </div>
-                    </a>
+    @if (config('top_artists')->count() == 0)
+        <h4 class="text-center mt-5">No artist selected to the top!!</h4>
+    @else
+        <div class="artist-loop owl-carousel owl-theme">
+            @foreach (config('top_artists') as $item)
+                <div class="item">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <a class="text-decoration-none" href="{{ route('artist.show', $item->id) }}">
+                            <div>
+                                <img height="247px" width="247px" src="{{ $item->image ? asset('storage/seller/' . $item->image) : asset('vendor/images/artist/avatar.svg') }}" alt="" />
+                                <p class="my-0">{{ $item->name ?? $item->username }}</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        @endforeach
-
-    </div>
+            @endforeach
+        </div>
+    @endif
 </div>
 
 @push('js')
