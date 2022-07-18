@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Withdraw;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Stripe\Charge;
+use Stripe\Payout;
 use Stripe\Stripe;
 use Yajra\DataTables\DataTables;
 
@@ -45,65 +47,7 @@ class WithdrawRequestController extends Controller
                     }
                 })
                 ->addColumn('action', function ($data) {
-                    if ($data->method_id == 1) {
-                        $form = '';
-                    }
-                    if ($data->method_id == 2) {
-                        $form = '
-                            <div class="card card-body">
-                                <form action="' . route('admin.withdraw.complete', $data->id) . '" method="POST" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="' . env('STRIPE_KEY') . '" id="payment-form">
-                                ' . csrf_field() . '
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-6 form-group required text-left">
-                                            <label class="control-label">Name on Card</label>
-                                            <input type="text" class="form-control" size="4" type="text" value="Test">
-                                        </div>
-                                        <div class="col-xs-12 col-md-6 form-group required text-left">
-                                            <label class="control-label">Card Number</label>
-                                            <input autocomplete="off" class="form-control card-number" size="20" type="tel" value="4242424242424242">
-                                        </div>
-                                        <div class="col-xs-12 col-md-4 form-group cvc required text-left">
-                                            <label class="control-label">CVC</label>
-                                            <input autocomplete="off" class="form-control card-cvc" placeholder="ex. 311" size="4" type="number" value="311">
-                                        </div>
-                                        <div class="col-xs-12 col-md-4 form-group expiration required text-left">
-                                            <label class="control-label">Expiration Month</label>
-                                            <input class="form-control card-expiry-month" placeholder="MM" size="2" type="number" value="02">
-                                        </div>
-                                        <div class="col-xs-12 col-md-4 form-group expiration required text-left">
-                                            <label class="control-label">Expiration Year</label>
-                                            <input class="form-control card-expiry-year" placeholder="YYYY" size="4" type="number" value="2023">
-                                        </div>
-                                        <button class="btn btn-sm btn-primary w-100">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        ';
-                    }
-                    $modal = '
-                            <div class="modal fade" id="withdrawModal' . $data->id . '" tabindex="-1" aria-labelledby="withdrawModal' . $data->id . 'Label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="withdrawModal' . $data->id . 'Label">Send Money to "' . $data->seller->username . '"</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ' . $form . '
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ';
-                    $complete = '
-                        <a href="javascript:void();" class="complete btn btn-info btn-sm" data-toggle="modal" data-target="#withdrawModal' . $data->id . '">Complete</a>
-                        ' . $modal . '
-                    ';
+                    $complete = '<a href="' . route('admin.withdraw.complete', $data->id) . '" class="complete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to payout this request?')" . '">Complete</a>';
                     $delete = '<a href="' . route('admin.withdraw.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this request?')" . '">Delete</a>';
                     return $complete . ' ' . $delete;
                 })
@@ -251,22 +195,41 @@ class WithdrawRequestController extends Controller
         toastr()->success('Withdraw request approved successfully!');
         return redirect()->route('admin.withdraw.index');
     }
-    public function complete(Request $request, $id)
+    public function complete($id)
     {
+        $withdraw_id = $id;
+        return redirect()->route('admin.withdraw.payout', [$withdraw_id]);
+    }
+    public function payout($withdraw_id)
+    {
+        $withdraw = Withdraw::find($withdraw_id);
+        $pageTitle = "Payout to " . $withdraw->seller->username;
+        return view('admin.withdraw-request.payout', compact('pageTitle', 'withdraw', 'withdraw_id'));
+    }
+
+    public function pay(Request $request)
+    {
+        $id = Crypt::decrypt($request->withdraw_id);
         $withdraw = Withdraw::find($id);
+        $total = $withdraw->amount;
         Stripe::setApiKey(env('STRIPE_SECRET'));
-        $charge = Charge::create([
-            "amount" => round($withdraw->amount * 100),
-            "currency" => "USD",
+        $charge = Payout::create([
+            "amount" => $total * 100,
+            "currency" => 'USD',
+            "method" => 'instant',
             "source" => $request->stripeToken,
-            "description" => "Accepted withdraw request and send money to this (" . $withdraw->account_number . ") acount number",
+            "destination" => $withdraw->account_number,
+        ], [
+            "stripe_account" => 'acct_1LIuzZIM5KRkGxKe',
         ]);
         $withdraw->status = 2;
         $withdraw->charge_id = $charge->id;
         $withdraw->save();
         toastr()->success('Withdraw request Completed successfully!');
-        return redirect()->back();
+        return redirect()->route('admin.withdraw.completed');
     }
+
+
     public function reject($id)
     {
         $withdraw = Withdraw::find($id);
