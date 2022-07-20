@@ -8,7 +8,10 @@
                     <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
                     <div class="card-body d-flex align-items-center justify-content-between mb30 pb10 border-bottom">
                         <h3 class="my-0">{{ $pageTitle }}</h3>
-                        <a href="{{ route('seller.withdraw.index') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Go Back</a>
+                        <div class="">
+                            <a href="{{ route('seller.withdraw.index') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Go Back</a>
+                            <a href="{{ route('seller.withdraw.set.method') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Method</a>
+                        </div>
                     </div>
                     @if (count($errors) > 0)
                         @foreach ($errors->all() as $error)
@@ -25,21 +28,29 @@
                                     <label for="amount">Payment Method</label>
                                     <div class="input-group">
                                         <select name="method_id" class="form-control form-select" id="selector" onchange="yesnoCheck(this);">
-                                            @foreach ($methods as $method)
-                                                <option value="{{ $method->id }}">{{ $method->name }}</option>
-                                            @endforeach
+                                            @if ($seller->stripe_id == !null && $seller->paypal_id == !null)
+                                                @foreach ($methods as $method)
+                                                    <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                                @endforeach
+                                            @else
+                                                @if ($seller->paypal_id == !null)
+                                                    @foreach ($methods as $method)
+                                                        @if ($method->id == 1)
+                                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                                @if ($seller->stripe_id == !null)
+                                                    @foreach ($methods as $method)
+                                                        @if ($method->id == 2)
+                                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endif
                                         </select>
                                     </div>
                                     @error('amount')
-                                        <span class="invalid-feedback" role="alert">
-                                            <small>{{ $message }}</small>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="mb20">
-                                    <label for="amount"> Account Number </label>
-                                    <input type="number" name="account_number" class="form-control" placeholder="Enter account number">
-                                    @error('account_number')
                                         <span class="invalid-feedback" role="alert">
                                             <small>{{ $message }}</small>
                                         </span>

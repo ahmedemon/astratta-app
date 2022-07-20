@@ -3,25 +3,28 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\BillingDetail;
 use App\Models\Coupon;
-use App\Models\CurrentBalance;
 use App\Models\MyCart;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
-use App\Models\ShippingDetail;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Stripe\Charge;
-use Stripe\Customer;
 use Stripe\Stripe;
+use Omnipay\Omnipay;
 
 class CheckoutController extends Controller
 {
+    private $gateway;
+    public function __construct()
+    {
+        $this->gateway = Omnipay::create('PayPal_Rest');
+        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
+        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
+        $this->gateway->setTestMode(true);
+    }
     public function checkout()
     {
         if (request()->total_cost == 0) {
@@ -101,6 +104,43 @@ class CheckoutController extends Controller
         $pageTitle = "Checkout";
         return view('frontend.checkout.checkout', compact('items', 'code', 'total', 'total_cost', 'percentage', 'pageTitle'));
     }
+
+    public function success(Request $request)
+    {
+        if ($request->input('paymentId') && $request->input('PayerID')) {
+            $transaction = $this->gateway->completePurchase(array(
+                'payer_id' => $request->input('PayerID'),
+                'transactionReference' => $request->input('paymentId')
+            ));
+
+            $response = $transaction->send();
+
+            if ($response->isSuccessful()) {
+
+                $arr = $response->getData();
+
+                $payment = new Payment();
+                $payment->payment_id = $arr['id'];
+                $payment->payer_id = $arr['payer']['payer_info']['payer_id'];
+                $payment->payer_email = $arr['payer']['payer_info']['email'];
+                $payment->amount = $arr['transactions'][0]['amount']['total'];
+                $payment->currency = env('PAYPAL_CURRENCY');
+                $payment->payment_status = $arr['state'];
+
+                $payment->save();
+
+                include('PlaceOrder.php');
+                alert('Order Complete!', 'Your order has been placed!', 'success');
+                return redirect()->route('checkout.completed', [Crypt::encrypt($order)])->with('success', "Payment is Successfull. Your Transaction Id is : " . $arr['id']);
+            } else {
+                return $response->getMessage();
+            }
+        } else {
+            alert('Error!', 'Payment declined!!!', 'error');
+            return redirect()->back();
+        }
+    }
+
     public function placeOrder(Request $request)
     {
         $order_track_id = mt_rand(100000, 999999);
@@ -108,196 +148,45 @@ class CheckoutController extends Controller
         $method_id = Crypt::decrypt($request->method_id);
 
         if ($method_id == 1) {
-            Stripe::setApiKey(env('STRIPE_SECRET'));
-            $charge = Charge::create([
-                "amount" => round($total * 100),
-                "currency" => "USD",
-                "source" => $request->stripeToken,
-                "description" => "Order Tracking No: #" . $order_track_id,
-            ]);
+            try {
+                Stripe::setApiKey(env('STRIPE_SECRET'));
+                $charge = Charge::create([
+                    "amount" => round($total * 100),
+                    "currency" => "USD",
+                    "source" => $request->stripeToken,
+                    "description" => "Order Tracking No: #" . $order_track_id,
+                ]);
+                include('PlaceOrder.php');
+            } catch (\Throwable $th) {
+                alert('Error!', $th->getMessage(), 'error');
+                return redirect()->back();
+            }
         } elseif ($method_id == 2) {
-            return 'paypal';
+            try {
+                $response = $this->gateway->purchase(array(
+                    'amount' => $request->amount,
+                    'currency' => env('PAYPAL_CURRENCY'),
+                    'returnUrl' => route('checkout.success'),
+                    'cancelUrl' => route('checkout.checkout')
+                ))->send();
+
+                if ($response->isRedirect()) {
+                    $response->redirect();
+                } else {
+                    alert('Error!', $response->getMessage(), 'error');
+                    return redirect()->back();
+                }
+            } catch (\Throwable $th) {
+                alert('Error!', $th->getMessage(), 'error');
+                return redirect()->back();
+            }
         } else {
             return 'none';
         }
-        $authCheck = Auth::guard('web')->check();
-        if ($authCheck) {
-            $user = User::find(Auth::user()->id);
-            $user->name = Auth::user()->name ?? $request->first_name . ' ' . $request->last_name;
-            $user->phone = $request->phone;
-            $user->save();
-        } else {
-            $newuser = User::create([
-                'name' => $request->first_name . ' ' . $request->last_name,
-                'username' => Str::slug($request->first_name . $request->last_name),
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'email_verified_at' => date(now()),
-                'password' => Hash::make(Str::random(10)),
-                'privacy_policy' => 1,
-                'is_active' => 1,
-                'is_approved' => 1,
-                'is_blocked' => 0,
-            ]);
+        if ($method_id == 1) {
+            alert('Order Complete!', 'Your order has been placed!', 'success');
+            return redirect()->route('checkout.completed', [Crypt::encrypt($order)]);
         }
-        if (isset($request->items) && count($request->items) > 0) {
-            foreach ($request->items as $key => $value) {
-                $id = $value['product_id'];
-                if ($value['cart_item_id'] != null) {
-                    if (Auth::guard('web')->check()) {
-                        $my_cart = MyCart::where('product_id', $id)->where('buyer_id', Auth::user()->id)->first();
-                        $my_cart->delete();
-                    } else {
-                        $my_cart = MyCart::where('product_id', $id)->where('guest_id', Auth::guest())->first();
-                        $my_cart->delete();
-                    }
-                }
-
-                $product = Product::find($id);
-                $product->is_purchased = 1;
-                $product->save();
-
-                // if ($code != null) {
-                //     $coupon = Coupon::where('is_active', 1)->where('code', $code)->first();
-                //     $percentage = $coupon->percentage;
-                // } else {
-                //     $percentage = 0;
-                // }
-
-                // if ($code != 0) {
-                //     $sub_amount = ($percentage / 100) * $total_cost;
-                //     $amount = $total_cost - $sub_amount;
-                // } else {
-                //     $amount = Crypt::decrypt($request->total_cost);
-                // }
-
-                $code = Crypt::decrypt($request->code) ?? null;
-                $total_cost = Crypt::decrypt($request->total_cost);
-
-                $order = Order::create([
-                    'user_id' => Auth::user()->id ?? $newuser->id,
-                    'seller_id' => $product->seller_id,
-                    'product_id' => $value['product_id'],
-                    'order_track_id' => $order_track_id,
-                    'order_date' => date(now()),
-                    'product_price' => $product->product_price,
-                    'total_cost' => $total_cost,
-                    'coupon_code' => $code,
-                    'method_id' => 1,
-                    'guest_id' => $newuser->id ?? null,
-                ]);
-
-                CurrentBalance::create([
-                    'seller_id' => $product->seller_id,
-                    'credit_amount' => $product->product_price,
-                    'debit_amount' => null,
-                    'note' => 'Order amount',
-                    'trnx_id' => Str::random(16),
-                ]);
-            }
-        }
-
-        $this->validate($request, [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'phone' => ['required', 'string'],
-            'email' => ['required', 'string'],
-            'country' => ['required', 'string'],
-            'state' => ['required', 'string'],
-            'town_city' => ['required', 'string'],
-            'street' => ['required', 'string'],
-            'post_or_zip' => ['required', 'string'],
-        ]);
-
-
-        if ($authCheck) {
-            $hasBilling = BillingDetail::where('user_id', Auth::user()->id)->count();
-            if ($hasBilling == 1) {
-                $billing  = BillingDetail::find(Auth::user()->billing->id);
-                $billing->first_name    = $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name;
-                $billing->last_name     = $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name;
-                $billing->phone         = $authCheck ? $request->phone : $request->phone;
-                $billing->email         = $authCheck ? Auth::user()->email ?? $request->email : $request->email;
-                $billing->country       = $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country;
-                $billing->state         = $authCheck ? Auth::user()->billing->state ?? $request->state : $request->state;
-                $billing->town_city     = $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country;
-                $billing->street        = $authCheck ? Auth::user()->billing->street ?? $request->street :  $request->street;
-                $billing->post_or_zip   = $authCheck ? Auth::user()->billing->post_or_zip ?? $request->post_or_zip : $request->post_or_zip;
-                $billing->save();
-            } else {
-                BillingDetail::create([
-                    'user_id'       => Auth::user()->id ?? $newuser->id,
-                    'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
-                    'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
-                    'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
-                    'email'         => $authCheck ? Auth::user()->email ?? $request->email : $request->email,
-                    'country'       => $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country,
-                    'state'         => $authCheck ? Auth::user()->billing->state ?? $request->state : $request->state,
-                    'town_city'     => $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country,
-                    'street'        => $authCheck ? Auth::user()->billing->street ?? $request->street :  $request->street,
-                    'post_or_zip'   => $authCheck ? Auth::user()->billing->post_or_zip ?? $request->post_or_zip : $request->post_or_zip,
-                ]);
-            }
-        } else {
-            BillingDetail::create([
-                'user_id'       => Auth::user()->id ?? $newuser->id,
-                'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
-                'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
-                'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
-                'email'         => $authCheck ? Auth::user()->email ?? $request->email : $request->email,
-                'country'       => $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country,
-                'state'         => $authCheck ? Auth::user()->billing->state ?? $request->state : $request->state,
-                'town_city'     => $authCheck ? Auth::user()->billing->country ?? $request->country : $request->country,
-                'street'        => $authCheck ? Auth::user()->billing->street ?? $request->street :  $request->street,
-                'post_or_zip'   => $authCheck ? Auth::user()->billing->post_or_zip ?? $request->post_or_zip : $request->post_or_zip,
-            ]);
-        }
-
-        if ($authCheck) {
-            $hasShipping = ShippingDetail::where('user_id', Auth::user()->id)->count();
-            if ($hasShipping == 1) {
-                $shipping  = ShippingDetail::find(Auth::user()->shipping->id);
-                $shipping->user_id       = Auth::user()->id ?? $newuser->id;
-                $shipping->first_name    = $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name;
-                $shipping->last_name     = $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name;
-                $shipping->phone         = $authCheck ? $request->phone : $request->phone;
-                $shipping->email         = $authCheck ? Auth::user()->email ?? $request->email : $request->email;
-                $shipping->country       = $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country;
-                $shipping->state         = $authCheck ? Auth::user()->shipping->state ?? $request->state : $request->state;
-                $shipping->town_city     = $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country;
-                $shipping->street        = $authCheck ? Auth::user()->shipping->street ?? $request->street :  $request->street;
-                $shipping->post_or_zip   = $authCheck ? Auth::user()->shipping->post_or_zip ?? $request->post_or_zip : $request->post_or_zip;
-                $shipping->save();
-            } else {
-                ShippingDetail::create([
-                    'user_id'       => Auth::user()->id ?? $newuser->id,
-                    'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
-                    'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
-                    'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
-                    'email'         => $authCheck ? Auth::user()->email ?? $request->email : $request->email,
-                    'country'       => $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country,
-                    'state'         => $authCheck ? Auth::user()->shipping->state ?? $request->state : $request->state,
-                    'town_city'     => $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country,
-                    'street'        => $authCheck ? Auth::user()->shipping->street ?? $request->street :  $request->street,
-                    'post_or_zip'   => $authCheck ? Auth::user()->shipping->post_or_zip ?? $request->post_or_zip : $request->post_or_zip,
-                ]);
-            }
-        } else {
-            ShippingDetail::create([
-                'user_id'       => Auth::user()->id ?? $newuser->id,
-                'first_name'    => $authCheck ? strtok(Auth::user()->name, ' ') : $request->first_name,
-                'last_name'     => $authCheck ? basename(str_replace(' ', '/', Auth::user()->name ?? $request->last_name,)) : $request->last_name,
-                'phone'         => $authCheck ? Auth::user()->phone ?? $request->phone : $request->phone,
-                'email'         => $authCheck ? Auth::user()->email ?? $request->email : $request->email,
-                'country'       => $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country,
-                'state'         => $authCheck ? Auth::user()->shipping->state ?? $request->state : $request->state,
-                'town_city'     => $authCheck ? Auth::user()->shipping->country ?? $request->country : $request->country,
-                'street'        => $authCheck ? Auth::user()->shipping->street ?? $request->street :  $request->street,
-                'post_or_zip'   => $authCheck ? Auth::user()->shipping->post_or_zip ?? $request->post_or_zip : $request->post_or_zip,
-            ]);
-        }
-        alert('Order Complete!', 'Your order has been placed!', 'success');
-        return redirect()->route('checkout.completed', [Crypt::encrypt($order)]);
     }
 
     public function completed($order)

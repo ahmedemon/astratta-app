@@ -261,7 +261,10 @@
                                                     </a>
                                                 </h2>
                                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                                    <div class="card card-body" style="width: 300px">This is some placeholder content for a horizontal collapse. It's hidden by default and shown when triggered.</div>
+                                                    {{-- <div class="card card-body">
+                                                        <div class="input-grou"></div>
+                                                    </div> --}}
+                                                    <input type="hidden" name="amount" value="{{ $total }}" />
                                                 </div>
                                             </div>
                                         </div>

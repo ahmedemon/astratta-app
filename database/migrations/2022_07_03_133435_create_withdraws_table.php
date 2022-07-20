@@ -18,7 +18,8 @@ return new class extends Migration
             $table->integer('seller_id');
             $table->integer('method_id');
             $table->integer('charge_id')->nullable();
-            $table->integer('account_number');
+            $table->string('stripe_id')->nullable();
+            $table->string('paypal_id')->nullable();
             $table->decimal('amount', 10, 2);
             $table->string('note');
             $table->integer('status')->default(0);

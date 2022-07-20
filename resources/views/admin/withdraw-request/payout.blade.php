@@ -6,30 +6,10 @@
                 <h6 class="m-0 font-weight-bold text-primary">{{ $pageTitle }}</h6>
             </div>
             <div class="card card-body">
-                <form action="{{ route('admin.withdraw.pay') }}" method="POST" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
+                <form action="{{ route('admin.withdraw.pay') }}" method="POST">
                     @csrf
                     <input type="hidden" value="{{ Crypt::encrypt($withdraw_id) }}" name="withdraw_id">
                     <div class="row">
-                        <div class="col-xs-12 col-md-6 form-group required">
-                            <label class="control-label">Name on Card</label>
-                            <input type="text" class="form-control" size="4" type="text" value="Test">
-                        </div>
-                        <div class="col-xs-12 col-md-6 form-group required">
-                            <label class="control-label">Card Number</label>
-                            <input autocomplete="off" class="form-control card-number" size="20" type="tel" value="4242424242424242">
-                        </div>
-                        <div class="col-xs-12 col-md-4 form-group cvc required">
-                            <label class="control-label">CVC</label>
-                            <input autocomplete="off" class="form-control card-cvc" placeholder="ex. 311" size="4" type="number" value="311">
-                        </div>
-                        <div class="col-xs-12 col-md-4 form-group expiration required">
-                            <label class="control-label">Expiration Month</label>
-                            <input class="form-control card-expiry-month" placeholder="MM" size="2" type="number" value="02">
-                        </div>
-                        <div class="col-xs-12 col-md-4 form-group expiration required">
-                            <label class="control-label">Expiration Year</label>
-                            <input class="form-control card-expiry-year" placeholder="YYYY" size="4" type="number" value="2023">
-                        </div>
                         <button class="btn btn-sm btn-primary w-100 checkout-button">Pay</button>
                     </div>
                 </form>

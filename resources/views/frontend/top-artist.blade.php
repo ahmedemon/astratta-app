@@ -4,7 +4,7 @@
         <img class="h-100" src="{{ asset('frontend/images/line1.png') }}" alt="" />
     </div>
     @if (config('top_artists')->count() == 0)
-        <h4 class="text-center mt-5">No artist selected to the top!!</h4>
+        <h4 class="no-paint text-center mt-5">No artist selected to the top!!</h4>
     @else
         <div class="artist-loop owl-carousel owl-theme">
             @foreach (config('top_artists') as $item)

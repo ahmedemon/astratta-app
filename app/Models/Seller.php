@@ -11,6 +11,8 @@ class Seller extends User
     use HasFactory;
     protected $fillable = [
         'username',
+        'stripe_id',
+        'paypal_id',
         'email',
         'phone',
         'password',

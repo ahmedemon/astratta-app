@@ -86,6 +86,7 @@ Route::controller(CheckoutController::class)->prefix('check-point')->as('checkou
     Route::get('buy-now/{id}', 'buyNow')->name('buy.now');
     Route::post('place-order', 'placeOrder')->name('place.order');
     Route::get('completed/{order}', 'completed')->name('completed');
+    Route::get('success', 'success')->name('success');
 });
 
 Route::get('artisan-call', function () {

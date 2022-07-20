@@ -22,7 +22,7 @@
                                 <th class="text-center">SL No</th>
                                 <th class="text-center">Seller</th>
                                 <th class="text-center">Method</th>
-                                <th class="text-center">Account Number</th>
+                                <th class="text-center">Account</th>
                                 <th class="text-center">Amount</th>
                                 <th class="text-center">Status</th>
                                 <th width="18%" class="text-center">Action</th>

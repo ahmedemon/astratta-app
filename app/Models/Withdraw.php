@@ -9,7 +9,7 @@ class Withdraw extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'note', 'trnx_id', 'seller_id', 'method_id', 'account_number'];
+    protected $fillable = ['amount', 'note', 'trnx_id', 'seller_id', 'method_id'];
 
     public function withdrawMethod()
     {

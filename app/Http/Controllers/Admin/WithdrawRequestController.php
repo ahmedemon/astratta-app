@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Stripe\Charge;
 use Stripe\Payout;
+use Stripe\Refund;
 use Stripe\Stripe;
+use Stripe\StripeClient;
+use Stripe\Transfer;
 use Yajra\DataTables\DataTables;
 
 class WithdrawRequestController extends Controller
@@ -21,16 +24,26 @@ class WithdrawRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
-                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                     $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('method_id', function ($data) {
-                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
+                })
+                ->editColumn('account_number', function ($data) {
+                    if ($data->stripe_id == !null) {
+                        $account_number = $data->stripe_id;
+                        return $account_number;
+                    }
+                    if ($data->paypal_id == !null) {
+                        $account_number = $data->paypal_id;
+                        return $account_number;
+                    }
                 })
                 ->editColumn('amount', function ($data) {
                     $amount = intval($data->amount);
-                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -47,11 +60,13 @@ class WithdrawRequestController extends Controller
                     }
                 })
                 ->addColumn('action', function ($data) {
-                    $complete = '<a href="' . route('admin.withdraw.complete', $data->id) . '" class="complete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to payout this request?')" . '">Complete</a>';
+                    $complete = '
+                        <a href="' . route('admin.withdraw.complete', $data->id) . '" class="complete btn btn-info btn-sm" onClick="' . "return confirm('Are you sure you want to payout this request?')" . '">Complete</a>
+                    ';
                     $delete = '<a href="' . route('admin.withdraw.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this request?')" . '">Delete</a>';
                     return $complete . ' ' . $delete;
                 })
-                ->rawColumns(['action', 'seller_id', 'method_id', 'status'])
+                ->rawColumns(['action', 'seller_id', 'method_id', 'status', 'account_number'])
                 ->make(true);
         }
         $pageTitle = "Approved Withdraws";
@@ -64,16 +79,26 @@ class WithdrawRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
-                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                     $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('method_id', function ($data) {
-                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
+                })
+                ->editColumn('account_number', function ($data) {
+                    if ($data->stripe_id == !null) {
+                        $account_number = $data->stripe_id;
+                        return $account_number;
+                    }
+                    if ($data->paypal_id == !null) {
+                        $account_number = $data->paypal_id;
+                        return $account_number;
+                    }
                 })
                 ->editColumn('amount', function ($data) {
                     $amount = intval($data->amount);
-                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -95,7 +120,7 @@ class WithdrawRequestController extends Controller
                     $delete = '<a href="' . route('admin.withdraw.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this request?')" . '">Delete</a>';
                     return $approve . ' ' . $reject . ' ' . $delete;
                 })
-                ->rawColumns(['action', 'seller_id', 'method_id', 'status'])
+                ->rawColumns(['action', 'seller_id', 'method_id', 'status', 'account_number'])
                 ->make(true);
         }
         $pageTitle = "Requested Withdraws";
@@ -108,16 +133,26 @@ class WithdrawRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
-                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                     $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('method_id', function ($data) {
-                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
+                })
+                ->editColumn('account_number', function ($data) {
+                    if ($data->stripe_id == !null) {
+                        $account_number = $data->stripe_id;
+                        return $account_number;
+                    }
+                    if ($data->paypal_id == !null) {
+                        $account_number = $data->paypal_id;
+                        return $account_number;
+                    }
                 })
                 ->editColumn('amount', function ($data) {
                     $amount = intval($data->amount);
-                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -136,7 +171,7 @@ class WithdrawRequestController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<a href="' . route('admin.withdraw.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this request?')" . '">Delete</a>';
                 })
-                ->rawColumns(['action', 'seller_id', 'method_id', 'status'])
+                ->rawColumns(['action', 'seller_id', 'method_id', 'status', 'account_number'])
                 ->make(true);
         }
         $pageTitle = "Solded Withdraws";
@@ -149,16 +184,26 @@ class WithdrawRequestController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('seller_id', function ($data) {
-                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    $name = $data->seller->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                     $username = '<small>(' . ($data->seller->username ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>') . ')</small>';
                     return $name . ' ' . $username;
                 })
                 ->editColumn('method_id', function ($data) {
-                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return $data->withdrawMethod->name ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
+                })
+                ->editColumn('account_number', function ($data) {
+                    if ($data->stripe_id == !null) {
+                        $account_number = $data->stripe_id;
+                        return $account_number;
+                    }
+                    if ($data->paypal_id == !null) {
+                        $account_number = $data->paypal_id;
+                        return $account_number;
+                    }
                 })
                 ->editColumn('amount', function ($data) {
                     $amount = intval($data->amount);
-                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Selected</span>';
+                    return '$' . $amount ?? '<span class="btn btn-sm btn-warning rounded-0">Not Updated</span>';
                 })
                 ->editColumn('status', function ($data) {
                     if ($data->status == 0) {
@@ -179,7 +224,7 @@ class WithdrawRequestController extends Controller
                     $delete = '<a href="' . route('admin.withdraw.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure you want to delete this request?')" . '">Delete</a>';
                     return $recall . ' ' . $delete;
                 })
-                ->rawColumns(['action', 'seller_id', 'method_id', 'status'])
+                ->rawColumns(['action', 'seller_id', 'method_id', 'status', 'account_number'])
                 ->make(true);
         }
         $pageTitle = "Solded Withdraws";
@@ -197,38 +242,31 @@ class WithdrawRequestController extends Controller
     }
     public function complete($id)
     {
-        $withdraw_id = $id;
-        return redirect()->route('admin.withdraw.payout', [$withdraw_id]);
-    }
-    public function payout($withdraw_id)
-    {
-        $withdraw = Withdraw::find($withdraw_id);
-        $pageTitle = "Payout to " . $withdraw->seller->username;
-        return view('admin.withdraw-request.payout', compact('pageTitle', 'withdraw', 'withdraw_id'));
-    }
-
-    public function pay(Request $request)
-    {
-        $id = Crypt::decrypt($request->withdraw_id);
         $withdraw = Withdraw::find($id);
-        $total = $withdraw->amount;
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        $charge = Payout::create([
-            "amount" => $total * 100,
-            "currency" => 'USD',
-            "method" => 'instant',
-            "source" => $request->stripeToken,
-            "destination" => $withdraw->account_number,
-        ], [
-            "stripe_account" => 'acct_1LIuzZIM5KRkGxKe',
-        ]);
+        $total = intval($withdraw->amount);
+        if ($withdraw->method_id == 2) {
+            try {
+                // $transfer = new StripeClient(
+                //     env('STRIPE_SECRET')
+                // );
+                Stripe::setApiKey(env('STRIPE_SECRET'));
+                $transfer = Transfer::create([
+                    'amount' => $total,
+                    'currency' => 'USD',
+                    'destination' => $withdraw->stripe_id,
+                    'transfer_group' => $withdraw->id,
+                ]);
+            } catch (\Throwable $th) {
+                toastr()->error('Something went wrong! ' . $th . '', 'Error!');
+                return redirect()->back();
+            }
+        }
         $withdraw->status = 2;
-        $withdraw->charge_id = $charge->id;
+        $withdraw->charge_id = $transfer->id;
         $withdraw->save();
         toastr()->success('Withdraw request Completed successfully!');
         return redirect()->route('admin.withdraw.completed');
     }
-
 
     public function reject($id)
     {

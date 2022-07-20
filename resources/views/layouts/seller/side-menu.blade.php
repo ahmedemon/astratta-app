@@ -32,7 +32,11 @@
                 <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.refund.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/refunds*') ? 'active' : '' }} deactivated">Refunds</a>
             </li>
             <li class="list-group-item p-0 border-0 mb10">
-                <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.withdraw.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }} deactivated">Withdraw</a>
+                @if (Auth::guard('seller')->user()->stripe_id == null && Auth::guard('seller')->user()->paypal_id == null)
+                    <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.withdraw.set.method') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }} deactivated">Withdraw</a>
+                @else
+                    <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.withdraw.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/withdraw*') ? 'active' : '' }} deactivated">Withdraw</a>
+                @endif
             </li>
             <li class="list-group-item p-0 border-0 mb10">
                 <a href="{{ Auth::guard('seller')->user()->is_approved ? route('seller.setting.index') : 'javascript::void();' }}" class="btn btn-light pl35 w-100 rounded-0 border-0 {{ Request::is('seller/settings*') ? 'active' : '' }} deactivated">Settings</a>

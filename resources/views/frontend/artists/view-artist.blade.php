@@ -1,5 +1,13 @@
 @extends('layouts.frontend.app', ['pageTitle' => $pageTitle])
 @section('content')
+    <style>
+        .no-paint {
+            font-family: 'Crucial' !important;
+            font-style: normal;
+            font-weight: 500;
+            color: #000000;
+        }
+    </style>
     <div class="container-fluid px-0 bg-white product-view-page-container">
         <!-- artist details -->
         <div class="container view-artist">
@@ -20,7 +28,7 @@
                 <div class="right-side col-md-6 section2-container-2">
                     <div class="row justify-content-between">
                         @if ($myProducts->count() == 0)
-                            <h3 class="text-center mt-5">No paint uploaded yet!</h3>
+                            <h3 class="no-paint text-center mt-5">No paint uploaded yet!</h3>
                         @else
                             @foreach ($myProducts as $product)
                                 <div class="col-6 px-lg-0 best-selling-container painting">

@@ -54,6 +54,8 @@ Route::middleware('seller')->group(function () {
         Route::get('/', [WithdrawController::class, 'index'])->name('index');
         Route::get('create', [WithdrawController::class, 'create'])->name('create');
         Route::post('store', [WithdrawController::class, 'store'])->name('store');
+        Route::get('set/method', [WithdrawController::class, 'setMethod'])->name('set.method');
+        Route::put('method', [WithdrawController::class, 'putMethod'])->name('put.method');
     });
     Route::group(['prefix' => 'settings', 'as' => 'setting.'], function () {
         Route::get('/', [AccountSettingController::class, 'index'])->name('index');

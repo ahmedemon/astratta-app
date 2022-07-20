@@ -134,8 +134,6 @@ Route::middleware('admin')->group(function () {
 
         Route::get('approve/{id}', [WithdrawRequestController::class, 'approve'])->name('approve');
         Route::get('complete/{id}', [WithdrawRequestController::class, 'complete'])->name('complete');
-        Route::get('payout/{id}', [WithdrawRequestController::class, 'payout'])->name('payout');
-        Route::post('pay', [WithdrawRequestController::class, 'pay'])->name('pay');
         Route::get('reject/{id}', [WithdrawRequestController::class, 'reject'])->name('reject');
         Route::get('recall/{id}', [WithdrawRequestController::class, 'recall'])->name('recall');
         Route::get('delete/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
