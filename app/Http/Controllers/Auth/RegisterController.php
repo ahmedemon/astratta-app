@@ -7,6 +7,7 @@ use App\Models\BillingDetail;
 use App\Models\ShippingDetail;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Notifications\NewRegisterNotifications;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -81,6 +82,8 @@ class RegisterController extends Controller
         BillingDetail::create([
             'user_id' => $user->id,
         ]);
+
+        $user->notify(new NewRegisterNotifications($user));
         return $user;
     }
 }

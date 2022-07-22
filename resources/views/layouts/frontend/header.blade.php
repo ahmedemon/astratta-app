@@ -29,7 +29,7 @@
             <ul class="navbar-nav m-auto mb-lg-0 d-none d-lg-block">
                 <li class="nav-item">
                     <a class="nav-link" href="/">
-                        <img width="124px" src="{{ asset('frontend/images/logo.png') }}" alt="" />
+                        <img width="170px" src="{{ asset('frontend/images/logo.png') }}" alt="" />
                     </a>
                 </li>
             </ul>

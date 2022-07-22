@@ -1,5 +1,10 @@
 @extends('layouts.frontend.app', ['pageTitle' => $pageTitle])
 @section('content')
+    <style>
+        .ratio {
+            background-color: #00000047 !important;
+        }
+    </style>
     <div class="container-fluid px-0 bg-white product-view-page-container">
         <!-- product grettings -->
         <div class="container product-section1">
@@ -45,8 +50,9 @@
                     </div>
                     <div class="col-md-8 px-lg-0 px-xl-0 px-xxl-0 d-flex justify-content-lg-end justify-content-xl-end justify-content-xxl-end justify-content-between">
                         @foreach ($painting->productImages as $key => $image)
-                            <a class="thumbnails {{ $key == 0 ? 'text-left' : '' }} {{ $key == 1 ? 'text-center' : '' }} {{ $key == 2 ? 'text-end' : '' }}" href="javascript:void();">
-                                <img onclick="change_image(this)" src="{{ asset($image->image ? 'storage/products/' . $image->image : 'frontend/images/art/art2.png') }}" alt="" />
+                            <a class="thumbnails {{ $key == 0 ? 'text-left' : '' }} {{ $key == 1 ? 'text-center' : '' }} {{ $key == 2 ? 'text-end' : '' }}" href="{{ asset($image->image ? 'storage/products/' . $image->image : 'frontend/images/art/art2.png') }}" data-toggle="lightbox" data-gallery="example-gallery">
+                                <img src="{{ asset($image->image ? 'storage/products/' . $image->image : 'frontend/images/art/art2.png') }}" alt="" />
+                                {{-- <img onclick="change_image(this)" src="{{ asset($image->image ? 'storage/products/' . $image->image : 'frontend/images/art/art2.png') }}" alt="" /> --}}
                             </a>
                         @endforeach
                     </div>
@@ -141,12 +147,23 @@
 
 
 @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.0/dist/index.bundle.min.js"></script>
     <script>
-        function change_image(image) {
-            var container = document.getElementById("main-image");
+        const options = {
+            keyboard: true,
+            size: 'fullscreen'
+        };
+        document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventListener('click', (e) => {
+            e.preventDefault();
+            const lightbox = new Lightbox(el, options);
+            lightbox.show();
+        }));
 
-            container.src = image.src;
-        }
-        document.addEventListener("DOMContentLoaded", function(event) {});
+        // function change_image(image) {
+        //     var container = document.getElementById("main-image");
+
+        //     container.src = image.src;
+        // }
+        // document.addEventListener("DOMContentLoaded", function(event) {});
     </script>
 @endpush
