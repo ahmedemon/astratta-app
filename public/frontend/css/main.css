@@ -417,6 +417,18 @@ textarea{
     color: #FFFFFF;
     margin-left: 30px;
 }
+.footer .sub-links{
+    margin-left: 120px;
+}
+.footer .sub-link{
+    text-decoration: none;
+    font-family: 'Crucial' !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #380F28;
+}
 /* footer nav */
 
 /* .form-control:focus{
@@ -2679,6 +2691,7 @@ textarea{
 }
 @media only screen and (min-width: 319px) and (max-width: 476px) {
     .footer-nav{
+        margin-bottom: 65px !important;
         width: fit-content !important;
     }
 }
@@ -2712,11 +2725,14 @@ textarea{
     }
     /* home page */
     .section1 {
+        display: flex;
+        align-items: center;
         background-image: url(../images/frame.png);
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 0;
         background-position: center bottom;
         overflow: hidden;
+        height: 600px;
     }
     .art-demo-container img {
         width: 300px;
@@ -2734,12 +2750,9 @@ textarea{
         background: #4A00C7 !important;
     }
     .section2 .section2-container-1 img {
-        width: 100px;
         height: auto;
     }
     .section2 .section2-container-1 .col-md-4 {
-        width: 150px;
-        height: 180px;
         margin-bottom: 50px;
     }
 
@@ -2766,9 +2779,7 @@ textarea{
     }
     .section1 .headings1 {
         width: auto;
-        font-size: 25px;
         margin-top: 20px !important;
-        margin-bottom: auto !important;
     }
     .section1-content{
         height: auto;
@@ -2883,12 +2894,15 @@ textarea{
         padding-left: inherit !important;
     }
 
+    .footer .sub-links {
+        margin-left: auto;
+    }
     .footer .contact-section {
         padding-left: inherit !important;
     }
 
     .social-links {
-        padding-left: 8px !important;
+        padding-left: 0px !important;
     }
 
     .product-section1 .art #main-image {

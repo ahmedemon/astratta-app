@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 px-lg-0">
+                    <div class="col-md-6 px-lg-0 d-md-block d-lg-block d-xl-block d-xxl-block d-none">
                         <div class="art-demo-container d-flex justify-content-lg-end justify-content-center">
                             <img src="{{ asset('frontend/images/art/hero.png') }}" alt="" />
                         </div>
@@ -39,7 +39,7 @@
         <!-- section 2 start -->
         <div class="section2">
             <div class="container section2-container-1 px-0">
-                <div class="row justify-content-lg-between justify-content-between justify-content-md-between mx-auto">
+                <div class="row justify-content-lg-between justify-content-center justify-content-md-between justify-content-xl-between justify-content-xxl-between mx-auto">
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4">
                         <img src="{{ asset('frontend/images/art/demo1.png') }}" alt="" />
                     </div>

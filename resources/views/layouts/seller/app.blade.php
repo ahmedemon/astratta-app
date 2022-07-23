@@ -17,6 +17,7 @@
     <!-- cdn links -->
 
     <!-- local link -->
+    <link rel="stylesheet" href="{{ asset('frontend/css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/custom.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/media-query.css') }}" />
     <link rel="stylesheet" href="{{ asset('vendor/css/owl.carousel.min.css') }}" />

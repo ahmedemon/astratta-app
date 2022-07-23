@@ -31,7 +31,7 @@
             @csrf
             @method('GET')
             <!-- product list -->
-            <div class="cart-product-list bg-light">
+            <div class="cart-product-list bg-light {{ $cartItems->count() == 0 ? 'pb96' : '' }}">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-8 bg-white cart">
@@ -43,76 +43,93 @@
                                     <p class="my-0">Price</p>
                                 </div>
                             </div>
-                            @foreach ($cartItems as $item)
-                                <label for="chk-{{ $item->id }}" class="row-label">
-                                    <div class="row cart-body" id="row-{{ $item->id }}">
-                                        <input type="hidden" name="items[{{ $item->id }}][cart_item_id]" value="{{ $item->id }}" />
-                                        <input class="input-x d-none" type="checkbox" checked id="chk-{{ $item->id }}" name="items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}" data-price="{{ $item->product->product_price }}" required aria-required="" />
-                                        <div class="col-8 d-flex align-items-center">
-                                            <a href="{{ route('my-cart.remove-from-cart', $item->id) }}" class="m-0">
-                                                <i class="lni lni-close" id="close-{{ $item->id }}"></i>
-                                            </a>
-                                            <img class="product-image" src="{{ asset('storage/products/' . $item->product->main_image) }}" alt="" />
-                                            <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
+                            <style>
+                                .empty-cart {
+                                    font-family: 'Crucial' !important;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                }
+                            </style>
+                            @if ($cartItems->count() == 0)
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <h3 class="my-4 text-center empty-cart">Your Cart Is Empty <i class="far fa-frown"></i></h3>
+                                    <a href="{{ route('painting.index') }}" class="ms-3" style="color: #ce157b; text-decoration: none;">CONTINUE SHOPPING <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            @else
+                                @foreach ($cartItems as $item)
+                                    <label for="chk-{{ $item->id }}" class="row-label">
+                                        <div class="row cart-body" id="row-{{ $item->id }}">
+                                            <input type="hidden" name="items[{{ $item->id }}][cart_item_id]" value="{{ $item->id }}" />
+                                            <input class="input-x d-none" type="checkbox" checked id="chk-{{ $item->id }}" name="items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}" data-price="{{ $item->product->product_price }}" required aria-required="" />
+                                            <div class="col-8 d-flex align-items-center">
+                                                <a href="{{ route('my-cart.remove-from-cart', $item->id) }}" class="m-0">
+                                                    <i class="lni lni-close" id="close-{{ $item->id }}"></i>
+                                                </a>
+                                                <img class="product-image" src="{{ asset('storage/products/' . $item->product->main_image) }}" alt="" />
+                                                <a href="{{ route('painting.show', $item->product_id) }}" class="text-decoration-none color-{{ $item->id }}">{{ $item->product->product_name }}</a>
+                                            </div>
+                                            <div class="col-4 d-flex align-items-center justify-content-end">
+                                                <p class="my-0 color-{{ $item->id }}">${{ str_replace('.00', '', $item->product->product_price) }}</p>
+                                            </div>
                                         </div>
-                                        <div class="col-4 d-flex align-items-center justify-content-end">
-                                            <p class="my-0 color-{{ $item->id }}">${{ str_replace('.00', '', $item->product->product_price) }}</p>
-                                        </div>
-                                    </div>
-                                </label>
-                            @endforeach
+                                    </label>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
             <!-- product list -->
 
-            <!-- apply coupon -->
-            <div class="apply-coupon bg-light">
-                <div class="container px-lg-0 px-xl-0 px-xxl-0">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="coupon-body bg-white d-flex">
-                                <input type="text" name="code" id="code" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
-                                <button class="btn rounded-0 sign-in-button" type="button" id="discountButton">Apply Coupon</button>
+            @if ($cartItems->count() == 0)
+            @else
+                <!-- apply coupon -->
+                <div class="apply-coupon bg-light">
+                    <div class="container px-lg-0 px-xl-0 px-xxl-0">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="coupon-body bg-white d-flex">
+                                    <input type="text" name="code" id="code" class="form-control rounded-0 shadow-none" placeholder="Coupon Code" />
+                                    <button class="btn rounded-0 sign-in-button" type="button" id="discountButton">Apply Coupon</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- apply coupon -->
+                <!-- apply coupon -->
 
-            <!-- cart total -->
-            <div class="cart-total bg-light">
-                <div class="container px-lg-0 px-xl-0 px-xxl-0">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="cart-total-body bg-white">
-                                <h3 class="my-0">Cart Total</h3>
-                                <div class="d-flex subtotal justify-content-between mb25">
-                                    <p class="my-0 subtotal-title">Subtotal</p>
-                                    <p class="my-0 subtotal-amount">{{ config('currency.usd') }}</p>
-                                </div>
-                                <div class="d-flex discounted justify-content-between mb25">
-                                    <p class="my-0 discounted-title">Discounted</p>
-                                    <p class="my-0 discounted-amount">{{ config('symbol.percent') }}0</p>
-                                </div>
-                                <hr class="mb25" />
-                                <div class="d-flex shipping justify-content-between mb25">
-                                    <p class="my-0 shipping-title">Total</p>
-                                    <p class="my-0 shipping-amount d-flex align-items-center justify-content-end">
-                                        {{ config('currency.usd') }}
-                                        <input class="bg-transparent px-0 border-0 text-end form-control rounded-0 shadow-none w-50" id="total" type="number" name="total_cost" min="1" value="" readonly />
-                                    </p>
-                                </div>
+                <!-- cart total -->
+                <div class="cart-total bg-light">
+                    <div class="container px-lg-0 px-xl-0 px-xxl-0">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="cart-total-body bg-white">
+                                    <h3 class="my-0">Cart Total</h3>
+                                    <div class="d-flex subtotal justify-content-between mb25">
+                                        <p class="my-0 subtotal-title">Subtotal</p>
+                                        <p class="my-0 subtotal-amount">{{ config('currency.usd') }}</p>
+                                    </div>
+                                    <div class="d-flex discounted justify-content-between mb25">
+                                        <p class="my-0 discounted-title">Discounted</p>
+                                        <p class="my-0 discounted-amount">{{ config('symbol.percent') }}0</p>
+                                    </div>
+                                    <hr class="mb25" />
+                                    <div class="d-flex shipping justify-content-between mb25">
+                                        <p class="my-0 shipping-title">Total</p>
+                                        <p class="my-0 shipping-amount d-flex align-items-center justify-content-end">
+                                            {{ config('currency.usd') }}
+                                            <input class="bg-transparent px-0 border-0 text-end form-control rounded-0 shadow-none w-50" id="total" type="number" name="total_cost" min="1" value="" readonly />
+                                        </p>
+                                    </div>
 
-                                <button class="d-flex align-items-center justify-content-center w-100 btn rounded-0 border-0 sign-up-button checkout-button">Proceed To Checkout</button>
+                                    <button class="d-flex align-items-center justify-content-center w-100 btn rounded-0 border-0 sign-up-button checkout-button">Proceed To Checkout</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- cart total -->
+                <!-- cart total -->
+            @endif
         </form>
     </div>
     <div id="tots"></div>
