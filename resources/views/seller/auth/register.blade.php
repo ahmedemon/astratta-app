@@ -57,8 +57,8 @@
                                     <input type="password" id="password_confirmation" class="px-0 form-control rounded-0 border-0 border-bottom border-secondary shadow-none @error('password_confirmation') is-invalid @enderror" placeholder="Enter your password again" name="password_confirmation" required autocomplete="new-password" />
                                 </div>
                                 <div class="inputGroup mb30">
-                                    <label for="paintings" class="mb-2">Your Paintings</label>
-                                    <input type="file" id="paintings" name="paintings" class="shadow-none" />
+                                    <label for="images" class="mb-2">Your Paintings</label>
+                                    <input type="file" id="images" name="images[]" class="shadow-none" multiple />
                                 </div>
                                 <div class="inputGroup form-check mb15">
                                     <div class="d-flex align-items-center">

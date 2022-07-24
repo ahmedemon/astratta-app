@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ReviewPainting;
 use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class SellerController extends Controller
@@ -83,9 +85,10 @@ class SellerController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '
-                        <a href="' . route('admin.seller.approve', $data->id) . '" class="edit btn btn-success btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Approve</a>
-                        <a href="' . route('admin.seller.reject', $data->id) . '" class="edit btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Reject</a>
-                        <a href="' . route('admin.seller.destroy', $data->id) . '" class="delete btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Delete</a>
+                        <a href="' . route('admin.seller.approve', $data->id) . '" class="edit mb-1 btn btn-success btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Approve</a>
+                        <a href="' . route('admin.seller.reject', $data->id) . '" class="edit mb-1 btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Reject</a>
+                        <a href="' . route('admin.seller.destroy', $data->id) . '" class="delete mb-1 btn btn-danger btn-sm" onClick="' . "return confirm('Are you sure?')" . '">Delete</a>
+                        <a href="' . route('admin.seller.view.paintings', $data->id) . '" class="edit btn btn-info btn-sm" target="_blank">View Images</a>
                     ';
                     return $actionBtn;
                 })
@@ -132,12 +135,22 @@ class SellerController extends Controller
         $pageTitle = "Rejected Sellers";
         return view('admin.sellers.index', compact('pageTitle'));
     }
-
+    public function review_paintings($id)
+    {
+        $paintings = ReviewPainting::where('seller_id', $id)->get();
+        $pageTitle = "Review Paintings";
+        return view('admin.sellers.review_paintings', compact('pageTitle', 'paintings'));
+    }
     public function approve($id)
     {
         $seller = Seller::find($id);
         $seller->is_approved = 1;
         $seller->save();
+        $paintings = ReviewPainting::where('seller_id', $id)->get();
+        foreach ($paintings as $painting) {
+            Storage::disk('profile')->delete($painting->image);
+            $painting->delete();
+        }
         toastr()->success('Seller request accepted for ' . $seller->username . '!', 'Approved!');
         return redirect()->back();
     }

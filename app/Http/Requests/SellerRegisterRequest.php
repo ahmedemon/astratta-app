@@ -29,7 +29,6 @@ class SellerRegisterRequest extends FormRequest
             'phone' => ['required', 'unique:sellers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required'],
-            'paintings' => ['nullable', 'mimes:png,jpg,jpeg,gif', 'max:2048'],
             'privacy_policy' => ['required', 'boolean'],
             'contact_agreement' => ['required', 'boolean'],
         ];

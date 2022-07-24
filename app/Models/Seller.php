@@ -17,7 +17,6 @@ class Seller extends User
         'phone',
         'password',
         'card_number',
-        'paintings',
         'privacy_policy',
         'contact_agreement',
     ];
@@ -25,5 +24,10 @@ class Seller extends User
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function review_paintings()
+    {
+        return $this->hasMany(ReviewPainting::class);
     }
 }

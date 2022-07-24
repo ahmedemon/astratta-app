@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('stripe_id')->nullable();
             $table->string('paypal_id')->nullable();
-            $table->string('paintings')->nullable();
 
             $table->rememberToken();
             $table->boolean('privacy_policy')->default(0);

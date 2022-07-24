@@ -24,6 +24,7 @@ Route::middleware('admin')->group(function () {
     });
     Route::group(['prefix' => 'sellers', 'as' => 'seller.'], function () {
         Route::get('/', [SellerController::class, 'index'])->name('index');
+        Route::get('seller/review/paintings/{id}', [SellerController::class, 'review_paintings'])->name('view.paintings');
         Route::get('requests', [SellerController::class, 'sellerRequest'])->name('request');
         Route::get('rejected', [SellerController::class, 'rejected'])->name('rejected');
         Route::get('approve/{id}', [SellerController::class, 'approve'])->name('approve');
