@@ -13,7 +13,7 @@
             <div class="row justify-content-between mx-auto">
                 @include('layouts.seller.side-menu')
                 <div class="col-md-8 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
-                    <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    {{-- <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button> --}}
                     <div class="card-body d-flex align-items-center justify-content-between mb30 pb10 border-bottom">
                         <h3 class="my-0">{{ $pageTitle }}</h3>
                         <a href="{{ route('seller.withdraw.index') }}" class="btn btn-sm rounded-0 pb-0 sign-in-button mx-0 h-50">Go Back</a>

@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Seller\Auth;
 use App\Helpers\FileManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SellerRegisterRequest;
+use App\Mail\Register;
+use App\Mail\SellerRegisterMailer;
 use App\Models\ReviewPainting;
 use App\Models\Seller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -48,6 +52,10 @@ class SellerRegisterController extends Controller
                     $review_painting->save();
                 }
             }
+        }
+
+        if ($seller) {
+            Mail::to($seller->email)->send(new SellerRegisterMailer($seller));
         }
 
         toastr()->info('You`ve just registered as an artist. Please wait for confirmation!', 'Success!');

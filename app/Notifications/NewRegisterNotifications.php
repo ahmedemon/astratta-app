@@ -40,13 +40,7 @@ class NewRegisterNotifications extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->view(
-                'greeting_mail',
-                ['user' => $this->user]
-            )
-            ->from('support@yourcompany.com', 'Your Company Name')
-            ->subject('Welcome Aboard');
+        return (new MailMessage)->view('newUserGreetings', ['user' => $this->user])->from(env('MAIL_FROM_ADDRESS'), 'Astratta')->subject('Welcome Aboard');
     }
 
     /**

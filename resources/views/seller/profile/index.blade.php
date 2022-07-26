@@ -5,7 +5,7 @@
             <div class="row justify-content-between mx-auto">
                 @include('layouts.seller.side-menu')
                 <div class="col-md-12 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
-                    <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    {{-- <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button> --}}
                     <h3 class="my-0 mb20-i">Change Profile Picture</h3>
                     <form action="{{ route('seller.profile.update', Auth::guard('seller')->user()->id) }}}}" method="POST">
                         @csrf

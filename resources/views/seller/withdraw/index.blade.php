@@ -5,7 +5,7 @@
             <div class="row justify-content-between mx-auto">
                 @include('layouts.seller.side-menu')
                 <div class="col-md-8 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
-                    <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    {{-- <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button> --}}
                     <div class="card mb30 border-0">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <h3 class="my-0">{{ $pageTitle }}</h3>

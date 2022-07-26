@@ -43,17 +43,17 @@
 
 <nav class="navbar navbar-expand-lg bg-white fixed-bottom shadow d-lg-none d-xl-none d-xxl-none d-flex align-items-center" style="height: 65px !important;">
     <div class="container px-lg-0 px-5 justify-content-between">
-        <a href="/" class="">
-            <img height="30px" src="{{ asset('frontend/svg/home.svg') }}" alt="" />
+        <a href="/" class="btn btn-sm rounded-0">
+            <img height="25px" src="{{ asset('frontend/svg/home.svg') }}" alt="" />
         </a>
-        <a href="{{ route('painting.index') }}" class="">
-            <img height="30px" src="{{ asset('frontend/svg/paintings.svg') }}" alt="" />
+        <a href="{{ route('painting.index') }}" class="btn btn-sm rounded-0">
+            <img height="25px" src="{{ asset('frontend/svg/paintings.svg') }}" alt="" />
         </a>
-        <a href="tel:01940546604" class="">
-            <img height="32px" src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
+        <a href="tel:01940546604" class="btn btn-sm rounded-0">
+            <img height="28px" src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
         </a>
-        <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="">
-            <img height="32px" src="{{ asset('frontend/svg/profile.svg') }}" alt="" />
+        <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="btn btn-sm rounded-0">
+            <img height="28px" src="{{ asset('frontend/svg/profile.svg') }}" alt="" />
         </a>
     </div>
 </nav>

@@ -5,7 +5,7 @@
             <div class="row justify-content-between mx-auto">
                 @include('layouts.seller.side-menu')
                 <div class="col-md-8 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
-                    <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    {{-- <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button> --}}
                     <h1 class="my-0 text-center border-bottom mb35-i">{{ $pageTitle }}</h1>
                     @if (count($errors) > 0)
                         @foreach ($errors->all() as $error)

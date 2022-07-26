@@ -5,7 +5,7 @@
             <div class="row justify-content-between mx-auto">
                 @include('layouts.seller.side-menu')
                 <div class="col-md-12 col-lg-8 col-xl-8 col-xxl-8 col-12 vendor-content">
-                    <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button>
+                    {{-- <button class="btn btn-light sideMenuButton d-lg-none d-xl-none d-xxl-none" onclick="sideBarToggle()"><i class="fas fa-arrow-right"></i></button> --}}
                     <h3 class="my-0 d-flex align-items-center justify-content-between mb35-i">
                         Add New Product <a href="{{ route('seller.product.index') }}" class="text-decoration-none text-dark"><i class="fas fa-times"></i></a>
                     </h3>

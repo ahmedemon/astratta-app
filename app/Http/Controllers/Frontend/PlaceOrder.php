@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\Register;
 use App\Models\BillingDetail;
 use App\Models\CurrentBalance;
 use App\Models\MyCart;
@@ -7,9 +8,13 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingDetail;
 use App\Models\User;
+use App\Notifications\BuyerCreateNotifications;
+use App\Notifications\NewRegisterNotifications;
+use App\Notifications\OrderNotifications;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 $authCheck = Auth::guard('web')->check();
@@ -19,18 +24,22 @@ if ($authCheck) {
     $user->phone = $request->phone;
     $user->save();
 } else {
+    $password = Str::random(10);
     $newuser = User::create([
         'name' => $request->first_name . ' ' . $request->last_name,
         'username' => Str::slug($request->first_name . $request->last_name),
         'email' => $request->email,
         'phone' => $request->phone,
         'email_verified_at' => date(now()),
-        'password' => Hash::make(Str::random(10)),
+        'password' => Hash::make($password),
         'privacy_policy' => 1,
         'is_active' => 1,
         'is_approved' => 1,
         'is_blocked' => 0,
     ]);
+    if ($newuser) {
+        $newuser->notify(new BuyerCreateNotifications($newuser, $password));
+    }
 }
 if (isset($request->items) && count($request->items) > 0) {
     foreach ($request->items as $key => $value) {
@@ -78,6 +87,7 @@ if (isset($request->items) && count($request->items) > 0) {
             'method_id' => 1,
             'guest_id' => $newuser->id ?? null,
         ]);
+
 
         CurrentBalance::create([
             'seller_id' => $product->seller_id,

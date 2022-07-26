@@ -24,7 +24,6 @@ class SellerSeeder extends Seeder
                 'email'          => 'ahmedemon@gmail.com',
                 'phone'          => '01950594252',
                 'password'       => bcrypt('ahmedemon'), // password
-                'paintings'          => null,
                 'email_verified_at' => now(),
                 'remember_token' => null,
                 'privacy_policy' => 1,
@@ -43,7 +42,6 @@ class SellerSeeder extends Seeder
                 'email'          => 'ejazgazi@gmail.com',
                 'phone'          => '01950594251',
                 'password'       => bcrypt('ahmedemon'), // password
-                'paintings'          => null,
                 'email_verified_at' => now(),
                 'remember_token' => null,
                 'privacy_policy' => 1,

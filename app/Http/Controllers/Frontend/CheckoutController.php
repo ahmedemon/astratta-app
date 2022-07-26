@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderMailer;
 use App\Models\Coupon;
 use App\Models\MyCart;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Notifications\OrderNotifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Charge;
 use Stripe\Stripe;
 use Omnipay\Omnipay;
@@ -130,6 +133,10 @@ class CheckoutController extends Controller
                 $payment->save();
 
                 include('PlaceOrder.php');
+                $buyer = $user ?? $newuser;
+                if ($order) {
+                    Mail::to($buyer->email)->send(new OrderMailer($order, $buyer));
+                }
                 alert('Order Complete!', 'Your order has been placed!', 'success');
                 return redirect()->route('checkout.completed', [Crypt::encrypt($order)])->with('success', "Payment is Successfull. Your Transaction Id is : " . $arr['id']);
             } else {
@@ -143,6 +150,14 @@ class CheckoutController extends Controller
 
     public function placeOrder(Request $request)
     {
+        foreach ($request->items as $key => $item) {
+            $product = Product::find($item['product_id']);
+            if ($product->is_purchased == 1) {
+                alert('Stock Out!', 'You have selected a product that is already sold!', 'warning');
+                return redirect()->route('painting.index');
+            }
+        }
+
         $order_track_id = mt_rand(100000, 999999);
         $total  = Crypt::decrypt($request->total_cost);
         $method_id = Crypt::decrypt($request->method_id);
@@ -184,6 +199,10 @@ class CheckoutController extends Controller
             return 'none';
         }
         if ($method_id == 1) {
+            $buyer = $user ?? $newuser;
+            if ($order) {
+                Mail::to($buyer->email)->send(new OrderMailer($order, $buyer));
+            }
             alert('Order Complete!', 'Your order has been placed!', 'success');
             return redirect()->route('checkout.completed', [Crypt::encrypt($order)]);
         }
