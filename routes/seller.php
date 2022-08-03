@@ -4,10 +4,12 @@ use App\Http\Controllers\Seller\AccountSettingController;
 use App\Http\Controllers\Seller\Auth\SellerLoginController;
 use App\Http\Controllers\Seller\Auth\SellerRegisterController;
 use App\Http\Controllers\Seller\DashboardController;
+use App\Http\Controllers\Seller\ForgotPasswordController;
 use App\Http\Controllers\Seller\OrderController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Seller\ProfileController;
 use App\Http\Controllers\Seller\RefundController;
+use App\Http\Controllers\Seller\ResetPasswordController;
 use App\Http\Controllers\Seller\WithdrawController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,4 +63,11 @@ Route::middleware('seller')->group(function () {
         Route::get('/', [AccountSettingController::class, 'index'])->name('index');
         Route::put('update/{id}', [AccountSettingController::class, 'updateuAccount'])->name('update');
     });
+});
+Route::prefix('passwords')->group(function () {
+    Route::get('forget-password', [ForgotPasswordController::class, 'getEmail'])->name('forget.password');
+    Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->name('forget.password.store');
+
+    Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword'])->name('reset.password');
+    Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('reset.password.store');
 });

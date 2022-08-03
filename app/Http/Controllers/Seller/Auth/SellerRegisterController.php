@@ -6,6 +6,7 @@ use App\Helpers\FileManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SellerRegisterRequest;
 use App\Mail\Register;
+use App\Mail\SellerInfoToAdmin;
 use App\Mail\SellerRegisterMailer;
 use App\Models\ReviewPainting;
 use App\Models\Seller;
@@ -56,6 +57,7 @@ class SellerRegisterController extends Controller
 
         if ($seller) {
             Mail::to($seller->email)->send(new SellerRegisterMailer($seller));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new SellerInfoToAdmin($seller));
         }
 
         toastr()->info('You`ve just registered as an artist. Please wait for confirmation!', 'Success!');

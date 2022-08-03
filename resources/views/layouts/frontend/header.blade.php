@@ -39,6 +39,13 @@
             </div>
         </div>
     </div>
+    {{-- <div id="google_element" class="fixed-top" style="left: 90%;"></div>
+    <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+    <script>
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement("google_element");
+        }
+    </script> --}}
 </nav>
 
 <nav class="navbar navbar-expand-lg bg-white fixed-bottom shadow d-lg-none d-xl-none d-xxl-none d-flex align-items-center" style="height: 65px !important;">

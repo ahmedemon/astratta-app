@@ -15,6 +15,7 @@ use App\Models\ShippingDetail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::controller(FrontendController::class)->group(function () {
+
     Route::get('about', 'about')->name('about');
 
     Route::get('contact', 'contact')->name('contact');

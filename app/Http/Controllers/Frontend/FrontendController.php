@@ -8,12 +8,14 @@ use App\Models\Blog;
 use App\Models\Contact;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class FrontendController extends Controller
 {
     // ------------------------------------------------- home
     public function index()
     {
+
         $best_sellings = Product::where('best_selling', 1)->where('status', 1)->where('is_purchased', 0)->with('productImages')->latest()->paginate(6);
         $featuredBlogs = Blog::where('is_featured', 1)->get();
         $pageTitle = "Welcome to largest online painting platform!";

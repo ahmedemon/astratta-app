@@ -26,7 +26,6 @@
 </head>
 
 <body>
-
     <!-- Google Tag Manager -->
     <script>
         (function(w, d, s, l, i) {
@@ -57,6 +56,7 @@
         @include('layouts.frontend.header')
     @endif
     <!-- navbar end -->
+
     @yield('content')
     <!-- footer start -->
     @if (Request::is('admin/orders/rescript*'))

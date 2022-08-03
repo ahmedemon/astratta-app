@@ -42,11 +42,11 @@ class AdminBalanceHelper
     {
         $startMonth = Carbon::now()->startOfMonth()->subMonth();
         $endMonth = Carbon::now()->startOfMonth();
-        return Withdraw::whereBetween('updated_at', [$startMonth, $endMonth])->where('updated_at', '<=', Carbon::now()->subDays(20)->toDateTimeString())->where('status', 2)->sum('total_cost');
+        return Withdraw::whereBetween('updated_at', [$startMonth, $endMonth])->where('updated_at', '<=', Carbon::now()->subDays(20)->toDateTimeString())->where('status', 2)->sum('amount');
     }
     public static function getTotalWithdraw() //withdraw by month
     {
-        return Withdraw::where('status', 2)->sum('total_cost');
+        return Withdraw::where('status', 2)->sum('amount');
     }
     public static function getOutgoingAmount() //upcoming amount
     {

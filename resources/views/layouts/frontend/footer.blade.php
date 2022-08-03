@@ -25,7 +25,7 @@
                                 <li class="list-group-item"><a href="{{ route('about') }}" class="">About</a></li>
                                 <li class="list-group-item"><a href="{{ route('contact') }}" class="">Contact</a></li>
                             </ul>
-                            <div class="row">
+                            <div class="row d-lg-none d-xl-none d-xxl-none">
                                 <div class="col-12 mb-lg-0 px-4 sub-links mb-5">
                                     <a href="{{ route('contract') }}" class="sub-link d-block mb-3">Contract</a>
                                     <a href="" class="sub-link d-block">Privacy Policy</a>

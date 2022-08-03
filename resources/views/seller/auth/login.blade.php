@@ -42,7 +42,7 @@
                                 </div>
                                 <button type="submit" class="btn rounded-0 border-0 login">LOGIN</button>
                                 @if (Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}" class="sub-link">Forget Password?</a>
+                                    <a href="{{ route('seller.forget.password') }}" class="sub-link">Forget Password?</a>
                                 @endif
                                 <div class="d-flex justify-content-between align-items-center or">
                                     <hr />
