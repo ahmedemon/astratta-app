@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
         $top_artists = Seller::where('is_top', 1)->get();
         config(
             [
-                'app_name' => 'Astratta',
+                'app.number' => '0195094285',
+                'app_name' => 'Arteastratta',
                 'top_artists' => $top_artists,
                 'currency.usd' => '$',
                 'symbol.percent' => '%',

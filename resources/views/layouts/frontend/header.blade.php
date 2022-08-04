@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-white sticky-top shadow">
+<nav class="navbar navbar-expand-lg bg-white sticky-top shadow" style="z-index: 100000000;">
     <div class="container px-lg-0 px-xl-0 px-xxl-0 px-5 align-items-center">
         <ul class="navbar-nav me-auto mb-lg-0 d-lg-none">
             <li class="nav-item">
@@ -26,7 +26,7 @@
             </ul>
             <div class="nav-right d-none d-lg-block">
                 <div class="d-flex">
-                    <a href="tel:01940546604" class="">
+                    <a href="tel:{{ config('app.number') }}" class="">
                         <img height="30px" src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
                     </a>
                     <a href="{{ route('my-cart.index') }}" class="">
@@ -39,16 +39,21 @@
             </div>
         </div>
     </div>
-    {{-- <div id="google_element" class="fixed-top" style="left: 90%;"></div>
+    <style>
+        .goog-te-menu-frame {
+            z-index: 100000000;
+        }
+    </style>
+    <div id="google_element" class="card border-danger fixed-bottom" style="left: 88%;right: 10px;bottom: 10px !important;bottom: 9px;text-align: center !important;"></div>
     <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
     <script>
         function loadGoogleTranslate() {
             new google.translate.TranslateElement("google_element");
         }
-    </script> --}}
+    </script>
 </nav>
 
-<nav class="navbar navbar-expand-lg bg-white fixed-bottom shadow d-lg-none d-xl-none d-xxl-none d-flex align-items-center" style="height: 65px !important;">
+<nav class="navbar navbar-expand-lg bg-white fixed-bottom shadow d-lg-none d-xl-none d-xxl-none d-flex align-items-center" style="height: 65px !important; z-index: 100000000;">
     <div class="container px-lg-0 px-5 justify-content-between">
         <a href="/" class="btn btn-sm rounded-0">
             <img height="25px" src="{{ asset('frontend/svg/home.svg') }}" alt="" />
@@ -56,7 +61,7 @@
         <a href="{{ route('painting.index') }}" class="btn btn-sm rounded-0">
             <img height="25px" src="{{ asset('frontend/svg/paintings.svg') }}" alt="" />
         </a>
-        <a href="tel:01940546604" class="btn btn-sm rounded-0">
+        <a href="tel:{{ config('app.number') }}" class="btn btn-sm rounded-0">
             <img height="28px" src="{{ asset('frontend/svg/phone.svg') }}" alt="" />
         </a>
         <a href="{{ Auth::guard('seller')->user() ? route('seller.dashboard.index') : (Auth::user() ? route('my-account.index') : route('login')) }}" class="btn btn-sm rounded-0">
