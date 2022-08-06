@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
+use App\Mail\EnquiryEmail;
 use App\Models\Blog;
 use App\Models\Contact;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class FrontendController extends Controller
@@ -36,8 +38,10 @@ class FrontendController extends Controller
     }
     public function contactStore(ContactRequest $request)
     {
+        $contacts = $request->all();
         $contact = new Contact($request->all());
         $contact->save();
+        Mail::to('info@arteastratta.es')->send(new EnquiryEmail($contacts));
         alert('Message Sent!', 'Your valuable message sented to our community!', 'success');
         return redirect()->back();
     }

@@ -57,7 +57,7 @@ class SellerRegisterController extends Controller
 
         if ($seller) {
             Mail::to($seller->email)->send(new SellerRegisterMailer($seller));
-            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new SellerInfoToAdmin($seller));
+            Mail::to('altas@arteastratta.es')->send(new SellerInfoToAdmin($seller));
         }
 
         toastr()->info('You`ve just registered as an artist. Please wait for confirmation!', 'Success!');
