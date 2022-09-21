@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\Auth\ChangePasswordController;
+use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
+use App\Http\Controllers\Admin\Auth\PasswordController;
+use App\Http\Controllers\Admin\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
@@ -18,9 +22,20 @@ Route::get('login', [AdminLoginController::class, 'viewLogin'])->name('log-in');
 Route::post('admin-login', [AdminLoginController::class, 'login'])->name('login');
 Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 
+Route::prefix('passwords')->group(function () {
+    Route::get('forget-password', [ForgotPasswordController::class, 'getEmail'])->name('forget.password');
+    Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->name('forget.password.store');
+
+    Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword'])->name('reset.password');
+    Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('reset.password.store');
+});
 Route::middleware('admin')->group(function () {
     Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+    });
+    Route::group(['prefix' => 'password', 'as' => 'password.'], function () {
+        Route::get('change/', [PasswordController::class, 'index'])->name('change.index');
+        Route::put('change-pass/{id}', [PasswordController::class, 'update'])->name('change');
     });
     Route::group(['prefix' => 'sellers', 'as' => 'seller.'], function () {
         Route::get('/', [SellerController::class, 'index'])->name('index');

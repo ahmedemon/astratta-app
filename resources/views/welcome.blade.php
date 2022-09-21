@@ -85,12 +85,12 @@
             @include('frontend.top-artist')
             <!-- meet our top artist -->
 
-            <div class="row container mx-auto px-lg-0">
+            <div class="row container mx-auto px-lg-0 d-lg-block d-xl-block d-xxl-block d-none">
                 <div class="container cta-section bg-white d-flex align-items-center px-lg-0">
                     <div class="row">
                         <div class="col-md-12 px-lg-0">
                             <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
-                            <div class="d-inline-flex align-items-center">
+                            <div class="d-flex align-items-center start-selling-bg">
                                 <a href="{{ Auth::guard('seller')->check() ? route('seller.dashboard.index') : route('seller.join-us') }}" class="start-selling-link">Start selling your paintings</a>
                                 <p class="my-0 text-dark">Paintings</p>
                             </div>

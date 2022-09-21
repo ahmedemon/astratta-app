@@ -28,7 +28,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
-        @if (!Request::is('admin/login'))
+        @if (!Request::is('admin/login') && !Request::is('admin/passwords*'))
             @include('layouts.backend.side-nav')
         @endif
         <!-- End of Sidebar -->
@@ -38,17 +38,17 @@
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                @if (!Request::is('admin/login'))
+                @if (!Request::is('admin/login') && !Request::is('admin/passwords*'))
                     @include('layouts.backend.header')
                 @endif
                 <!-- End of Topbar -->
-                <div class="container-fluid {{ Request::is('admin/login') ? 'bg-gradient-primary vh-100' : '' }}">
+                <div class="container-fluid {{ Request::is('admin/login') ? 'bg-gradient-primary vh-100' : '' }} {{ Request::is('admin/passwords*') ? 'bg-gradient-primary vh-100' : '' }}">
                     @yield('content')
                 </div>
             </div>
             <!-- End of Main Content -->
             <!-- Footer -->
-            @if (!Request::is('admin/login'))
+            @if (!Request::is('admin/login') && !Request::is('admin/passwords*'))
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">

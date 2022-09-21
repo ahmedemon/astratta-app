@@ -21,7 +21,6 @@ class BillingDetail extends Model
         'street',
         'post_or_zip',
     ];
-
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -1,11 +1,7 @@
 @extends('layouts.backend.app')
 @section('content')
     <div class="container vh-100">
-        @if (count($errors) > 0)
-            @foreach ($errors->all() as $error)
-                <small class="text-danger">{{ $error }}</small>
-            @endforeach
-        @endif
+
         <!-- Outer Row -->
         <div class="row justify-content-center align-items-center vh-100">
 
@@ -21,6 +17,11 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Admin Login!</h1>
                                     </div>
+                                    @if (count($errors) > 0)
+                                        @foreach ($errors->all() as $error)
+                                            <small class="text-danger">{{ $error }}</small>
+                                        @endforeach
+                                    @endif
                                     <form class="user" action="{{ route('admin.login') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
@@ -49,7 +50,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                        <a class="small" href="{{ route('admin.forget.password') }}">Forgot Password?</a>
                                     </div>
                                 </div>
                             </div>
